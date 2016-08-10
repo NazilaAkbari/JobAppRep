@@ -12,16 +12,11 @@
         android:layout_marginTop="70dp"
         android:orientation="horizontal">
 
-
-        <Button
-            android:id="@+id/btnAddJob"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/round_btn"
-            android:drawableLeft="@drawable/plus"
-            android:paddingLeft="9dp"
-            android:gravity="center"
-            android:layout_marginLeft="300dp" />
+        <android.support.design.widget.FloatingActionButton android:id="@+id/btnAddJob"
+            android:elevation="10dp" android:layout_width="50dp"
+            android:layout_height="50dp" android:paddingLeft="9dp"
+            android:gravity="center" android:layout_marginLeft="300dp"
+            android:src="@drawable/plus" />
 
     </LinearLayout>
 

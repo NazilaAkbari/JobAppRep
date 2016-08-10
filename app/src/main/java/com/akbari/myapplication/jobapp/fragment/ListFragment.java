@@ -2,6 +2,7 @@ package com.akbari.myapplication.jobapp.fragment;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +32,7 @@ public class ListFragment extends Fragment implements OnAddItemListener {
 
     private List<Job> jobs = new ArrayList<>();
 
-    private Button addButton;
+    private FloatingActionButton addButton;
     private Button removeButton;
 
     @Override
@@ -48,7 +49,7 @@ public class ListFragment extends Fragment implements OnAddItemListener {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new CustomRecyclerAdapter(view, jobs);
         mRecyclerView.setAdapter(mAdapter);
-        addButton = (Button) view.findViewById(R.id.btnAddJob);
+        addButton = (FloatingActionButton) view.findViewById(R.id.btnAddJob);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
