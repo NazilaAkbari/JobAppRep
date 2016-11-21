@@ -85,7 +85,7 @@ public class TimeDao {
             newQueryModel.setDateFrom(entry.getKey());
             newQueryModel.setDateTo(entry.getValue());
             newQueryModel.setJobName(queryModel.getJobName());
-            chartYAxisList.add(getTimeInMonthDateRange(context, queryModel));
+            chartYAxisList.add(getTimeInMonthDateRange(context, newQueryModel));
         }
         return chartYAxisList;
     }
@@ -94,15 +94,16 @@ public class TimeDao {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Calendar firsDateBeforeDateTo = getDateFrom(queryModel);
         Calendar firstDateAfterDateFrom = getDateTo(queryModel);
-        Calendar middleDate = firsDateBeforeDateTo;
+        Calendar middleDate = getDateFrom(queryModel);
         Map<String, String> dateMap = new HashMap<>();
         dateMap.put(dateFormat.format(firsDateBeforeDateTo.getTime()), queryModel.getDateTo());
         dateMap.put(queryModel.getDateFrom(), dateFormat.format(firstDateAfterDateFrom.getTime()));
         while (firsDateBeforeDateTo.compareTo(firstDateAfterDateFrom) > 0) {
-            middleDate.set(Calendar.MONTH, middleDate.get(Calendar.MONTH) - 1);
+            int month = firsDateBeforeDateTo.get(Calendar.MONTH);
+            middleDate.set(Calendar.MONTH, month - 1);
             dateMap.put(dateFormat.format(middleDate.getTime()),
                     dateFormat.format(firsDateBeforeDateTo.getTime()));
-            firsDateBeforeDateTo = middleDate;
+            firsDateBeforeDateTo.set(Calendar.MONTH, month - 1);
         }
         return dateMap;
     }
@@ -161,7 +162,7 @@ public class TimeDao {
                 + queryModel.getDateTo() + "'"
                 + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
                 + " = '" + queryModel.getJobName() + "'";
-        System.out.println(query+"!!!!!!Q");
+        System.out.println(query + "!!!!!!Q");
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst())
             return cursor.getInt(0);
