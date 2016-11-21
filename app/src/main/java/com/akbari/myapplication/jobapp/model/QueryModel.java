@@ -1,13 +1,18 @@
 package com.akbari.myapplication.jobapp.model;
 
 /**
- * Created by n.akbari on 04/24/2016.
+ * @author Akbari
+ * @version ${VERSION}
+ * @since 11/21/2016
  */
-public class Job {
+
+public class QueryModel {
+
     private String id;
+    private String dateFrom;
+    private String dateTo;
     private String jobName;
     private Integer payDay;
-    private boolean isChecked;
 
     public String getId() {
         return id;
@@ -15,6 +20,22 @@ public class Job {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDateFrom() {
+        return dateFrom;
+    }
+
+    public void setDateFrom(String dateFrom) {
+        this.dateFrom = dateFrom;
+    }
+
+    public String getDateTo() {
+        return dateTo;
+    }
+
+    public void setDateTo(String dateTo) {
+        this.dateTo = dateTo;
     }
 
     public String getJobName() {
@@ -31,13 +52,5 @@ public class Job {
 
     public void setPayDay(Integer payDay) {
         this.payDay = payDay;
-    }
-
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setIsChecked(boolean isChecked) {
-        this.isChecked = isChecked;
     }
 }

@@ -68,7 +68,7 @@ public class ListFragment extends Fragment implements OnAddItemListener {
     @Override
     public void OnAddItem(String title, String payDay) {
         Job job = new Job();
-        job.setJobTitle(title);
+        job.setJobName(title);
         job.setPayDay(Integer.valueOf(payDay));
         job.setIsChecked(false);
         jobs.add(job);

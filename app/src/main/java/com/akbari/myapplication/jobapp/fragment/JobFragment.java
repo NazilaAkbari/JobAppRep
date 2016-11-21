@@ -1,6 +1,5 @@
 package com.akbari.myapplication.jobapp.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,17 +16,17 @@ import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.activity.JobActivity;
 import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
+import com.akbari.myapplication.jobapp.model.QueryModel;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class JobFragment extends Fragment {
 
@@ -42,7 +41,7 @@ public class JobFragment extends Fragment {
         return view;
     }
 
-    private void setMonthTime(View view){
+    private void setMonthTime(View view) {
         TextView monthTime = (TextView) view.findViewById(R.id.monthTime);
         TimeDao timeDao = new TimeDao();
         String time = timeDao.getMonthTime(this.getActivity(),
@@ -52,7 +51,7 @@ public class JobFragment extends Fragment {
         monthTime.setText(time);
     }
 
-    private void setAddButtonActionListener(View view){
+    private void setAddButtonActionListener(View view) {
         Button addTimeButton = (Button) view.findViewById(R.id.addTimeBtn);
         addTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,20 +65,38 @@ public class JobFragment extends Fragment {
         });
     }
 
-    private void setChartData(View view){
+    private void setChartData(View view) {
         BarChart chart = (BarChart) view.findViewById(R.id.chart);
-        List<BarEntry> entries=new ArrayList<>();
-        entries.add(new BarEntry(2,132));
-        entries.add(new BarEntry(3,130));
-        entries.add(new BarEntry(4,131));
-        BarDataSet set=new BarDataSet(entries,"BarDataSet");
+        List<BarEntry> entries = new ArrayList<>();
+        TimeDao timeDao = new TimeDao();
+        List<Integer> chartYAxisList = timeDao.
+                getChartYAxisList(getContext(), getQueryModel());
+        for (int i = 0; i < chartYAxisList.size(); i++) {
+            entries.add(new BarEntry(i + 1, chartYAxisList.get(i)));
+        }
+        BarDataSet set = new BarDataSet(entries, "BarDataSet");
         BarData data = new BarData(set);
-        set.setColors(new int[]{R.color.pink,R.color.colorAccent,R.color.yellow},
+        set.setColors(new int[]{R.color.pink, R.color.colorAccent, R.color.yellow},
                 getContext());
         data.setBarWidth(0.5f);
         chart.setData(data);
         chart.setFitBars(true); // make the x-axis fit exactly all bars
         chart.invalidate();
+    }
+
+    private QueryModel getQueryModel() {
+        QueryModel queryModel = new QueryModel();
+        queryModel.setJobName(getArguments().getString("selectedJob"));
+        queryModel.setPayDay(Integer.valueOf(getArguments().getString("payDay")));
+        Calendar calendar = Calendar.getInstance();
+        Calendar dateFrom = Calendar.getInstance();
+        System.out.println();
+        dateFrom.set(Calendar.DAY_OF_MONTH, Integer.valueOf(getArguments().getString("payDay")));
+        dateFrom.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 6);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        queryModel.setDateFrom(dateFormat.format(dateFrom.getTime()));
+        queryModel.setDateTo(dateFormat.format(calendar.getTime()));
+        return queryModel;
     }
 
     @Override
@@ -93,7 +110,7 @@ public class JobFragment extends Fragment {
         // handle item selection
         switch (item.getItemId()) {
             case R.id.action_back:
-                Intent intent=new Intent(getActivity(),MainActivity.class);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 return true;
             default:

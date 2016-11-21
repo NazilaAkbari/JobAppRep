@@ -20,7 +20,7 @@ public class JobDao {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_PAY_DAY, job.getPayDay());
-        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_JOB, job.getJobTitle());
+        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_JOB, job.getJobName());
         db.insert(DbHelper.FeedEntry.TABLE_NAME_JOB, null, contentValues);
         db.close();
     }
@@ -34,7 +34,7 @@ public class JobDao {
             do {
                 Job job = new Job();
                 job.setId(cursor.getString(0));
-                job.setJobTitle(cursor.getString(1));
+                job.setJobName(cursor.getString(1));
                 job.setPayDay(Integer.valueOf(cursor.getString(2)));
                 jobs.add(job);
             } while (cursor.moveToNext());
@@ -50,7 +50,7 @@ public class JobDao {
         db.delete(
                 DbHelper.FeedEntry.TABLE_NAME_JOB,
                 DbHelper.FeedEntry.COLUMN_NAME_JOB_Name + "=?",
-                new String[]{job.getJobTitle()}
+                new String[]{job.getJobName()}
         );
         db.close();
     }

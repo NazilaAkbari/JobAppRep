@@ -7,8 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 
 import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dialogFragment.LongClickDialogFragment;
@@ -17,7 +15,6 @@ import com.akbari.myapplication.jobapp.interfaces.ItemLongClickListener;
 import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.viewHolder.RecyclerViewHolder;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,7 +46,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
     @Override
     public void onBindViewHolder(final RecyclerViewHolder viewHolder, final int position) {
         if (jobs.size() != 0) {
-            viewHolder.jobTitle.setText(jobs.get(position).getJobTitle());
+            viewHolder.jobTitle.setText(jobs.get(position).getJobName());
             viewHolder.payDay.setText(jobs.get(position).getPayDay().toString());
           /*  viewHolder.checkBox.setOnClickListener(
                     new View.OnClickListener() {
@@ -78,7 +75,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
                 public void onClick(View view, int position, boolean isLongClick) {
                     Intent intent = new Intent(view.getContext(), MainActivity.class);
                     intent.putExtra("payDay", jobs.get(position).getPayDay().toString());
-                    intent.putExtra("selectedJob", jobs.get(position).getJobTitle());
+                    intent.putExtra("selectedJob", jobs.get(position).getJobName());
                     view.getContext().startActivity(intent);
                 }
             });
@@ -86,7 +83,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
                 @Override
                 public boolean onLongClick(View view, int position, boolean isLongClick) {
                     String payDay = jobs.get(position).getPayDay().toString();
-                    String jobName = jobs.get(position).getJobTitle();
+                    String jobName = jobs.get(position).getJobName();
                     showOnLongClickDialog(payDay, jobName);
                     return true;
                 }

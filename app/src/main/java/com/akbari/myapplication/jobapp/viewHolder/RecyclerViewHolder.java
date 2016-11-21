@@ -2,7 +2,6 @@ package com.akbari.myapplication.jobapp.viewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.akbari.myapplication.jobapp.R;
@@ -25,7 +24,7 @@ public class RecyclerViewHolder
 
     public RecyclerViewHolder(View itemView) {
         super(itemView);
-        jobTitle = (TextView) itemView.findViewById(R.id.jobTitle);
+        jobTitle = (TextView) itemView.findViewById(R.id.jobName);
         payDay = (TextView) itemView.findViewById(R.id.payDay);
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
