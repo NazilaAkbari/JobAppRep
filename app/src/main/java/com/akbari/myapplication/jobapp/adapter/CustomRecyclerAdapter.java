@@ -1,6 +1,8 @@
 package com.akbari.myapplication.jobapp.adapter;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +11,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.akbari.myapplication.jobapp.activity.MainActivity;
+import com.akbari.myapplication.jobapp.dialogFragment.LongClickDialogFragment;
 import com.akbari.myapplication.jobapp.interfaces.ItemClickListener;
+import com.akbari.myapplication.jobapp.interfaces.ItemLongClickListener;
 import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.viewHolder.RecyclerViewHolder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,16 +29,12 @@ import com.akbari.myapplication.jobapp.R;
 public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     public static List<Job> jobs = Collections.emptyList();
-    private Button removeBtn;
-    private Button editBtn;
-    private CheckBox checkBox;
+    private Fragment fragment;
     public static int checkNum = 0;
 
-    public CustomRecyclerAdapter(View view, List<Job> jobs) {
+    public CustomRecyclerAdapter( List<Job> jobs, Fragment fragment) {
         this.jobs = jobs;
-        removeBtn = (Button) view.findViewById(R.id.remove);
-        editBtn = (Button) view.findViewById(R.id.edit);
-        checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+        this.fragment = fragment;
         notifyDataSetChanged();
     }
 
@@ -50,7 +51,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         if (jobs.size() != 0) {
             viewHolder.jobTitle.setText(jobs.get(position).getJobTitle());
             viewHolder.payDay.setText(jobs.get(position).getPayDay().toString());
-            viewHolder.checkBox.setOnClickListener(
+          /*  viewHolder.checkBox.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -71,7 +72,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
 
                         }
                     }
-            );
+            );*/
             viewHolder.setClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
@@ -79,6 +80,15 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
                     intent.putExtra("payDay", jobs.get(position).getPayDay().toString());
                     intent.putExtra("selectedJob", jobs.get(position).getJobTitle());
                     view.getContext().startActivity(intent);
+                }
+            });
+            viewHolder.setLongClickListener(new ItemLongClickListener() {
+                @Override
+                public boolean onLongClick(View view, int position, boolean isLongClick) {
+                    String payDay = jobs.get(position).getPayDay().toString();
+                    String jobName = jobs.get(position).getJobTitle();
+                    showOnLongClickDialog(payDay, jobName);
+                    return true;
                 }
             });
 
@@ -94,13 +104,23 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         notifyItemInserted(position);
     }
 
-    public void deleteItem(int position,int count) {
+    public void deleteItem(int position, int count) {
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position,count-position);
+        notifyItemRangeChanged(position, count - position);
     }
 
     public void updateList(List<Job> data) {
         jobs = data;
         notifyDataSetChanged();
     }
+
+    private void showOnLongClickDialog(String payDay, String jobName) {
+        LongClickDialogFragment longClickDialogFragment = new LongClickDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("selectedJob", jobName);
+        bundle.putString("payDay", payDay);
+        longClickDialogFragment.setArguments(bundle);
+        longClickDialogFragment.show(fragment.getFragmentManager(), "LongClickDialog");
+    }
+
 }

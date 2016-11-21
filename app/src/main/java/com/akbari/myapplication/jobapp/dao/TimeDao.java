@@ -14,7 +14,9 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Nazila Akbari on 04/24/2016.
+ * @author Nazila Akbari
+ * @since 04/24/2016
+ * @version 1.0
  */
 public class TimeDao {
 

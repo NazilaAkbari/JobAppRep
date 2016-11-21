@@ -9,43 +9,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/timeStart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:hint="@string/enter_time" />
-
-    <EditText
-        android:id="@+id/timeExit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/timeStart"
-        android:layout_marginBottom="20dp"
-        android:hint="@string/exit_time" />
-
-    <EditText
-        android:id="@+id/date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/timeExit"
-        android:layout_marginBottom="20dp"
-        android:hint="@string/date" />
-
-
-    <Button
-        android:id="@+id/addTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/date"
-        android:onClick="addTime"
-        android:text="@string/submit" />
-
     <TextView
         android:id="@+id/monthTimeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addTime"
+        android:layout_marginTop="100dp"
         android:text="@string/monthTime" />
 
     <TextView
@@ -53,6 +21,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/monthTimeTitle"
-        android:text="@string/monthTime"/>
+        android:text="@string/monthTime" />
+
+    <Button
+        android:id="@+id/addTimeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="@string/addTime" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="95dp"
+        android:layout_below="@+id/addTimeBtn" />
 
 </RelativeLayout>

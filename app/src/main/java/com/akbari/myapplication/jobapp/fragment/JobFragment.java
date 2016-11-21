@@ -1,118 +1,104 @@
 package com.akbari.myapplication.jobapp.fragment;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.akbari.myapplication.jobapp.R;
+import com.akbari.myapplication.jobapp.activity.JobActivity;
+import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JobFragment extends Fragment {
-    private EditText date;
-    private DatePickerDialog datePicker;
-    private EditText enterTime;
-    private TimePickerDialog enterTimePicker;
-    private EditText exitTime;
-    private TimePickerDialog exitTimePicker;
-    private TextView monthTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_job, container, false);
-        date = (EditText) view.findViewById(R.id.date);
-        date.setInputType(InputType.TYPE_NULL);
-        setDateField();
-        enterTime = (EditText) view.findViewById(R.id.timeStart);
-        enterTime.setInputType(InputType.TYPE_NULL);
-        setEnterTimeField();
-        exitTime = (EditText) view.findViewById(R.id.timeExit);
-        setExitTimeField();
-        monthTime = (TextView) view.findViewById(R.id.monthTime);
+        setHasOptionsMenu(true);
+        setMonthTime(view);
+        setAddButtonActionListener(view);
+        setChartData(view);
+        return view;
+    }
+
+    private void setMonthTime(View view){
+        TextView monthTime = (TextView) view.findViewById(R.id.monthTime);
         TimeDao timeDao = new TimeDao();
         String time = timeDao.getMonthTime(this.getActivity(),
                 getArguments().getString("payDay"),
                 getArguments().getString("selectedJob")
         ).toString();
         monthTime.setText(time);
-        return view;
     }
 
-    private void setDateField() {
-        date.setOnClickListener(new View.OnClickListener() {
+    private void setAddButtonActionListener(View view){
+        Button addTimeButton = (Button) view.findViewById(R.id.addTimeBtn);
+        addTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v == date)
-                    datePicker.show();
+                Intent intent = new Intent(getActivity(), JobActivity.class);
+                intent.putExtra("selectedJob", getArguments().getString("selectedJob"));
+                intent.putExtra("payDay", getArguments().getString("payDay"));
+                intent.putExtra("addTime", "true");
+                startActivity(intent);
             }
         });
-        Calendar calendar = Calendar.getInstance();
-        datePicker = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-                date.setText(simpleDateFormat.format(newDate.getTime()));
-            }
-
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    private void setEnterTimeField() {
-        enterTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v == enterTime)
-                    enterTimePicker.show();
-            }
-        });
-        Calendar calendar = Calendar.getInstance();
-        enterTimePicker = new TimePickerDialog(this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                Calendar newTime = Calendar.getInstance();
-                newTime.set(Calendar.HOUR, hourOfDay);
-                newTime.set(Calendar.MINUTE, minute);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.US);
-                enterTime.setText(simpleDateFormat.format(newTime.getTime()));
-            }
-        }, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
-
+    private void setChartData(View view){
+        BarChart chart = (BarChart) view.findViewById(R.id.chart);
+        List<BarEntry> entries=new ArrayList<>();
+        entries.add(new BarEntry(2,132));
+        entries.add(new BarEntry(3,130));
+        entries.add(new BarEntry(4,131));
+        BarDataSet set=new BarDataSet(entries,"BarDataSet");
+        BarData data = new BarData(set);
+        set.setColors(new int[]{R.color.pink,R.color.colorAccent,R.color.yellow},
+                getContext());
+        data.setBarWidth(0.5f);
+        chart.setData(data);
+        chart.setFitBars(true); // make the x-axis fit exactly all bars
+        chart.invalidate();
     }
 
-    private void setExitTimeField() {
-        exitTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v == exitTime)
-                    exitTimePicker.show();
-            }
-        });
-        Calendar calendar = Calendar.getInstance();
-        exitTimePicker = new TimePickerDialog(this.getActivity(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                Calendar newTime = Calendar.getInstance();
-                newTime.set(Calendar.HOUR, hourOfDay);
-                newTime.set(Calendar.MINUTE, minute);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.US);
-                exitTime.setText(simpleDateFormat.format(newTime.getTime()));
-            }
-        }, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
+    @Override
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_back, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_back:
+                Intent intent=new Intent(getActivity(),MainActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

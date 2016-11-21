@@ -1,4 +1,4 @@
-package com.akbari.myapplication.jobapp.fragment;
+package com.akbari.myapplication.jobapp.dialogFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -42,10 +42,12 @@ public class AddDialogFragment extends android.support.v4.app.DialogFragment {
                         title = (EditText) getDialog().findViewById(R.id.jobTitleTxt);
                         payDay = (EditText) getDialog().findViewById(R.id.payDayTxt);
                         assert payDay != null && title != null;
-                        int payDayInt = 1;
+                        int payDayInt = Integer.valueOf(payDay.getText().toString());
                         System.out.println(payDay.getText().toString()+"@@@@@@@");
-                        if (payDayInt > 0 && payDayInt <= 31 && !title.getText().toString().equals("")) {
-                            callBack.OnAddItem(title.getText().toString(), payDay.getText().toString());
+                        if (payDayInt > 0 && payDayInt <= 31 &&
+                                !title.getText().toString().equals("")) {
+                            callBack.OnAddItem(title.getText().toString(),
+                                    payDay.getText().toString());
                             title.setText("");
                             payDay.setText("");
                         }

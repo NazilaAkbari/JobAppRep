@@ -1,20 +1,18 @@
 package com.akbari.myapplication.jobapp.fragment;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.adapter.CustomRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
+import com.akbari.myapplication.jobapp.dialogFragment.AddDialogFragment;
 import com.akbari.myapplication.jobapp.interfaces.OnAddItemListener;
 import com.akbari.myapplication.jobapp.model.Job;
 
@@ -23,41 +21,30 @@ import java.util.List;
 
 public class ListFragment extends Fragment implements OnAddItemListener {
 
-    private RecyclerView mRecyclerView;
     private CustomRecyclerAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private Button removeBtn;
-    private Button editBtn;
-
 
     private List<Job> jobs = new ArrayList<>();
-
-    private FloatingActionButton addButton;
-    private Button removeButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.first_page, container, false);
-        removeBtn = (Button) view.findViewById(R.id.remove);
-        editBtn = (Button) view.findViewById(R.id.edit);
         JobDao jobDao = new JobDao();
         jobs.addAll(jobDao.getAllJobs(this.getActivity()));
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this.getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new CustomRecyclerAdapter(view, jobs);
+        mAdapter = new CustomRecyclerAdapter(jobs, this);
         mRecyclerView.setAdapter(mAdapter);
-        addButton = (FloatingActionButton) view.findViewById(R.id.btnAddJob);
+        FloatingActionButton addButton = (FloatingActionButton) view.findViewById(R.id.btnAddJob);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog();
             }
         });
-        removeButton = (Button) view.findViewById(R.id.remove);
-        removeButton.setOnClickListener(new View.OnClickListener() {
+        /*removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 JobDao jobDao = new JobDao();
@@ -74,7 +61,7 @@ public class ListFragment extends Fragment implements OnAddItemListener {
                 removeBtn.setVisibility(View.GONE);
                 editBtn.setVisibility(View.GONE);
             }
-        });
+        });*/
         return view;
     }
 

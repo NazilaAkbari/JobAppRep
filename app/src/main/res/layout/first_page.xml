@@ -23,30 +23,11 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="246dp"
+        android:layout_height="0dp"
         android:layout_weight="1.07"
-        android:scrollbars="vertical" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:weightSum="1">
-
-        <Button
-            android:id="@+id/remove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="Remove"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="Edit"
-            android:visibility="invisible" />
-    </LinearLayout>
+        android:scrollbars="vertical"
+        android:layout_gravity="end"
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="100dp"/>
 
 </LinearLayout>
