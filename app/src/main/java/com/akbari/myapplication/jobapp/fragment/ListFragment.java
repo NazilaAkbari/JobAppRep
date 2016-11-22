@@ -13,13 +13,13 @@ import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.adapter.CustomRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dialogFragment.AddDialogFragment;
-import com.akbari.myapplication.jobapp.interfaces.OnAddItemListener;
+import com.akbari.myapplication.jobapp.interfaces.OnListListener;
 import com.akbari.myapplication.jobapp.model.Job;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListFragment extends Fragment implements OnAddItemListener {
+public class ListFragment extends Fragment implements OnListListener {
 
     private CustomRecyclerAdapter mAdapter;
 
@@ -44,24 +44,6 @@ public class ListFragment extends Fragment implements OnAddItemListener {
                 showDialog();
             }
         });
-        /*removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JobDao jobDao = new JobDao();
-                List<Job> adapterJobs = new ArrayList<>();
-                adapterJobs.addAll(CustomRecyclerAdapter.jobs);
-                for (int i = 0; i < adapterJobs.size(); i++) {
-                    if (adapterJobs.get(i).isChecked()) {
-                        jobDao.delete(getActivity().getBaseContext(), adapterJobs.get(i));
-                        CustomRecyclerAdapter.jobs.remove(adapterJobs.get(i));
-                        mAdapter.deleteItem(CustomRecyclerAdapter.jobs.indexOf(adapterJobs.get(i)) + 1, adapterJobs.size());
-                    }
-                }
-                CustomRecyclerAdapter.checkNum = 0;
-                removeBtn.setVisibility(View.GONE);
-                editBtn.setVisibility(View.GONE);
-            }
-        });*/
         return view;
     }
 
@@ -73,8 +55,19 @@ public class ListFragment extends Fragment implements OnAddItemListener {
         job.setIsChecked(false);
         jobs.add(job);
         JobDao jobDao = new JobDao();
-        jobDao.addJob(getActivity().getBaseContext(), job);
+        jobDao.addJob(getContext(), job);
         mAdapter.addItem(jobs.size() - 1);
+    }
+
+    @Override
+    public void OnRemoveItem(String title, String payDay, int position) {
+        JobDao jobDao = new JobDao();
+        List<Job> adapterJobs = new ArrayList<>();
+        adapterJobs.addAll(jobs);
+        jobDao.delete(getContext(), jobs.get(position));
+        mAdapter.jobs.remove(position);
+        mAdapter.deleteItem(position,
+                adapterJobs.size());
     }
 
     private void showDialog() {

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.interfaces.OnAddItemListener;
+import com.akbari.myapplication.jobapp.interfaces.OnListListener;
 
 /**
  * Created by n.akbari on 06/19/2016.
@@ -17,14 +17,14 @@ public class AddDialogFragment extends android.support.v4.app.DialogFragment {
 
     private EditText title;
     private EditText payDay;
-    private OnAddItemListener callBack;
+    private OnListListener callBack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         try {
-            callBack = (OnAddItemListener) getTargetFragment();
+            callBack = (OnListListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
         }
@@ -43,7 +43,6 @@ public class AddDialogFragment extends android.support.v4.app.DialogFragment {
                         payDay = (EditText) getDialog().findViewById(R.id.payDayTxt);
                         assert payDay != null && title != null;
                         int payDayInt = Integer.valueOf(payDay.getText().toString());
-                        System.out.println(payDay.getText().toString()+"@@@@@@@");
                         if (payDayInt > 0 && payDayInt <= 31 &&
                                 !title.getText().toString().equals("")) {
                             callBack.OnAddItem(title.getText().toString(),

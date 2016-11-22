@@ -14,21 +14,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="@string/monthTime" />
+        android:text="@string/monthTime"
+        android:textDirection="anyRtl"/>
 
     <TextView
         android:id="@+id/monthTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/monthTimeTitle"
-        android:text="@string/monthTime" />
+        android:text="@string/monthTime"
+        android:textDirection="anyRtl"/>
 
     <Button
         android:id="@+id/addTimeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        android:text="@string/addTime" />
+        android:text="@string/addTime"
+        android:textDirection="anyRtl"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

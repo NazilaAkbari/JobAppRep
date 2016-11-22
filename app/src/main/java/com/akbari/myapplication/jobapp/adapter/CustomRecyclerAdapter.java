@@ -27,9 +27,8 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
 
     public static List<Job> jobs = Collections.emptyList();
     private Fragment fragment;
-    public static int checkNum = 0;
 
-    public CustomRecyclerAdapter( List<Job> jobs, Fragment fragment) {
+    public CustomRecyclerAdapter(List<Job> jobs, Fragment fragment) {
         this.jobs = jobs;
         this.fragment = fragment;
         notifyDataSetChanged();
@@ -48,28 +47,6 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         if (jobs.size() != 0) {
             viewHolder.jobTitle.setText(jobs.get(position).getJobName());
             viewHolder.payDay.setText(jobs.get(position).getPayDay().toString());
-          /*  viewHolder.checkBox.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (((CheckBox) v).isChecked()) {
-                                checkNum++;
-                                jobs.get(position).setIsChecked(true);
-                            } else {
-                                checkNum--;
-                                jobs.get(position).setIsChecked(false);
-                            }
-                            if (checkNum != 0) {
-                                removeBtn.setVisibility(View.VISIBLE);
-                                editBtn.setVisibility(View.VISIBLE);
-                            } else {
-                                removeBtn.setVisibility(View.GONE);
-                                editBtn.setVisibility(View.GONE);
-                            }
-
-                        }
-                    }
-            );*/
             viewHolder.setClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
@@ -84,7 +61,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
                 public boolean onLongClick(View view, int position, boolean isLongClick) {
                     String payDay = jobs.get(position).getPayDay().toString();
                     String jobName = jobs.get(position).getJobName();
-                    showOnLongClickDialog(payDay, jobName);
+                    showOnLongClickDialog(payDay, jobName, position);
                     return true;
                 }
             });
@@ -103,7 +80,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
 
     public void deleteItem(int position, int count) {
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, count - position);
+        notifyItemRangeChanged(position, getItemCount());
     }
 
     public void updateList(List<Job> data) {
@@ -111,11 +88,13 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         notifyDataSetChanged();
     }
 
-    private void showOnLongClickDialog(String payDay, String jobName) {
+    private void showOnLongClickDialog(String payDay, String jobName, int position) {
         LongClickDialogFragment longClickDialogFragment = new LongClickDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("selectedJob", jobName);
         bundle.putString("payDay", payDay);
+        bundle.putInt("position", position);
+        longClickDialogFragment.setTargetFragment(fragment, 0);
         longClickDialogFragment.setArguments(bundle);
         longClickDialogFragment.show(fragment.getFragmentManager(), "LongClickDialog");
     }

@@ -10,7 +10,8 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="Title" />
+        android:hint="@string/jobTitle"
+        android:textDirection="anyRtl"/>
     <EditText
         android:id="@+id/payDayTxt"
         android:layout_width="match_parent"
@@ -19,5 +20,6 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
-        android:hint="Pay Day"/>
+        android:hint="@string/payDay"
+        android:textDirection="anyRtl"/>
 </LinearLayout>

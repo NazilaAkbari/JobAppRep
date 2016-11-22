@@ -10,11 +10,9 @@ import com.akbari.myapplication.jobapp.model.Time;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -29,13 +27,16 @@ public class TimeDao {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-        Date date1 = format.parse(time.getEnterTime());
-        Date date2 = format.parse(time.getExitTime());
-        long difference = (date2.getTime() - date1.getTime()) / ((60 * 60 * 1000));
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
+        SimpleDateFormat dateFormatFrom = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        SimpleDateFormat dateFormatTo = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String newDate = dateFormatTo.format(dateFormatFrom.parse(time.getDate()));
+        Date timeEnter = timeFormat.parse(time.getEnterTime());
+        Date timeExit = timeFormat.parse(time.getExitTime());
+        long difference = (timeExit.getTime() - timeEnter.getTime()) / ((60 * 60 * 1000));
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_ENTER, time.getEnterTime());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_EXIT, time.getExitTime());
-        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_Date, time.getDate());
+        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_Date, newDate);
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_JOB_Name, time.getJobName());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_SUM, difference);
         db.insert(DbHelper.FeedEntry.TABLE_NAME_TIME, null, contentValues);
@@ -44,7 +45,7 @@ public class TimeDao {
 
 
     public Integer getMonthTime(Context context, String payDay, String jobName) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         Calendar queryCal = getQueryCal(Integer.valueOf(payDay));
         String dateFrom = dateFormat.format(queryCal.getTime());
         String dateTo = dateFormat.format(Calendar.getInstance().getTime());
@@ -68,47 +69,35 @@ public class TimeDao {
         Calendar queryCal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_MONTH);
         queryCal.set(Calendar.DAY_OF_MONTH, payDay);
-        if (day > payDay) {
+        if (day > payDay)
             queryCal.set(Calendar.MONTH, cal.get(Calendar.MONTH));
-
-        } else {
+        else
             queryCal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 1);
-        }
         return queryCal;
     }
 
-    public List<Integer> getChartYAxisList(Context context, QueryModel queryModel) {
-        Map<String, String> datesMap = getDatesMap(queryModel);
-        List<Integer> chartYAxisList = new ArrayList<>();
-        for (Map.Entry<String, String> entry : datesMap.entrySet()) {
+    public Map<Integer, Integer> getChartData(Context context, QueryModel queryModel) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Calendar endOfThisMonth = getEndOfThisMonth(queryModel);
+        Calendar startDate = getDateOfFirstTimeEntry(context, queryModel.getJobName());
+        Map<Integer, Integer> chartAxisMap = new HashMap<>();
+        while (endOfThisMonth.compareTo(startDate) > 0) {
             QueryModel newQueryModel = new QueryModel();
-            newQueryModel.setDateFrom(entry.getKey());
-            newQueryModel.setDateTo(entry.getValue());
+            newQueryModel.setDateTo(dateFormat.format(endOfThisMonth.getTime()));
+            endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
+            newQueryModel.setDateFrom(dateFormat.format(endOfThisMonth.getTime()));
             newQueryModel.setJobName(queryModel.getJobName());
-            chartYAxisList.add(getTimeInMonthDateRange(context, newQueryModel));
+            if (queryModel.getPayDay() > 15)
+                chartAxisMap.put(endOfThisMonth.get(Calendar.MONTH) + 2,
+                        getTimeInMonthDateRange(context, newQueryModel));
+            else
+                chartAxisMap.put(endOfThisMonth.get(Calendar.MONTH) + 1,
+                        getTimeInMonthDateRange(context, newQueryModel));
         }
-        return chartYAxisList;
+        return chartAxisMap;
     }
 
-    private Map<String, String> getDatesMap(QueryModel queryModel) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        Calendar firsDateBeforeDateTo = getDateFrom(queryModel);
-        Calendar firstDateAfterDateFrom = getDateTo(queryModel);
-        Calendar middleDate = getDateFrom(queryModel);
-        Map<String, String> dateMap = new HashMap<>();
-        dateMap.put(dateFormat.format(firsDateBeforeDateTo.getTime()), queryModel.getDateTo());
-        dateMap.put(queryModel.getDateFrom(), dateFormat.format(firstDateAfterDateFrom.getTime()));
-        while (firsDateBeforeDateTo.compareTo(firstDateAfterDateFrom) > 0) {
-            int month = firsDateBeforeDateTo.get(Calendar.MONTH);
-            middleDate.set(Calendar.MONTH, month - 1);
-            dateMap.put(dateFormat.format(middleDate.getTime()),
-                    dateFormat.format(firsDateBeforeDateTo.getTime()));
-            firsDateBeforeDateTo.set(Calendar.MONTH, month - 1);
-        }
-        return dateMap;
-    }
-
-    private Calendar getDateFrom(QueryModel queryModel) {
+    private Calendar getEndOfThisMonth(QueryModel queryModel) {
         String pattern = "dd-MM-yyyy";
         Date date = new Date();
         try {
@@ -118,38 +107,14 @@ public class TimeDao {
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        Calendar dateToCal = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        dateToCal.set(Calendar.DAY_OF_MONTH, queryModel.getPayDay());
-        if (day > queryModel.getPayDay()) {
-            dateToCal.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
-
-        } else {
-            dateToCal.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
-        }
-        return dateToCal;
-    }
-
-    private Calendar getDateTo(QueryModel queryModel) {
-        String pattern = "dd-MM-yyyy";
-        Date date = new Date();
-        try {
-            date = new SimpleDateFormat(pattern).parse(queryModel.getDateFrom());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        Calendar dateFromCal = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        dateFromCal.set(Calendar.DAY_OF_MONTH, queryModel.getPayDay());
-        if (day >= queryModel.getPayDay()) {
-            dateFromCal.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
-
-        } else {
-            dateFromCal.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
-        }
-        return dateFromCal;
+        endDate.set(Calendar.DAY_OF_MONTH, queryModel.getPayDay());
+        if (day > queryModel.getPayDay())
+            endDate.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
+        else
+            endDate.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+        return endDate;
     }
 
     private Integer getTimeInMonthDateRange(Context context, QueryModel queryModel) {
@@ -164,10 +129,36 @@ public class TimeDao {
                 + " = '" + queryModel.getJobName() + "'";
         System.out.println(query + "!!!!!!Q");
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst())
+        if (cursor.moveToFirst()) {
             return cursor.getInt(0);
-        else
+        } else
             return -1;
+    }
+
+    private Calendar getDateOfFirstTimeEntry(Context context, String jobName) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT " + DbHelper.FeedEntry.COLUMN_NAME_Date
+                + " FROM " + DbHelper.FeedEntry.TABLE_NAME_TIME
+                + " WHERE " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
+                + " = '" + jobName + "'"
+                + " ORDER BY " + DbHelper.FeedEntry.COLUMN_NAME_Date
+                + " ASC LIMIT 1";
+        System.out.println(query + "!!!!!!Q");
+        Cursor cursor = db.rawQuery(query, null);
+        Calendar startDate = Calendar.getInstance();
+        if (cursor.moveToFirst()) {
+            String pattern = "20yy-MM-dd";
+            Date date = new Date();
+            try {
+                date = new SimpleDateFormat(pattern).parse(cursor.getString(0));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            startDate.setTime(date);
+            return startDate;
+        } else
+            return startDate;
     }
 
 }

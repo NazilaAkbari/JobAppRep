@@ -8,21 +8,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:hint="@string/enter_time" />
+        android:hint="@string/enter_time"
+        android:textDirection="anyRtl"/>
 
     <EditText
         android:id="@+id/timeExit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:hint="@string/exit_time" />
+        android:hint="@string/exit_time"
+        android:textDirection="anyRtl"/>
 
     <EditText
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:hint="@string/date" />
+        android:hint="@string/date"
+        android:textDirection="anyRtl"/>
 
     <Button
         android:text="@string/add"

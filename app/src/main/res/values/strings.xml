@@ -1,18 +1,18 @@
 <resources>
-    <string name="app_name">JobApp</string>
+    <string name="app_name">ساعت کار</string>
     <string name="title_activity_job">My Job</string>
     <string name="action_back">بازگشت</string>
     <string name="new_job">Add Job</string>
     <string name="enter_job">Enter New Job</string>
-    <string name="enter_time">Enter time</string>
-    <string name="exit_time">Exit time</string>
-    <string name="date">Date</string>
+    <string name="enter_time">ساعت ورود</string>
+    <string name="exit_time">ساعت خروج</string>
+    <string name="date">تاریخ</string>
     <string name="submit">ثبت</string>
     <string name="title">Job Time Calculator</string>
     <string name="jobName">Job Name</string>
-    <string name="payDay">Pay Day</string>
+    <string name="payDay">روز حساب</string>
     <string name="totalTime">Total Time</string>
-    <string name="monthTime">This Month Time</string>
+    <string name="monthTime">کارکرد این ماه:</string>
     <string name="addJob">افزودن شغل</string>
     <string name="cancelAdd">انصراف</string>
     <string name="show_item">نمایش</string>
@@ -20,4 +20,5 @@
     <string name="edit">ویرایش</string>
     <string name="addTime">افزودن ساعت</string>
     <string name="add">افزودن</string>
+    <string name="jobTitle">عنوان شغل</string>
 </resources>

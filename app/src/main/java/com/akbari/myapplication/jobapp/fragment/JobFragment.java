@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class JobFragment extends Fragment {
 
@@ -69,16 +70,17 @@ public class JobFragment extends Fragment {
         BarChart chart = (BarChart) view.findViewById(R.id.chart);
         List<BarEntry> entries = new ArrayList<>();
         TimeDao timeDao = new TimeDao();
-        List<Integer> chartYAxisList = timeDao.
-                getChartYAxisList(getContext(), getQueryModel());
-        for (int i = 0; i < chartYAxisList.size(); i++) {
-            entries.add(new BarEntry(i + 1, chartYAxisList.get(i)));
+        Map<Integer, Integer> chartData = timeDao.getChartData(getContext(), getQueryModel());
+        for (Map.Entry<Integer, Integer> entry : chartData.entrySet()
+                ) {
+            entries.add(new BarEntry(entry.getKey(), entry.getValue()));
         }
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
         BarData data = new BarData(set);
         set.setColors(new int[]{R.color.pink, R.color.colorAccent, R.color.yellow},
                 getContext());
         data.setBarWidth(0.5f);
+        chart.setHorizontalScrollBarEnabled(true);
         chart.setData(data);
         chart.setFitBars(true); // make the x-axis fit exactly all bars
         chart.invalidate();
@@ -89,12 +91,8 @@ public class JobFragment extends Fragment {
         queryModel.setJobName(getArguments().getString("selectedJob"));
         queryModel.setPayDay(Integer.valueOf(getArguments().getString("payDay")));
         Calendar calendar = Calendar.getInstance();
-        Calendar dateFrom = Calendar.getInstance();
         System.out.println();
-        dateFrom.set(Calendar.DAY_OF_MONTH, Integer.valueOf(getArguments().getString("payDay")));
-        dateFrom.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 6);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        queryModel.setDateFrom(dateFormat.format(dateFrom.getTime()));
         queryModel.setDateTo(dateFormat.format(calendar.getTime()));
         return queryModel;
     }
