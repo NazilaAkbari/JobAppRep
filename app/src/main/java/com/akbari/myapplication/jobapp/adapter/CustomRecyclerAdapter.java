@@ -21,11 +21,13 @@ import java.util.List;
 import com.akbari.myapplication.jobapp.R;
 
 /**
- * Created by n.akbari on 06/12/2016.
+ * @author n.akbari
+ * @since 06/12/2016
+ * @version 1.0
  */
 public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
-    public static List<Job> jobs = Collections.emptyList();
+    private static List<Job> jobs = Collections.emptyList();
     private Fragment fragment;
 
     public CustomRecyclerAdapter(List<Job> jobs, Fragment fragment) {
@@ -78,7 +80,8 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         notifyItemInserted(position);
     }
 
-    public void deleteItem(int position, int count) {
+    public void deleteItem(int position) {
+        jobs.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount());
     }

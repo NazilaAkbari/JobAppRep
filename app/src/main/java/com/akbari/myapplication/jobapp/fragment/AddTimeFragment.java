@@ -4,11 +4,18 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -16,7 +23,6 @@ import android.widget.TimePicker;
 
 import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.activity.JobActivity;
-import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.model.Time;
 
@@ -33,62 +39,28 @@ import java.util.Locale;
 
 public class AddTimeFragment extends Fragment {
 
-    private EditText date;
+    private EditText date, enterTime, exitTime;
     private DatePickerDialog datePicker;
-    private EditText enterTime;
-    private TimePickerDialog enterTimePicker;
-    private EditText exitTime;
-    private TimePickerDialog exitTimePicker;
+    private TimePickerDialog enterTimePicker, exitTimePicker;
+    private TextInputLayout timeStartLayout, timeEndLayout, dateLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_time, container, false);
-        date = (EditText) view.findViewById(R.id.date);
-        date.setInputType(InputType.TYPE_NULL);
-        setDateField();
-        enterTime = (EditText) view.findViewById(R.id.timeStart);
-        enterTime.setInputType(InputType.TYPE_NULL);
-        setEnterTimeField();
-        exitTime = (EditText) view.findViewById(R.id.timeExit);
-        setExitTimeField();
-        Button addButton= (Button) view.findViewById(R.id.btnAddTime);
-        Button cancelButton= (Button) view.findViewById(R.id.cancelAction);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Time time = new Time();
-                time.setJobName(getArguments().getString("selectedJob"));
-                time.setEnterTime(enterTime.getText().toString());
-                time.setExitTime(exitTime.getText().toString());
-                time.setDate(date.getText().toString());
-                TimeDao timeDao = new TimeDao();
-                try {
-                    timeDao.AddTime(getContext(), time);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                startActivity(intent);
-                enterTime.setText("");
-                exitTime.setText("");
-                date.setText("");
-            }
-        });
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), JobActivity.class);
-                intent.putExtra("selectedJob",getArguments().getString("selectedJob"));
-                intent.putExtra("payDay",getArguments().getString("payDay"));
-                startActivity(intent);
-            }
-        });
+        setHasOptionsMenu(true);
+        setDateField(view);
+        setEnterTimeField(view);
+        setExitTimeField(view);
+        setAddButtonListener(view);
         return view;
     }
 
 
-    private void setDateField() {
+    private void setDateField(View view) {
+        dateLayout = (TextInputLayout) view.findViewById(R.id.input_layout_date);
+        date = (EditText) view.findViewById(R.id.date);
+        date.setInputType(InputType.TYPE_NULL);
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,19 +69,25 @@ public class AddTimeFragment extends Fragment {
             }
         });
         Calendar calendar = Calendar.getInstance();
-        datePicker = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-                date.setText(simpleDateFormat.format(newDate.getTime()));
-            }
+        datePicker = new DatePickerDialog(this.getActivity(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                        date.setText(simpleDateFormat.format(newDate.getTime()));
+                    }
 
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+        date.addTextChangedListener(new MyTextWatcher(date));
     }
 
-    private void setEnterTimeField() {
+    private void setEnterTimeField(View view) {
+        timeStartLayout = (TextInputLayout) view.findViewById(R.id.input_layout_timeStart);
+        enterTime = (EditText) view.findViewById(R.id.timeStart);
+        enterTime.setInputType(InputType.TYPE_NULL);
         enterTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,10 +107,13 @@ public class AddTimeFragment extends Fragment {
                         enterTime.setText(simpleDateFormat.format(newTime.getTime()));
                     }
                 }, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
+        enterTime.addTextChangedListener(new MyTextWatcher(enterTime));
 
     }
 
-    private void setExitTimeField() {
+    private void setExitTimeField(View view) {
+        timeEndLayout = (TextInputLayout) view.findViewById(R.id.input_layout_timeExit);
+        exitTime = (EditText) view.findViewById(R.id.timeExit);
         exitTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,5 +132,160 @@ public class AddTimeFragment extends Fragment {
                 exitTime.setText(simpleDateFormat.format(newTime.getTime()));
             }
         }, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
+        exitTime.addTextChangedListener(new MyTextWatcher(exitTime));
+    }
+
+    private void setAddButtonListener(View view) {
+        Button addButton = (Button) view.findViewById(R.id.btnAddTime);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String enterTimeText = enterTime.getText().toString().trim();
+                String exitTimeText = exitTime.getText().toString().trim();
+                String dateText = date.getText().toString().trim();
+                if (enterTimeText.trim().isEmpty()) {
+                    timeStartLayout.setError(getString(R.string.timeEnterErrorEmpty));
+                    requestFocus(enterTime);
+                    return;
+                }
+                if (exitTimeText.trim().isEmpty()) {
+                    timeEndLayout.setError(getString(R.string.timeExitErrorEmpty));
+                    requestFocus(exitTime);
+                    return;
+                }
+                if (dateText.trim().isEmpty()) {
+                    dateLayout.setError(getString(R.string.dateErrorEmpty));
+                    requestFocus(date);
+                    return;
+                }
+                if (!validateEnterTime() || !validateExitTime() || !validateDate())
+                    return;
+                Time time = new Time();
+                time.setJobName(getArguments().getString("selectedJob"));
+                time.setEnterTime(enterTime.getText().toString());
+                time.setExitTime(exitTime.getText().toString());
+                time.setDate(date.getText().toString());
+                TimeDao timeDao = new TimeDao();
+                try {
+                    timeDao.AddTime(getContext(), time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(getContext(), JobActivity.class);
+                intent.putExtra("selectedJob", getArguments().getString("selectedJob"));
+                intent.putExtra("payDay", getArguments().getString("payDay"));
+                startActivity(intent);
+                enterTime.setText("");
+                exitTime.setText("");
+                date.setText("");
+            }
+        });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_back, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_back:
+                Intent intent = new Intent(getActivity(), JobActivity.class);
+                intent.putExtra("selectedJob", getArguments().getString("selectedJob"));
+                intent.putExtra("payDay", getArguments().getString("payDay"));
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private boolean validateEnterTime() {
+        String enterTimeText = enterTime.getText().toString().trim();
+        String timeRegex = "^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$";
+        if (!enterTimeText.matches(timeRegex)) {
+            timeStartLayout.setError(getString(R.string.timeEnterError));
+            requestFocus(enterTime);
+            return false;
+        } else {
+            timeStartLayout.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateExitTime() {
+        String exitTimeText = exitTime.getText().toString().trim();
+        String enterTimeText = enterTime.getText().toString().trim();
+        String timeRegex = "^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$";
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        try {
+            if (!exitTimeText.matches(timeRegex)) {
+                timeEndLayout.setError(getString(R.string.timeExitError));
+                requestFocus(exitTime);
+                return false;
+            } else if (sdf.parse(enterTimeText).after(sdf.parse(exitTimeText))) {
+                timeStartLayout.setError(getString(R.string.enterBeforeExitError));
+                requestFocus(enterTime);
+                return false;
+            } else {
+                timeEndLayout.setErrorEnabled(false);
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean validateDate() {
+        String dateText = date.getText().toString().trim();
+        String timeRegex = "^(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-((19|20)\\d\\d)$";
+        if (!dateText.matches(timeRegex)) {
+            dateLayout.setError(getString(R.string.dateError));
+            requestFocus(date);
+            return false;
+        } else {
+            dateLayout.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getActivity().getWindow().
+                    setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+                case R.id.timeStart:
+                    validateEnterTime();
+                    break;
+                case R.id.timeExit:
+                    validateExitTime();
+                    break;
+                case R.id.date:
+                    validateDate();
+                    break;
+            }
+        }
     }
 }

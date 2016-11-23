@@ -65,9 +65,7 @@ public class ListFragment extends Fragment implements OnListListener {
         List<Job> adapterJobs = new ArrayList<>();
         adapterJobs.addAll(jobs);
         jobDao.delete(getContext(), jobs.get(position));
-        mAdapter.jobs.remove(position);
-        mAdapter.deleteItem(position,
-                adapterJobs.size());
+        mAdapter.deleteItem(position);
     }
 
     private void showDialog() {

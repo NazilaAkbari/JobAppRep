@@ -21,4 +21,11 @@
     <string name="addTime">افزودن ساعت</string>
     <string name="add">افزودن</string>
     <string name="jobTitle">عنوان شغل</string>
+    <string name="timeEnterError">ساعت ورود درست نیست</string>
+    <string name="timeEnterErrorEmpty">ساعت ورود خالی است</string>
+    <string name="enterBeforeExitError">ساعت ورود قبل از ساعت خروج است</string>
+    <string name="timeExitError">ساعت خروج درست نیست</string>
+    <string name="timeExitErrorEmpty">ساعت خروج خالی است</string>
+    <string name="dateError">تاریخ درست نیست</string>
+    <string name="dateErrorEmpty">تاریخ خالی است</string>
 </resources>

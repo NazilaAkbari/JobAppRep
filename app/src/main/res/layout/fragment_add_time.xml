@@ -1,44 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/timeStart"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_timeStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:hint="@string/enter_time"
-        android:textDirection="anyRtl"/>
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:textDirection="anyRtl" >
 
-    <EditText
-        android:id="@+id/timeExit"
+        <EditText
+            android:id="@+id/timeStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/enter_time"
+            android:textDirection="anyRtl"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_timeExit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:hint="@string/exit_time"
-        android:textDirection="anyRtl"/>
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:textDirection="anyRtl" >
 
-    <EditText
-        android:id="@+id/date"
+        <EditText
+            android:id="@+id/timeExit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/exit_time"
+            android:textDirection="anyRtl"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:hint="@string/date"
-        android:textDirection="anyRtl"/>
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:textDirection="anyRtl" >
+
+        <EditText
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/date"
+            android:textDirection="anyRtl"/>
+    </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:text="@string/add"
-        android:layout_width="486dp"
-        android:layout_height="wrap_content"
         android:id="@+id/btnAddTime"
-        />
-
-    <Button
-        android:text="@string/cancelAdd"
-        android:layout_width="486dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cancelAction" />
-
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/white"
+        android:text="@string/add" />
 
 </LinearLayout>
