@@ -21,10 +21,11 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.PersianCalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -90,9 +91,8 @@ public class JobFragment extends Fragment {
         QueryModel queryModel = new QueryModel();
         queryModel.setJobName(getArguments().getString("selectedJob"));
         queryModel.setPayDay(Integer.valueOf(getArguments().getString("payDay")));
-        Calendar calendar = Calendar.getInstance();
-        System.out.println();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        Calendar calendar = new PersianCalendar();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         queryModel.setDateTo(dateFormat.format(calendar.getTime()));
         return queryModel;
     }

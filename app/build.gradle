@@ -19,6 +19,7 @@ android {
     }
 }
 repositories {
+    mavenCentral()
     maven { url "https://jitpack.io" }
 }
 
@@ -28,5 +29,7 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
-    compile 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
+    compile 'com.alirezaafkar:sundatepicker:2.0.4'
+    compile 'com.ibm.icu:icu4j:58.1'
+
 }

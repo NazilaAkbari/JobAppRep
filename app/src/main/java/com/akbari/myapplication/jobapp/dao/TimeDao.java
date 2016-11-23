@@ -7,10 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.akbari.myapplication.jobapp.model.QueryModel;
 import com.akbari.myapplication.jobapp.model.Time;
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.PersianCalendar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -28,15 +29,12 @@ public class TimeDao {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
-        SimpleDateFormat dateFormatFrom = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        SimpleDateFormat dateFormatTo = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        String newDate = dateFormatTo.format(dateFormatFrom.parse(time.getDate()));
         Date timeEnter = timeFormat.parse(time.getEnterTime());
         Date timeExit = timeFormat.parse(time.getExitTime());
-        long difference = (timeExit.getTime() - timeEnter.getTime()) / ((60 * 60 * 1000));
+        long difference = (timeExit.getTime() - timeEnter.getTime()) / ((60 * 1000));
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_ENTER, time.getEnterTime());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_EXIT, time.getExitTime());
-        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_Date, newDate);
+        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_Date, time.getDate());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_JOB_Name, time.getJobName());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_SUM, difference);
         db.insert(DbHelper.FeedEntry.TABLE_NAME_TIME, null, contentValues);
@@ -45,10 +43,10 @@ public class TimeDao {
 
 
     public Integer getMonthTime(Context context, String payDay, String jobName) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
         Calendar queryCal = getQueryCal(Integer.valueOf(payDay));
         String dateFrom = dateFormat.format(queryCal.getTime());
-        String dateTo = dateFormat.format(Calendar.getInstance().getTime());
+        String dateTo = dateFormat.format(new PersianCalendar().getTime());
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT SUM ( " + DbHelper.FeedEntry.COLUMN_NAME_SUM
@@ -77,7 +75,7 @@ public class TimeDao {
     }
 
     public Map<Integer, Integer> getChartData(Context context, QueryModel queryModel) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
         Calendar endOfThisMonth = getEndOfThisMonth(queryModel);
         Calendar startDate = getDateOfFirstTimeEntry(context, queryModel.getJobName());
         Map<Integer, Integer> chartAxisMap = new HashMap<>();
@@ -98,16 +96,16 @@ public class TimeDao {
     }
 
     private Calendar getEndOfThisMonth(QueryModel queryModel) {
-        String pattern = "dd-MM-yyyy";
+        String pattern = "yyyy/MM/dd";
         Date date = new Date();
         try {
             date = new SimpleDateFormat(pattern).parse(queryModel.getDateTo());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = new PersianCalendar();
         calendar.setTime(date);
-        Calendar endDate = Calendar.getInstance();
+        Calendar endDate = new PersianCalendar();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         endDate.set(Calendar.DAY_OF_MONTH, queryModel.getPayDay());
         if (day > queryModel.getPayDay())
@@ -148,7 +146,7 @@ public class TimeDao {
         Cursor cursor = db.rawQuery(query, null);
         Calendar startDate = Calendar.getInstance();
         if (cursor.moveToFirst()) {
-            String pattern = "20yy-MM-dd";
+            String pattern = "yyyy/MM/dd";
             Date date = new Date();
             try {
                 date = new SimpleDateFormat(pattern).parse(cursor.getString(0));

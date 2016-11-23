@@ -1,9 +1,9 @@
 package com.akbari.myapplication.jobapp.fragment;
 
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
@@ -25,10 +24,13 @@ import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.activity.JobActivity;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.model.Time;
+import com.alirezaafkar.sundatepicker.DatePicker;
+import com.alirezaafkar.sundatepicker.interfaces.DateSetListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
@@ -40,7 +42,6 @@ import java.util.Locale;
 public class AddTimeFragment extends Fragment {
 
     private EditText date, enterTime, exitTime;
-    private DatePickerDialog datePicker;
     private TimePickerDialog enterTimePicker, exitTimePicker;
     private TextInputLayout timeStartLayout, timeEndLayout, dateLayout;
 
@@ -59,28 +60,29 @@ public class AddTimeFragment extends Fragment {
 
     private void setDateField(View view) {
         dateLayout = (TextInputLayout) view.findViewById(R.id.input_layout_date);
-        date = (EditText) view.findViewById(R.id.date);
+        date = (EditText) view.findViewById(R.id.dateOfTime);
         date.setInputType(InputType.TYPE_NULL);
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v == date)
-                    datePicker.show();
+                    new DatePicker.Builder()
+                            .id(R.id.dateOfTime)
+                            .date(new GregorianCalendar())
+                            .build(new DateSetListener() {
+                                @Override
+                                public void onDateSet(int id, @Nullable Calendar calendar,
+                                                      int day, int month, int year) {
+                                    Calendar newDate = Calendar.getInstance();
+                                    newDate.set(year, month - 1, day);
+                                    SimpleDateFormat simpleDateFormat =
+                                            new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+                                    date.setText(simpleDateFormat.format(newDate.getTime()));
+                                }
+                            })
+                            .show(getFragmentManager(), "");
             }
         });
-        Calendar calendar = Calendar.getInstance();
-        datePicker = new DatePickerDialog(this.getActivity(),
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar newDate = Calendar.getInstance();
-                        newDate.set(year, monthOfYear, dayOfMonth);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-                        date.setText(simpleDateFormat.format(newDate.getTime()));
-                    }
-
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
         date.addTextChangedListener(new MyTextWatcher(date));
     }
 
@@ -242,7 +244,7 @@ public class AddTimeFragment extends Fragment {
 
     private boolean validateDate() {
         String dateText = date.getText().toString().trim();
-        String timeRegex = "^(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-((19|20)\\d\\d)$";
+        String timeRegex = "^((13|14)\\d\\d)/(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])$";
         if (!dateText.matches(timeRegex)) {
             dateLayout.setError(getString(R.string.dateError));
             requestFocus(date);
