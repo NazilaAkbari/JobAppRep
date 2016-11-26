@@ -43,13 +43,13 @@ public class JobFragment extends Fragment {
 
     private void setMonthTime(View view) {
         TextView monthTime = (TextView) view.findViewById(R.id.monthTime);
+        DonutChart donut = (DonutChart) view.findViewById(R.id.donutChart);
         TimeDao timeDao = new TimeDao();
         String time = timeDao.getThisMonthTime(this.getActivity(),
                 getArguments().getString("payDay"),
                 getArguments().getString("selectedJob")
         ).toString();
-        DonutChart donutChart=new DonutChart(getContext(),null,Float.valueOf(time));
-        getActivity().setContentView(donutChart);
+        donut.setData(Float.valueOf(time));
         monthTime.setText(time);
     }
 

@@ -34,7 +34,7 @@ public class DonutChart extends View {
     RectF shadowRectF;
     float hour;
 
-    public DonutChart(Context context, AttributeSet attrs, float hourDegree) {
+    public DonutChart(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
@@ -48,7 +48,6 @@ public class DonutChart extends View {
         } finally {
             a.recycle();
         }
-        this.hour = hourDegree;
         paint = new Paint();
         paint.setDither(true);
         paint.setStyle(Paint.Style.FILL);
@@ -84,7 +83,10 @@ public class DonutChart extends View {
         innerCircle.set(adjust, adjust, radius * 2 - adjust, radius * 2 - adjust);
 
     }
-
+    public void setData(float hour){
+            this.hour = hour;
+            invalidate();
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
