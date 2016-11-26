@@ -31,5 +31,6 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile 'com.alirezaafkar:sundatepicker:2.0.4'
     compile 'com.ibm.icu:icu4j:58.1'
+    compile 'org.apache.commons:commons-lang3:3.5'
 
 }

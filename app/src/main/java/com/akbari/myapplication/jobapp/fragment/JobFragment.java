@@ -17,17 +17,14 @@ import com.akbari.myapplication.jobapp.activity.JobActivity;
 import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.model.QueryModel;
+import com.akbari.myapplication.jobapp.utils.DateUtil;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.ibm.icu.util.Calendar;
-import com.ibm.icu.util.PersianCalendar;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class JobFragment extends Fragment {
@@ -46,7 +43,7 @@ public class JobFragment extends Fragment {
     private void setMonthTime(View view) {
         TextView monthTime = (TextView) view.findViewById(R.id.monthTime);
         TimeDao timeDao = new TimeDao();
-        String time = timeDao.getMonthTime(this.getActivity(),
+        String time = timeDao.getThisMonthTime(this.getActivity(),
                 getArguments().getString("payDay"),
                 getArguments().getString("selectedJob")
         ).toString();
@@ -91,9 +88,7 @@ public class JobFragment extends Fragment {
         QueryModel queryModel = new QueryModel();
         queryModel.setJobName(getArguments().getString("selectedJob"));
         queryModel.setPayDay(Integer.valueOf(getArguments().getString("payDay")));
-        Calendar calendar = new PersianCalendar();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        queryModel.setDateTo(dateFormat.format(calendar.getTime()));
+        queryModel.setDateTo(DateUtil.getCurrentPersianDate());
         return queryModel;
     }
 
