@@ -18,6 +18,7 @@ import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.model.QueryModel;
 import com.akbari.myapplication.jobapp.utils.DateUtil;
+import com.akbari.myapplication.jobapp.view.DonutChart;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -47,6 +48,8 @@ public class JobFragment extends Fragment {
                 getArguments().getString("payDay"),
                 getArguments().getString("selectedJob")
         ).toString();
+        DonutChart donutChart=new DonutChart(getContext(),null,Float.valueOf(time));
+        getActivity().setContentView(donutChart);
         monthTime.setText(time);
     }
 

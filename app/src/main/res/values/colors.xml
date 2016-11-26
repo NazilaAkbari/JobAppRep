@@ -6,4 +6,6 @@
     <color name="colorText">#cc6e81</color>
     <color name="pink">#ff7372</color>
     <color name="yellow">#ffa500</color>
+    <color name="textViewColorPink">#dfabb3</color>
+    <color name="lightGray">#d3d3d3</color>
 </resources>
