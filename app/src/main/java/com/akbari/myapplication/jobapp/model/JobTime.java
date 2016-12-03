@@ -6,7 +6,7 @@ package com.akbari.myapplication.jobapp.model;
  * @since 11/21/2016
  */
 
-public class QueryModel {
+public class JobTime {
 
     private String id;
     private String dateFrom;

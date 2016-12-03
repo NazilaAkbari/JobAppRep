@@ -16,7 +16,7 @@ import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.activity.JobActivity;
 import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
-import com.akbari.myapplication.jobapp.model.QueryModel;
+import com.akbari.myapplication.jobapp.model.JobTime;
 import com.akbari.myapplication.jobapp.utils.DateUtil;
 import com.akbari.myapplication.jobapp.view.DonutChart;
 import com.github.mikephil.charting.charts.BarChart;
@@ -71,7 +71,7 @@ public class JobFragment extends Fragment {
         BarChart chart = (BarChart) view.findViewById(R.id.chart);
         List<BarEntry> entries = new ArrayList<>();
         TimeDao timeDao = new TimeDao();
-        Map<Integer, Integer> chartData = timeDao.getChartData(getContext(), getQueryModel());
+        Map<Integer, Integer> chartData = timeDao.getChartData(getContext(), getJobTime());
         for (Map.Entry<Integer, Integer> entry : chartData.entrySet()
                 ) {
             entries.add(new BarEntry(entry.getKey(), entry.getValue()));
@@ -87,12 +87,12 @@ public class JobFragment extends Fragment {
         chart.invalidate();
     }
 
-    private QueryModel getQueryModel() {
-        QueryModel queryModel = new QueryModel();
-        queryModel.setJobName(getArguments().getString("selectedJob"));
-        queryModel.setPayDay(Integer.valueOf(getArguments().getString("payDay")));
-        queryModel.setDateTo(DateUtil.getCurrentPersianDate());
-        return queryModel;
+    private JobTime getJobTime() {
+        JobTime jobTime = new JobTime();
+        jobTime.setJobName(getArguments().getString("selectedJob"));
+        jobTime.setPayDay(Integer.valueOf(getArguments().getString("payDay")));
+        jobTime.setDateTo(DateUtil.getCurrentPersianDate());
+        return jobTime;
     }
 
     @Override

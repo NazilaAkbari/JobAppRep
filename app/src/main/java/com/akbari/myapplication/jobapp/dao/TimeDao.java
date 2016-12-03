@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.akbari.myapplication.jobapp.model.QueryModel;
+import com.akbari.myapplication.jobapp.model.JobTime;
 import com.akbari.myapplication.jobapp.model.Time;
 import com.akbari.myapplication.jobapp.utils.DateUtil;
 import com.ibm.icu.util.Calendar;
@@ -44,57 +44,57 @@ public class TimeDao {
 
 
     public Integer getThisMonthTime(Context context, String payDay, String jobName) {
-        QueryModel queryModel = new QueryModel();
-        queryModel.setPayDay(Integer.valueOf(payDay));
-        queryModel.setJobName(jobName);
-        PersianCalendar endOfThisMonth = getEndOfThisMonth(queryModel);
-        queryModel.setDateTo(DateUtil.computeDateString(endOfThisMonth));
+        JobTime jobTime = new JobTime();
+        jobTime.setPayDay(Integer.valueOf(payDay));
+        jobTime.setJobName(jobName);
+        PersianCalendar endOfThisMonth = getEndOfThisMonth(jobTime);
+        jobTime.setDateTo(DateUtil.computeDateString(endOfThisMonth));
         endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
-        queryModel.setDateFrom(DateUtil.computeDateString(endOfThisMonth));
-        return getTimeInMonthDateRange(context, queryModel);
+        jobTime.setDateFrom(DateUtil.computeDateString(endOfThisMonth));
+        return getTimeInMonthDateRange(context, jobTime);
     }
 
-    public Map<Integer, Integer> getChartData(Context context, QueryModel queryModel) {
-        PersianCalendar endOfThisMonth = getEndOfThisMonth(queryModel);
-        PersianCalendar startDate = getDateOfFirstTimeEntry(context, queryModel.getJobName());
+    public Map<Integer, Integer> getChartData(Context context, JobTime jobTime) {
+        PersianCalendar endOfThisMonth = getEndOfThisMonth(jobTime);
+        PersianCalendar startDate = getDateOfFirstTimeEntry(context, jobTime.getJobName());
         Map<Integer, Integer> chartAxisMap = new HashMap<>();
         while (endOfThisMonth.compareTo(startDate) > 0) {
-            QueryModel newQueryModel = new QueryModel();
-            newQueryModel.setDateTo(DateUtil.computeDateString(endOfThisMonth));
+            JobTime newJobTime = new JobTime();
+            newJobTime.setDateTo(DateUtil.computeDateString(endOfThisMonth));
             endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
-            newQueryModel.setDateFrom(DateUtil.computeDateString(endOfThisMonth));
-            newQueryModel.setJobName(queryModel.getJobName());
-            if (queryModel.getPayDay() > 15)
+            newJobTime.setDateFrom(DateUtil.computeDateString(endOfThisMonth));
+            newJobTime.setJobName(jobTime.getJobName());
+            if (jobTime.getPayDay() > 15)
                 chartAxisMap.put(endOfThisMonth.get(Calendar.MONTH) + 1,
-                        getTimeInMonthDateRange(context, newQueryModel));
+                        getTimeInMonthDateRange(context, newJobTime));
             else
                 chartAxisMap.put(endOfThisMonth.get(Calendar.MONTH),
-                        getTimeInMonthDateRange(context, newQueryModel));
+                        getTimeInMonthDateRange(context, newJobTime));
         }
         return chartAxisMap;
     }
 
-    private PersianCalendar getEndOfThisMonth(QueryModel queryModel) {
+    private PersianCalendar getEndOfThisMonth(JobTime jobTime) {
         PersianCalendar calendar = new PersianCalendar();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        calendar.set(Calendar.DAY_OF_MONTH, queryModel.getPayDay());
-        if (day > queryModel.getPayDay())
+        calendar.set(Calendar.DAY_OF_MONTH, jobTime.getPayDay());
+        if (day > jobTime.getPayDay())
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 2);
         else
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
         return calendar;
     }
 
-    private Integer getTimeInMonthDateRange(Context context, QueryModel queryModel) {
+    private Integer getTimeInMonthDateRange(Context context, JobTime jobTime) {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT SUM ( " + DbHelper.FeedEntry.COLUMN_NAME_SUM
                 + " ) FROM " + DbHelper.FeedEntry.TABLE_NAME_TIME
                 + " WHERE " + DbHelper.FeedEntry.COLUMN_NAME_Date
-                + " BETWEEN '" + queryModel.getDateFrom() + "' AND '"
-                + queryModel.getDateTo() + "'"
+                + " BETWEEN '" + jobTime.getDateFrom() + "' AND '"
+                + jobTime.getDateTo() + "'"
                 + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
-                + " = '" + queryModel.getJobName() + "'";
+                + " = '" + jobTime.getJobName() + "'";
         System.out.println(query + "!!!!!!Q");
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
