@@ -14,7 +14,7 @@
     <string name="totalTime">Total Time</string>
     <string name="monthTime">کارکرد این ماه:</string>
     <string name="addJob">افزودن شغل</string>
-    <string name="cancelAdd">انصراف</string>
+    <string name="cancel">انصراف</string>
     <string name="show_item">نمایش</string>
     <string name="remove">حذف</string>
     <string name="edit">ویرایش</string>

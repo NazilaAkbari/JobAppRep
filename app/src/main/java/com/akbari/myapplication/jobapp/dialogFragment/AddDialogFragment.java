@@ -11,7 +11,9 @@ import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.interfaces.OnListListener;
 
 /**
- * Created by n.akbari on 06/19/2016.
+ * @author n.akbari
+ * @since 06/19/2016
+ * @version 1.0
  */
 public class AddDialogFragment extends android.support.v4.app.DialogFragment {
 
@@ -52,12 +54,14 @@ public class AddDialogFragment extends android.support.v4.app.DialogFragment {
                         }
                     }
                 })
-                .setNegativeButton(R.string.cancelAdd, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         AddDialogFragment.this.getDialog().cancel();
                     }
                 });
-        return builder.create();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        return alertDialog;
 
     }
 

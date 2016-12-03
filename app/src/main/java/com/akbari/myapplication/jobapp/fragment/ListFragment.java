@@ -31,6 +31,9 @@ public class ListFragment extends Fragment implements OnListListener {
         View view = inflater.inflate(R.layout.first_page, container, false);
         JobDao jobDao = new JobDao();
         jobs.addAll(jobDao.getAllJobs(this.getActivity()));
+        if (jobs.size() == 0) {
+            showDialog();
+        }
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
