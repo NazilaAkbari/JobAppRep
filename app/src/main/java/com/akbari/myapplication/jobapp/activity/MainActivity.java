@@ -9,6 +9,9 @@ import android.support.v7.widget.Toolbar;
 import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.fragment.ListFragment;
+import com.akbari.myapplication.jobapp.model.Job;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,10 +29,15 @@ public class MainActivity extends AppCompatActivity {
         String payDay = intent.getStringExtra("payDay");
         String jobName = intent.getStringExtra("selectedJob");
         JobDao jobDao = new JobDao();
-        if (jobDao.getAllJobs(this).size()==0){
-
+        List<Job> jobs = jobDao.getAllJobs(this);
+        if (jobs.size() == 1) {
+            Intent jobIntent = new Intent(this, JobActivity.class);
+            jobIntent.putExtra("selectedJob", jobs.get(0).getJobName());
+            jobIntent.putExtra("payDay", jobs.get(0).getPayDay().toString());
+            startActivity(jobIntent);
+            this.finish();
         }
-        if (jobName == null || jobName.equals("") ) {
+        if (jobName == null || jobName.equals("")) {
             ft.replace(R.id.place_holder, new ListFragment());
             ft.commit();
         } else {

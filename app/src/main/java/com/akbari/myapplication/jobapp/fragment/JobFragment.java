@@ -98,14 +98,14 @@ public class JobFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(
             Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_back, menu);
+        inflater.inflate(R.menu.menu_open_drawer, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle item selection
         switch (item.getItemId()) {
-            case R.id.action_back:
+            case R.id.open_drawer:
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 return true;

@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/action_back"
+        android:id="@+id/open_drawer"
         android:orderInCategory="100"
         android:title="@string/action_back"
-        android:icon="@android:drawable/ic_menu_revert"
+        android:icon="@drawable/ic_menu"
         app:showAsAction="ifRoom">
 
     </item>
