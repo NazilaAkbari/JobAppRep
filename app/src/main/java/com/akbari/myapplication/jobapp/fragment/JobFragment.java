@@ -3,6 +3,8 @@ package com.akbari.myapplication.jobapp.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,10 +32,13 @@ import java.util.Map;
 
 public class JobFragment extends Fragment {
 
+    private DrawerLayout drawerLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_job, container, false);
+        drawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         setHasOptionsMenu(true);
         setMonthTime(view);
         setAddButtonActionListener(view);
@@ -106,8 +111,7 @@ public class JobFragment extends Fragment {
         // handle item selection
         switch (item.getItemId()) {
             case R.id.open_drawer:
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                drawerLayout.openDrawer(Gravity.START);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
