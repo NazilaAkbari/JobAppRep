@@ -3,6 +3,7 @@ package com.akbari.myapplication.jobapp.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -111,7 +112,10 @@ public class JobFragment extends Fragment {
         // handle item selection
         switch (item.getItemId()) {
             case R.id.open_drawer:
-                drawerLayout.openDrawer(Gravity.START);
+                if (drawerLayout.isDrawerOpen(GravityCompat.END))
+                    drawerLayout.closeDrawer(GravityCompat.END);
+                else
+                    drawerLayout.openDrawer(GravityCompat.END);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

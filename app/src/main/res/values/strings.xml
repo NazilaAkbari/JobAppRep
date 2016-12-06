@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ساعت کار</string>
     <string name="title_activity_job">My Job</string>
-    <string name="action_back">بازگشت</string>
+    <string name="open_menu">مشاهده منو</string>
     <string name="new_job">Add Job</string>
     <string name="enter_job">Enter New Job</string>
     <string name="enter_time">ساعت ورود</string>
