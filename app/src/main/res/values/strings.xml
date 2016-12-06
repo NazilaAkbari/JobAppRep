@@ -13,6 +13,7 @@
     <string name="payDay">روز حساب</string>
     <string name="totalTime">Total Time</string>
     <string name="monthTime">کارکرد این ماه:</string>
+    <string name="weekTime">کارکرد این هفته:</string>
     <string name="addJob">افزودن شغل</string>
     <string name="cancel">انصراف</string>
     <string name="show_item">نمایش</string>
@@ -28,4 +29,5 @@
     <string name="timeExitErrorEmpty">ساعت خروج خالی است</string>
     <string name="dateError">تاریخ درست نیست</string>
     <string name="dateErrorEmpty">تاریخ خالی است</string>
+    <string name="today">امروز</string>
 </resources>

@@ -1,13 +1,14 @@
 package com.akbari.myapplication.jobapp.model;
 
 /**
- * Created by n.akbari on 04/24/2016.
+ * @author n.akbari
+ * @since 04/24/2016
+ * @version 1.0
  */
 public class Job {
     private String id;
     private String jobName;
     private Integer payDay;
-    private boolean isChecked;
 
     public String getId() {
         return id;
@@ -31,13 +32,5 @@ public class Job {
 
     public void setPayDay(Integer payDay) {
         this.payDay = payDay;
-    }
-
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setIsChecked(boolean isChecked) {
-        this.isChecked = isChecked;
     }
 }

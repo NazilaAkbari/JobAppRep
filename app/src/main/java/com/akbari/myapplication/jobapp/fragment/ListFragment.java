@@ -55,7 +55,6 @@ public class ListFragment extends Fragment implements OnListListener {
         Job job = new Job();
         job.setJobName(title);
         job.setPayDay(Integer.valueOf(payDay));
-        job.setIsChecked(false);
         jobs.add(job);
         JobDao jobDao = new JobDao();
         jobDao.addJob(getContext(), job);

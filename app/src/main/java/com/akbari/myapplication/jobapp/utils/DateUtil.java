@@ -17,6 +17,10 @@ public class DateUtil {
         return computeDateString(new PersianCalendar());
     }
 
+    public static String getCurrentStringPersianDate() {
+        return getPersianTextDate(new PersianCalendar());
+    }
+
     public static String computeDateString(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -40,5 +44,14 @@ public class DateUtil {
             return new PersianCalendar(year, month, day, hour, minute, second);
         }
         return new PersianCalendar(year, month, day);
+    }
+
+    static public String getPersianTextDate(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        String month = Month.values()[calendar.get(Calendar.MONTH) - 1].toString();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        return StringUtils.leftPad(String.valueOf(day), 2, '0') + " " +
+                month + " " +
+                year;
     }
 }

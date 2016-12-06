@@ -32,7 +32,7 @@ public class TimeDao {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
         Date timeEnter = timeFormat.parse(time.getEnterTime());
         Date timeExit = timeFormat.parse(time.getExitTime());
-        long difference = (timeExit.getTime() - timeEnter.getTime()) / ((60 * 60 * 1000));
+        float difference = (timeExit.getTime() - timeEnter.getTime()) / ((60 * 1000));
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_ENTER, time.getEnterTime());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_EXIT, time.getExitTime());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_Date, time.getDate());
@@ -43,7 +43,7 @@ public class TimeDao {
     }
 
 
-    public Integer getThisMonthTime(Context context, String payDay, String jobName) {
+    public Integer getThisMonthHour(Context context, String payDay, String jobName) {
         JobTime jobTime = new JobTime();
         jobTime.setPayDay(Integer.valueOf(payDay));
         jobTime.setJobName(jobName);
@@ -51,7 +51,21 @@ public class TimeDao {
         jobTime.setDateTo(DateUtil.computeDateString(endOfThisMonth));
         endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
         jobTime.setDateFrom(DateUtil.computeDateString(endOfThisMonth));
-        return getTimeInMonthDateRange(context, jobTime);
+        return getHourInDateRange(context, jobTime);
+    }
+
+    public Integer getThisWeekHour(Context context, String payDay, String jobName) {
+        JobTime jobTime = new JobTime();
+        jobTime.setPayDay(Integer.valueOf(payDay));
+        jobTime.setJobName(jobName);
+        PersianCalendar persianCalendar = new PersianCalendar();
+        int dayOfWeek = persianCalendar.get(Calendar.DAY_OF_WEEK);
+        persianCalendar.set(Calendar.MONTH, persianCalendar.get(Calendar.MONTH) + 1);
+        jobTime.setDateTo(DateUtil.computeDateString(persianCalendar));
+        persianCalendar.set(Calendar.DAY_OF_MONTH,
+                persianCalendar.get(Calendar.DAY_OF_MONTH) - dayOfWeek);
+        jobTime.setDateFrom(DateUtil.computeDateString(persianCalendar));
+        return getHourInDateRange(context, jobTime);
     }
 
     public Map<Integer, Integer> getChartData(Context context, JobTime jobTime) {
@@ -66,10 +80,10 @@ public class TimeDao {
             newJobTime.setJobName(jobTime.getJobName());
             if (jobTime.getPayDay() > 15)
                 chartAxisMap.put(endOfThisMonth.get(Calendar.MONTH) + 1,
-                        getTimeInMonthDateRange(context, newJobTime));
+                        getHourInDateRange(context, newJobTime));
             else
                 chartAxisMap.put(endOfThisMonth.get(Calendar.MONTH),
-                        getTimeInMonthDateRange(context, newJobTime));
+                        getHourInDateRange(context, newJobTime));
         }
         return chartAxisMap;
     }
@@ -85,7 +99,7 @@ public class TimeDao {
         return calendar;
     }
 
-    private Integer getTimeInMonthDateRange(Context context, JobTime jobTime) {
+    private Integer getHourInDateRange(Context context, JobTime jobTime) {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT SUM ( " + DbHelper.FeedEntry.COLUMN_NAME_SUM

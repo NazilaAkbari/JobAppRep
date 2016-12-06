@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:customviews="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -38,37 +37,70 @@
             android:layout_marginTop="95dp" />
 
         <TextView
-            android:id="@+id/monthTime"
+            android:id="@+id/today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/chart"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="49dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/today"
+            android:textDirection="anyRtl" />
+
+        <TextView
+            android:id="@+id/todayDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_toStartOf="@+id/today"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textDirection="anyRtl" />
+
+        <TextView
+            android:id="@+id/monthTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/today"
+            android:layout_marginStart="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="@string/monthTime"
             android:textDirection="anyRtl" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/monthTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/todayDate"
+            android:layout_toStartOf="@+id/monthTimeText"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textDirection="anyRtl" />
+        <TextView
+            android:id="@+id/weekTimeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/donutChart"
-            android:layout_marginTop="25dp"
-            android:background="@color/textViewColorPink"
+            android:layout_below="@+id/monthTimeText"
+            android:layout_marginStart="10dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="@string/monthTime"
-            android:textDirection="anyRtl"
-            android:textSize="12sp" />
+            android:text="@string/weekTime"
+            android:textDirection="anyRtl" />
 
-        <com.akbari.myapplication.jobapp.view.DonutChart
-            android:id="@+id/donutChart"
+        <TextView
+            android:id="@+id/weekTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="47dp"
-            android:layout_toEndOf="@+id/addTimeBtn"
-            customviews:radius="90dp" />
+            android:layout_below="@+id/monthTime"
+            android:layout_toStartOf="@+id/weekTimeText"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textDirection="anyRtl" />
+
 
     </RelativeLayout>
 
@@ -77,8 +109,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        app:itemTextColor="@color/colorAccent"
         app:headerLayout="@layout/drawer_header"
+        app:itemTextColor="@color/colorAccent"
         app:menu="@menu/drawer_view" />
 
 </android.support.v4.widget.DrawerLayout>

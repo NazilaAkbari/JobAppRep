@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,15 +16,15 @@ import android.widget.TextView;
 
 import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.activity.JobActivity;
-import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.model.JobTime;
 import com.akbari.myapplication.jobapp.utils.DateUtil;
-import com.akbari.myapplication.jobapp.view.DonutChart;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.PersianCalendar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,22 +40,43 @@ public class JobFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_job, container, false);
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         setHasOptionsMenu(true);
+        setTodayDate(view);
         setMonthTime(view);
+        setWeekTime(view);
         setAddButtonActionListener(view);
         setChartData(view);
         return view;
     }
 
+    private void setTodayDate(View view) {
+        TextView todayText = (TextView) view.findViewById(R.id.todayDate);
+        todayText.setText(DateUtil.getCurrentStringPersianDate());
+    }
+
     private void setMonthTime(View view) {
         TextView monthTime = (TextView) view.findViewById(R.id.monthTime);
-        DonutChart donut = (DonutChart) view.findViewById(R.id.donutChart);
         TimeDao timeDao = new TimeDao();
-        String time = timeDao.getThisMonthTime(this.getActivity(),
+        Integer time = timeDao.getThisMonthHour(this.getActivity(),
                 getArguments().getString("payDay"),
                 getArguments().getString("selectedJob")
-        ).toString();
-        donut.setData(Float.valueOf(time));
-        monthTime.setText(time);
+        );
+        String timeS = time / 60 + " ساعت ";
+        if (time % 60 > 0)
+            timeS += "و " + time % 60 + " دقیقه";
+        monthTime.setText(timeS);
+    }
+
+    private void setWeekTime(View view) {
+        TextView weekTime = (TextView) view.findViewById(R.id.weekTime);
+        TimeDao timeDao = new TimeDao();
+        Integer time = timeDao.getThisWeekHour(this.getActivity(),
+                getArguments().getString("payDay"),
+                getArguments().getString("selectedJob")
+        );
+        String timeS = time / 60 + " ساعت ";
+        if (time % 60 > 0)
+            timeS += "و " + time % 60 + " دقیقه";
+        weekTime.setText(timeS);
     }
 
     private void setAddButtonActionListener(View view) {
@@ -80,13 +100,13 @@ public class JobFragment extends Fragment {
         Map<Integer, Integer> chartData = timeDao.getChartData(getContext(), getJobTime());
         for (Map.Entry<Integer, Integer> entry : chartData.entrySet()
                 ) {
-            entries.add(new BarEntry(entry.getKey(), entry.getValue()));
+            entries.add(new BarEntry(entry.getKey(), entry.getValue()/60));
         }
-        BarDataSet set = new BarDataSet(entries, "BarDataSet");
+        BarDataSet set = new BarDataSet(entries, "کارکرد هر ماه");
         BarData data = new BarData(set);
         set.setColors(new int[]{R.color.pink, R.color.colorAccent, R.color.yellow},
                 getContext());
-        data.setBarWidth(0.5f);
+        data.setBarWidth(0.1f);
         chart.setHorizontalScrollBarEnabled(true);
         chart.setData(data);
         chart.setFitBars(true); // make the x-axis fit exactly all bars
