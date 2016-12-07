@@ -15,7 +15,7 @@ import com.akbari.myapplication.jobapp.interfaces.OnListListener;
  * @since 06/19/2016
  * @version 1.0
  */
-public class AddDialogFragment extends android.support.v4.app.DialogFragment {
+public class AddJobDialogFragment extends android.support.v4.app.DialogFragment {
 
     private EditText title;
     private EditText payDay;
@@ -45,7 +45,7 @@ public class AddDialogFragment extends android.support.v4.app.DialogFragment {
                         payDay = (EditText) getDialog().findViewById(R.id.payDayTxt);
                         assert payDay != null && title != null;
                         int payDayInt = Integer.valueOf(payDay.getText().toString());
-                        if (payDayInt > 0 && payDayInt <= 31 &&
+                        if (payDayInt > 0 && payDayInt <= 30 &&
                                 !title.getText().toString().equals("")) {
                             callBack.OnAddItem(title.getText().toString(),
                                     payDay.getText().toString());
@@ -56,7 +56,7 @@ public class AddDialogFragment extends android.support.v4.app.DialogFragment {
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddDialogFragment.this.getDialog().cancel();
+                        AddJobDialogFragment.this.getDialog().cancel();
                     }
                 });
         AlertDialog alertDialog = builder.create();

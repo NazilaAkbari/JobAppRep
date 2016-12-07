@@ -146,17 +146,17 @@ public class AddTimeFragment extends Fragment {
                 String exitTimeText = exitTime.getText().toString().trim();
                 String dateText = date.getText().toString().trim();
                 if (enterTimeText.trim().isEmpty()) {
-                    timeStartLayout.setError(getString(R.string.timeEnterErrorEmpty));
+                    timeStartLayout.setError(getString(R.string.time_enter_error_empty));
                     requestFocus(enterTime);
                     return;
                 }
                 if (exitTimeText.trim().isEmpty()) {
-                    timeEndLayout.setError(getString(R.string.timeExitErrorEmpty));
+                    timeEndLayout.setError(getString(R.string.time_exit_error_empty));
                     requestFocus(exitTime);
                     return;
                 }
                 if (dateText.trim().isEmpty()) {
-                    dateLayout.setError(getString(R.string.dateErrorEmpty));
+                    dateLayout.setError(getString(R.string.date_error_empty));
                     requestFocus(date);
                     return;
                 }
@@ -209,7 +209,7 @@ public class AddTimeFragment extends Fragment {
         String enterTimeText = enterTime.getText().toString().trim();
         String timeRegex = "^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$";
         if (!enterTimeText.matches(timeRegex)) {
-            timeStartLayout.setError(getString(R.string.timeEnterError));
+            timeStartLayout.setError(getString(R.string.time_enter_error));
             requestFocus(enterTime);
             return false;
         } else {
@@ -225,11 +225,11 @@ public class AddTimeFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         try {
             if (!exitTimeText.matches(timeRegex)) {
-                timeEndLayout.setError(getString(R.string.timeExitError));
+                timeEndLayout.setError(getString(R.string.time_exit_error));
                 requestFocus(exitTime);
                 return false;
             } else if (sdf.parse(enterTimeText).after(sdf.parse(exitTimeText))) {
-                timeStartLayout.setError(getString(R.string.enterBeforeExitError));
+                timeStartLayout.setError(getString(R.string.enter_before_exit_error));
                 requestFocus(enterTime);
                 return false;
             } else {
@@ -246,7 +246,7 @@ public class AddTimeFragment extends Fragment {
         String dateText = date.getText().toString().trim();
         String timeRegex = "^((13|14)\\d\\d)/(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])$";
         if (!dateText.matches(timeRegex)) {
-            dateLayout.setError(getString(R.string.dateError));
+            dateLayout.setError(getString(R.string.date_error));
             requestFocus(date);
             return false;
         } else {

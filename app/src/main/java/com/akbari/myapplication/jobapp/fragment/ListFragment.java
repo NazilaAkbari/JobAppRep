@@ -12,7 +12,8 @@ import android.view.ViewGroup;
 import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.adapter.CustomRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
-import com.akbari.myapplication.jobapp.dialogFragment.AddDialogFragment;
+import com.akbari.myapplication.jobapp.dialogFragment.AddJobDialogFragment;
+import com.akbari.myapplication.jobapp.dialogFragment.EditJobDialogFragment;
 import com.akbari.myapplication.jobapp.interfaces.OnListListener;
 import com.akbari.myapplication.jobapp.model.Job;
 
@@ -64,14 +65,34 @@ public class ListFragment extends Fragment implements OnListListener {
     @Override
     public void OnRemoveItem(String title, String payDay, int position) {
         JobDao jobDao = new JobDao();
-        List<Job> adapterJobs = new ArrayList<>();
-        adapterJobs.addAll(jobs);
         jobDao.delete(getContext(), jobs.get(position));
         mAdapter.deleteItem(position);
     }
 
+    @Override
+    public void OnEditItem(String title, String payDay) {
+        EditJobDialogFragment fragment = new EditJobDialogFragment();
+        JobDao jobDao = new JobDao();
+        Job job = jobDao.findJobIdByTitleAndPayDay(getContext(), title, payDay);
+        Bundle bundle = new Bundle();
+        bundle.putString("id", job.getId());
+        bundle.putString("title", title);
+        bundle.putString("payDay", payDay);
+        fragment.setArguments(bundle);
+        fragment.setTargetFragment(this, 0);
+        fragment.show(getFragmentManager(), "Edit");
+    }
+
+    @Override
+    public void OnEdit(Job job,String oldName) {
+        JobDao jobDao = new JobDao();
+        jobDao.editJob(getContext(), job);
+        jobDao.editJobNameInTimeDb(getContext(),job,oldName);
+        mAdapter.updateList(jobDao.getAllJobs(getContext()));
+    }
+
     private void showDialog() {
-        AddDialogFragment dialogFragment = new AddDialogFragment();
+        AddJobDialogFragment dialogFragment = new AddJobDialogFragment();
         dialogFragment.setTargetFragment(this, 0);
         dialogFragment.show(getFragmentManager(), "add");
     }

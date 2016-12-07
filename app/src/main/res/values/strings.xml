@@ -21,13 +21,17 @@
     <string name="edit">ویرایش</string>
     <string name="addTime">افزودن ساعت</string>
     <string name="add">افزودن</string>
-    <string name="jobTitle">عنوان شغل</string>
-    <string name="timeEnterError">ساعت ورود درست نیست</string>
-    <string name="timeEnterErrorEmpty">ساعت ورود خالی است</string>
-    <string name="enterBeforeExitError">ساعت ورود قبل از ساعت خروج است</string>
-    <string name="timeExitError">ساعت خروج درست نیست</string>
-    <string name="timeExitErrorEmpty">ساعت خروج خالی است</string>
-    <string name="dateError">تاریخ درست نیست</string>
-    <string name="dateErrorEmpty">تاریخ خالی است</string>
+    <string name="job_title">عنوان شغل</string>
+    <string name="time_enter_error">ساعت ورود درست نیست</string>
+    <string name="time_enter_error_empty">ساعت ورود خالی است</string>
+    <string name="enter_before_exit_error">ساعت ورود قبل از ساعت خروج است</string>
+    <string name="time_exit_error">ساعت خروج درست نیست</string>
+    <string name="time_exit_error_empty">ساعت خروج خالی است</string>
+    <string name="date_error">تاریخ درست نیست</string>
+    <string name="date_error_empty">تاریخ خالی است</string>
     <string name="today">امروز</string>
+    <string name="add_new_job">افزودن شغل جدید</string>
+    <string name="annual_report">گزارش سالیانه</string>
+    <string name="show_job_list">مشاهده لیست مشاغل</string>
+
 </resources>

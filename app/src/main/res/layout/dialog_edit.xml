@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <EditText
-        android:id="@+id/jobTitleTxt"
+        android:id="@+id/jobTitleEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -13,7 +13,7 @@
         android:hint="@string/job_title"
         android:textDirection="anyRtl"/>
     <EditText
-        android:id="@+id/payDayTxt"
+        android:id="@+id/payDayEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"

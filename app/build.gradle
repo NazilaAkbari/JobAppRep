@@ -25,12 +25,13 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
-    compile 'com.android.support:recyclerview-v7:25.0.0'
+
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile 'com.alirezaafkar:sundatepicker:2.0.4'
     compile 'com.ibm.icu:icu4j:58.1'
     compile 'org.apache.commons:commons-lang3:3.5'
-
+    compile 'com.android.support:support-v4:25.0.1'
 }

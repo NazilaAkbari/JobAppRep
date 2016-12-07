@@ -8,4 +8,7 @@
     <color name="yellow">#ffa500</color>
     <color name="textViewColorPink">#dfabb3</color>
     <color name="lightGray">#d3d3d3</color>
+    <color name="lightBlue">#4d85ea</color>
+    <color name="lightGreen">#95ed64</color>
+    <color name="purple">#f07bdf</color>
 </resources>

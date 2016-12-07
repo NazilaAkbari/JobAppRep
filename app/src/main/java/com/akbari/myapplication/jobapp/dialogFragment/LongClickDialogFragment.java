@@ -51,7 +51,11 @@ public class LongClickDialogFragment extends android.support.v4.app.DialogFragme
                         getContext().startActivity(intent);
                         break;
                     case 1:
-                        callBack.OnRemoveItem(jobName,payDay,position);
+                        callBack.OnRemoveItem(jobName, payDay, position);
+                        break;
+                    case 2:
+                        callBack.OnEditItem(jobName, payDay);
+                        break;
 
                 }
             }

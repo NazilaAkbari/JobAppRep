@@ -3,25 +3,21 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/navigation_item_attachment"
-            android:checked="true"
-            android:title="1" />
+            android:id="@+id/addNewJob"
+            android:title="@string/add_new_job"
+            android:textDirection="anyRtl"/>
         <item
-            android:id="@+id/navigation_item_images"
-            android:title="2" />
+            android:id="@+id/annualReport"
+            android:title="@string/annual_report"
+            android:textDirection="anyRtl" />
         <item
-            android:id="@+id/navigation_item_location"
-            android:icon="@drawable/ic_place"
-            android:title="3" />
+            android:id="@+id/showJobList"
+            android:title="@string/show_job_list"
+            android:textDirection="anyRtl" />
+        <item
+            android:id="@+id/editJobDrawer"
+            android:title="@string/edit"
+            android:textDirection="anyRtl" />
     </group>
-
-    <item android:title="3">
-        <menu>
-            <item
-                android:title="33" />
-            <item
-                android:title="4" />
-        </menu>
-    </item>
 
 </menu>
