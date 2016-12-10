@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.akbari.myapplication.jobapp.activity.MainActivity;
-import com.akbari.myapplication.jobapp.interfaces.OnListListener;
+import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
 
 /**
  * @author Akbari
@@ -20,7 +20,7 @@ public class JobListItemLongClickDialogFragment extends android.support.v4.app.D
     private String payDay;
     private String jobName;
     private int position;
-    private OnListListener callBack;
+    private OnJobListListener callBack;
     private static final CharSequence[] items = {"نمایش", "حذف", "ویرایش"};
 
     @Override
@@ -30,7 +30,7 @@ public class JobListItemLongClickDialogFragment extends android.support.v4.app.D
         jobName = getArguments().getString("selectedJob");
         position = getArguments().getInt("position");
         try {
-            callBack = (OnListListener) getTargetFragment();
+            callBack = (OnJobListListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
         }
@@ -54,7 +54,7 @@ public class JobListItemLongClickDialogFragment extends android.support.v4.app.D
                         callBack.OnRemoveItem(jobName, payDay, position);
                         break;
                     case 2:
-                        callBack.OnEditItem(jobName, payDay);
+                        callBack.OnSelectEditButton(jobName, payDay);
                         break;
 
                 }

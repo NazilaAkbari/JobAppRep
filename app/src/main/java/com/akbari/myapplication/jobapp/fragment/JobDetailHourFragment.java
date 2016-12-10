@@ -12,12 +12,13 @@ import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.adapter.TimeDetailRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.decoration.CustomDividerItemDecoration;
+import com.akbari.myapplication.jobapp.interfaces.OnJobDetailHourListListener;
 import com.akbari.myapplication.jobapp.model.Time;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobDetailHourFragment extends Fragment {
+public class JobDetailHourFragment extends Fragment implements OnJobDetailHourListListener{
 
     private List<Time> times = new ArrayList<>();
     private TimeDetailRecyclerAdapter mAdapter;
@@ -34,10 +35,19 @@ public class JobDetailHourFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new TimeDetailRecyclerAdapter(times, this);
+        mAdapter = new TimeDetailRecyclerAdapter(times, this,payDay,jobTitle);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new CustomDividerItemDecoration(getContext()));
         return view;
     }
 
+    @Override
+    public void OnRemoveItem() {
+
+    }
+
+    @Override
+    public void OnEditItem() {
+
+    }
 }

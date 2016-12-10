@@ -44,6 +44,7 @@ public class AddTimeFragment extends Fragment {
     private EditText date, enterTime, exitTime;
     private TimePickerDialog enterTimePicker, exitTimePicker;
     private TextInputLayout timeStartLayout, timeEndLayout, dateLayout;
+    private Button addButton, editButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +55,12 @@ public class AddTimeFragment extends Fragment {
         setEnterTimeField(view);
         setExitTimeField(view);
         setAddButtonListener(view);
+        editButton = (Button) view.findViewById(R.id.btnEditTime);
+        if (getArguments().getString("enterTime") == null ||
+                getArguments().getString("enterTime").equals(""))
+            editButton.setVisibility(View.GONE);
+        else
+            addButton.setVisibility(View.GONE);
         return view;
     }
 
@@ -138,7 +145,7 @@ public class AddTimeFragment extends Fragment {
     }
 
     private void setAddButtonListener(View view) {
-        Button addButton = (Button) view.findViewById(R.id.btnAddTime);
+        addButton = (Button) view.findViewById(R.id.btnAddTime);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

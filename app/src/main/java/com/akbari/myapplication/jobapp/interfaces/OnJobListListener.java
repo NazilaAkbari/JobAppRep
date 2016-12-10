@@ -3,15 +3,17 @@ package com.akbari.myapplication.jobapp.interfaces;
 import com.akbari.myapplication.jobapp.model.Job;
 
 /**
- * Created by n.akbari on 06/19/2016.
+ * @author n.akbari
+ * @since 06/19/2016
+ * @version 1.0
  */
-public interface OnListListener {
+public interface OnJobListListener {
 
     void OnAddItem(String title, String payDay);
 
     void OnRemoveItem(String title, String payDay, int position);
 
-    void OnEditItem(String title, String payDay);
+    void OnSelectEditButton(String title, String payDay);
 
-    void OnEdit(Job job,String oldName);
+    void OnEditItem(Job job, String oldName);
 }

@@ -14,13 +14,13 @@ import com.akbari.myapplication.jobapp.adapter.JobRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dialogFragment.AddJobDialogFragment;
 import com.akbari.myapplication.jobapp.dialogFragment.EditJobDialogFragment;
-import com.akbari.myapplication.jobapp.interfaces.OnListListener;
+import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
 import com.akbari.myapplication.jobapp.model.Job;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListFragment extends Fragment implements OnListListener {
+public class ListFragment extends Fragment implements OnJobListListener {
 
     private JobRecyclerAdapter mAdapter;
 
@@ -70,7 +70,7 @@ public class ListFragment extends Fragment implements OnListListener {
     }
 
     @Override
-    public void OnEditItem(String title, String payDay) {
+    public void OnSelectEditButton(String title, String payDay) {
         EditJobDialogFragment fragment = new EditJobDialogFragment();
         JobDao jobDao = new JobDao();
         Job job = jobDao.findJobIdByTitleAndPayDay(getContext(), title, payDay);
@@ -84,7 +84,7 @@ public class ListFragment extends Fragment implements OnListListener {
     }
 
     @Override
-    public void OnEdit(Job job,String oldName) {
+    public void OnEditItem(Job job, String oldName) {
         JobDao jobDao = new JobDao();
         jobDao.editJob(getContext(), job);
         jobDao.editJobNameInTimeDb(getContext(),job,oldName);

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.interfaces.OnListListener;
+import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
 
 /**
  * @author n.akbari
@@ -19,14 +19,14 @@ public class AddJobDialogFragment extends android.support.v4.app.DialogFragment 
 
     private EditText title;
     private EditText payDay;
-    private OnListListener callBack;
+    private OnJobListListener callBack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         try {
-            callBack = (OnListListener) getTargetFragment();
+            callBack = (OnJobListListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
         }

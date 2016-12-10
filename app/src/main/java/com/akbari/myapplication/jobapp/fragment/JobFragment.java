@@ -25,7 +25,7 @@ import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.dialogFragment.AddJobDialogFragment;
 import com.akbari.myapplication.jobapp.dialogFragment.EditJobDialogFragment;
-import com.akbari.myapplication.jobapp.interfaces.OnListListener;
+import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
 import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.JobTime;
 import com.akbari.myapplication.jobapp.utils.DateUtil;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class JobFragment extends Fragment implements OnListListener {
+public class JobFragment extends Fragment implements OnJobListListener {
 
     private DrawerLayout drawerLayout;
     private String jobTitle;
@@ -257,12 +257,12 @@ public class JobFragment extends Fragment implements OnListListener {
     }
 
     @Override
-    public void OnEditItem(String title, String payDay) {
+    public void OnSelectEditButton(String title, String payDay) {
 
     }
 
     @Override
-    public void OnEdit(Job job, String oldName) {
+    public void OnEditItem(Job job, String oldName) {
         JobDao jobDao = new JobDao();
         jobDao.editJob(getContext(), job);
         jobDao.editJobNameInTimeDb(getContext(), job, oldName);

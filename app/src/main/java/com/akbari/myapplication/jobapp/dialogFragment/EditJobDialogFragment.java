@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.interfaces.OnListListener;
+import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
 import com.akbari.myapplication.jobapp.model.Job;
 
 /**
@@ -23,13 +23,13 @@ public class EditJobDialogFragment extends android.support.v4.app.DialogFragment
     private EditText title;
     private EditText payDay;
     private String oldName;
-    private OnListListener callBack;
+    private OnJobListListener callBack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            callBack = (OnListListener) getTargetFragment();
+            callBack = (OnJobListListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
         }
@@ -57,7 +57,7 @@ public class EditJobDialogFragment extends android.support.v4.app.DialogFragment
                     job.setId(getArguments().getString("id"));
                     job.setJobName(title.getText().toString());
                     job.setPayDay(Integer.valueOf(payDay.getText().toString()));
-                    callBack.OnEdit(job,oldName);
+                    callBack.OnEditItem(job,oldName);
                     title.setText("");
                     payDay.setText("");
                 }
