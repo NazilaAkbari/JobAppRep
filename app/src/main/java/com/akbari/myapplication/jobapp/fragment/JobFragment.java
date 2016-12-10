@@ -158,28 +158,19 @@ public class JobFragment extends Fragment implements OnListListener {
                             case R.id.showJobList:
                                 item.setChecked(true);
                                 drawerLayout.closeDrawers();
-                                ListFragment listFragment = new ListFragment();
-                                FragmentManager fragmentManager = getFragmentManager();
-                                FragmentTransaction tr = fragmentManager.beginTransaction();
-                                tr.replace(R.id.job_holder, listFragment);
-                                tr.commit();
+                                openListFragment();
                                 return true;
                             case R.id.editJobDrawer:
                                 item.setChecked(true);
                                 drawerLayout.closeDrawers();
                                 item.setChecked(false);
-                                EditJobDialogFragment editJobDialogFragment =
-                                        new EditJobDialogFragment();
-                                JobDao jobDao = new JobDao();
-                                Job job = jobDao
-                                        .findJobIdByTitleAndPayDay(getContext(), jobTitle, payDay);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("id", job.getId());
-                                bundle.putString("title", jobTitle);
-                                bundle.putString("payDay", payDay);
-                                editJobDialogFragment.setArguments(bundle);
-                                editJobDialogFragment.setTargetFragment(jobFragmentInstance, 0);
-                                editJobDialogFragment.show(getFragmentManager(), "Edit");
+                                editJob(jobFragmentInstance);
+                                return true;
+                            case R.id.monthDetailHour:
+                                item.setChecked(true);
+                                drawerLayout.closeDrawers();
+                                openJobDetailHourFragment();
+                                return true;
                         }
                         return false;
                     }
@@ -191,6 +182,42 @@ public class JobFragment extends Fragment implements OnListListener {
         AddJobDialogFragment dialogFragment = new AddJobDialogFragment();
         dialogFragment.setTargetFragment(this, 0);
         dialogFragment.show(getFragmentManager(), "add");
+    }
+
+    private void openListFragment() {
+        ListFragment listFragment = new ListFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction tr = fragmentManager.beginTransaction();
+        tr.replace(R.id.job_holder, listFragment);
+        tr.commit();
+    }
+
+    private void openJobDetailHourFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putString("title", jobTitle);
+        bundle.putString("payDay", payDay);
+        JobDetailHourFragment jobDetailHourFragment =
+                new JobDetailHourFragment();
+        jobDetailHourFragment.setArguments(bundle);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction tr = fragmentManager.beginTransaction();
+        tr.replace(R.id.job_holder, jobDetailHourFragment);
+        tr.commit();
+    }
+
+    private void editJob(JobFragment jobFragmentInstance) {
+        EditJobDialogFragment editJobDialogFragment =
+                new EditJobDialogFragment();
+        JobDao jobDao = new JobDao();
+        Job job = jobDao
+                .findJobIdByTitleAndPayDay(getContext(), jobTitle, payDay);
+        Bundle bundle = new Bundle();
+        bundle.putString("id", job.getId());
+        bundle.putString("title", jobTitle);
+        bundle.putString("payDay", payDay);
+        editJobDialogFragment.setArguments(bundle);
+        editJobDialogFragment.setTargetFragment(jobFragmentInstance, 0);
+        editJobDialogFragment.show(getFragmentManager(), "Edit");
     }
 
     @Override

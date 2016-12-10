@@ -9,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.akbari.myapplication.jobapp.activity.MainActivity;
-import com.akbari.myapplication.jobapp.dialogFragment.LongClickDialogFragment;
+import com.akbari.myapplication.jobapp.dialogFragment.JobListItemLongClickDialogFragment;
 import com.akbari.myapplication.jobapp.interfaces.ItemClickListener;
 import com.akbari.myapplication.jobapp.interfaces.ItemLongClickListener;
 import com.akbari.myapplication.jobapp.model.Job;
-import com.akbari.myapplication.jobapp.viewHolder.RecyclerViewHolder;
+import com.akbari.myapplication.jobapp.viewHolder.JobRecyclerViewHolder;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,33 +22,33 @@ import com.akbari.myapplication.jobapp.R;
 
 /**
  * @author n.akbari
- * @since 06/12/2016
  * @version 1.0
+ * @since 06/12/2016
  */
-public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerViewHolder> {
 
     private static List<Job> jobs = Collections.emptyList();
     private Fragment fragment;
 
-    public CustomRecyclerAdapter(List<Job> jobs, Fragment fragment) {
-        this.jobs = jobs;
+    public JobRecyclerAdapter(List<Job> jobs, Fragment fragment) {
+        JobRecyclerAdapter.jobs = jobs;
         this.fragment = fragment;
         notifyDataSetChanged();
     }
 
 
     @Override
-    public RecyclerViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public JobRecyclerViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = inflater.inflate(R.layout.list_item, viewGroup, false);
-        return new RecyclerViewHolder(itemView);
+        return new JobRecyclerViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final JobRecyclerViewHolder viewHolder, final int position) {
         if (jobs.size() != 0) {
-            viewHolder.jobTitle.setText(jobs.get(position).getJobName());
-            viewHolder.payDay.setText(jobs.get(position).getPayDay().toString());
+            viewHolder.getJobTitle().setText(jobs.get(position).getJobName());
+            viewHolder.getPayDay().setText(jobs.get(position).getPayDay().toString());
             viewHolder.setClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
@@ -92,7 +92,8 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
     }
 
     private void showOnLongClickDialog(String payDay, String jobName, int position) {
-        LongClickDialogFragment longClickDialogFragment = new LongClickDialogFragment();
+        JobListItemLongClickDialogFragment longClickDialogFragment =
+                new JobListItemLongClickDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("selectedJob", jobName);
         bundle.putString("payDay", payDay);

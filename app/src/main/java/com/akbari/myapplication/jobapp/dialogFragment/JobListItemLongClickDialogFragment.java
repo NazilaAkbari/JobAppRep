@@ -15,7 +15,7 @@ import com.akbari.myapplication.jobapp.interfaces.OnListListener;
  * @since 11/19/2016
  */
 
-public class LongClickDialogFragment extends android.support.v4.app.DialogFragment {
+public class JobListItemLongClickDialogFragment extends android.support.v4.app.DialogFragment {
 
     private String payDay;
     private String jobName;

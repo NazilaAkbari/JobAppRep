@@ -13,8 +13,10 @@ import com.ibm.icu.util.PersianCalendar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -40,6 +42,40 @@ public class TimeDao {
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_SUM, difference);
         db.insert(DbHelper.FeedEntry.TABLE_NAME_TIME, null, contentValues);
         db.close();
+    }
+
+    public List<Time> getMonthTimes(Context context, String payDay, String jobTitle) {
+        JobTime jobTime = new JobTime();
+        jobTime.setPayDay(Integer.valueOf(payDay));
+        jobTime.setJobName(jobTitle);
+        PersianCalendar endOfThisMonth = getEndOfThisMonth(jobTime);
+        jobTime.setDateTo(DateUtil.computeDateString(endOfThisMonth));
+        endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
+        jobTime.setDateFrom(DateUtil.computeDateString(endOfThisMonth));
+        return getTimesInDateRange(context, jobTime);
+    }
+
+    private List<Time> getTimesInDateRange(Context context, JobTime jobTime) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM " + DbHelper.FeedEntry.TABLE_NAME_TIME
+                + " WHERE " + DbHelper.FeedEntry.COLUMN_NAME_Date
+                + " BETWEEN '" + jobTime.getDateFrom() + "' AND '"
+                + jobTime.getDateTo() + "'"
+                + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
+                + " = '" + jobTime.getJobName() + "'";
+        List<Time> times = new ArrayList<>();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Time time = new Time();
+            time.setEnterTime(cursor.getString(2));
+            time.setExitTime(cursor.getString(3));
+            time.setDate(cursor.getString(4));
+            times.add(time);
+            cursor.moveToNext();
+        }
+        return times;
     }
 
 

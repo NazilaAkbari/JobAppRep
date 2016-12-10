@@ -13,21 +13,29 @@ import com.akbari.myapplication.jobapp.interfaces.ItemLongClickListener;
  * @version 1.0
  * @since 06/12/2016
  */
-public class RecyclerViewHolder
+public class JobRecyclerViewHolder
         extends RecyclerView.ViewHolder
         implements View.OnClickListener, View.OnLongClickListener {
 
-    public TextView jobTitle;
-    public TextView payDay;
+    private TextView jobTitle;
+    private TextView payDay;
     private ItemClickListener clickListener;
     private ItemLongClickListener longClickListener;
 
-    public RecyclerViewHolder(View itemView) {
+    public JobRecyclerViewHolder(View itemView) {
         super(itemView);
         jobTitle = (TextView) itemView.findViewById(R.id.jobName);
         payDay = (TextView) itemView.findViewById(R.id.payDay);
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
+    }
+
+    public TextView getJobTitle() {
+        return jobTitle;
+    }
+
+    public TextView getPayDay() {
+        return payDay;
     }
 
     public void setClickListener(ItemClickListener clickListener) {

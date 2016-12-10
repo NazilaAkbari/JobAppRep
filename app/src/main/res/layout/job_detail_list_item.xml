@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/listPreferredItemHeight"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:divider="@drawable/divider">
+
+<!--
+    <TextView
+        android:id="@+id/enterTimeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:text="@string/enter_time"
+        android:textDirection="anyRtl" />
+
+    <TextView
+        android:id="@+id/exitTimeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:text="@string/exit_time"
+        android:textDirection="anyRtl" />
+
+    <TextView
+        android:id="@+id/dateEnterTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:text="@string/date"
+        android:textDirection="anyRtl" />-->
+
+    <TextView
+        android:id="@+id/dateEnter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:textDirection="anyRtl" />
+
+
+    <TextView
+        android:id="@+id/exitTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:textDirection="anyRtl" />
+
+    <TextView
+        android:id="@+id/enterTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:textDirection="anyRtl" />
+
+
+
+</LinearLayout>

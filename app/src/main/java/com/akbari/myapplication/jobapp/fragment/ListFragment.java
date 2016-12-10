@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.adapter.CustomRecyclerAdapter;
+import com.akbari.myapplication.jobapp.adapter.JobRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dialogFragment.AddJobDialogFragment;
 import com.akbari.myapplication.jobapp.dialogFragment.EditJobDialogFragment;
@@ -22,14 +22,14 @@ import java.util.List;
 
 public class ListFragment extends Fragment implements OnListListener {
 
-    private CustomRecyclerAdapter mAdapter;
+    private JobRecyclerAdapter mAdapter;
 
     private List<Job> jobs = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.first_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
         JobDao jobDao = new JobDao();
         jobs.addAll(jobDao.getAllJobs(this.getActivity()));
         if (jobs.size() == 0) {
@@ -39,7 +39,7 @@ public class ListFragment extends Fragment implements OnListListener {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new CustomRecyclerAdapter(jobs, this);
+        mAdapter = new JobRecyclerAdapter(jobs, this);
         mRecyclerView.setAdapter(mAdapter);
         FloatingActionButton addButton = (FloatingActionButton) view.findViewById(R.id.btnAddJob);
         addButton.setOnClickListener(new View.OnClickListener() {

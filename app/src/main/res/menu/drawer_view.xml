@@ -18,6 +18,10 @@
             android:id="@+id/editJobDrawer"
             android:title="@string/edit"
             android:textDirection="anyRtl" />
+        <item
+            android:id="@+id/monthDetailHour"
+            android:title="@string/month_detail_hour"
+            android:textDirection="anyRtl" />
     </group>
 
 </menu>
