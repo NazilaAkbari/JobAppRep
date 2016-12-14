@@ -23,22 +23,15 @@ public class JobActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(jobName);
         String payDay = intent.getStringExtra("payDay");
-        String isAddTime = intent.getStringExtra("addTime");
+        String jobId = intent.getStringExtra("jobId");
         Bundle bundle = new Bundle();
         bundle.putString("selectedJob", jobName);
         bundle.putString("payDay", payDay);
-        if (isAddTime!=null && isAddTime.equals("true")){
-            AddTimeFragment timeFragment=new AddTimeFragment();
-            timeFragment.setArguments(bundle);
-            ft.replace(R.id.job_holder, timeFragment);
-            ft.commit();
-        }
-        else {
-            JobFragment jobFragment = new JobFragment();
-            jobFragment.setArguments(bundle);
-            ft.replace(R.id.job_holder, jobFragment);
-            ft.commit();
-        }
+        bundle.putString("jobId", jobId);
+        JobFragment jobFragment = new JobFragment();
+        jobFragment.setArguments(bundle);
+        ft.replace(R.id.job_holder, jobFragment);
+        ft.commit();
     }
 
 }

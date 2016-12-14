@@ -28,12 +28,14 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String payDay = intent.getStringExtra("payDay");
         String jobName = intent.getStringExtra("selectedJob");
+        String jobId = intent.getStringExtra("jobId");
         JobDao jobDao = new JobDao();
         List<Job> jobs = jobDao.getAllJobs(this);
         if (jobs.size() == 1) {
             Intent jobIntent = new Intent(this, JobActivity.class);
             jobIntent.putExtra("selectedJob", jobs.get(0).getJobName());
             jobIntent.putExtra("payDay", jobs.get(0).getPayDay().toString());
+            jobIntent.putExtra("jobId", jobs.get(0).getId());
             startActivity(jobIntent);
             this.finish();
         }
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             Intent jobIntent = new Intent(this, JobActivity.class);
             jobIntent.putExtra("selectedJob", jobName);
             jobIntent.putExtra("payDay", payDay);
+            jobIntent.putExtra("jobId", jobs.get(0).getId());
             startActivity(jobIntent);
             this.finish();
         }

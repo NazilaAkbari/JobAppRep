@@ -43,6 +43,7 @@ public class JobFragment extends Fragment implements OnJobListListener {
     private DrawerLayout drawerLayout;
     private String jobTitle;
     private String payDay;
+    private String jobId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +52,7 @@ public class JobFragment extends Fragment implements OnJobListListener {
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         payDay = getArguments().getString("payDay");
         jobTitle = getArguments().getString("selectedJob");
+        jobId = getArguments().getString("jobId");
         setHasOptionsMenu(true);
         setTodayDate(view);
         setMonthTime(view);
@@ -93,11 +95,16 @@ public class JobFragment extends Fragment implements OnJobListListener {
         addTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), JobActivity.class);
-                intent.putExtra("selectedJob", jobTitle);
-                intent.putExtra("payDay", payDay);
-                intent.putExtra("addTime", "true");
-                startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", jobId);
+                bundle.putString("title", jobTitle);
+                bundle.putString("payDay", payDay);
+                AddTimeFragment addTimeFragment = new AddTimeFragment();
+                FragmentManager fm = getFragmentManager();
+                addTimeFragment.setArguments(bundle);
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.job_holder, addTimeFragment);
+                transaction.commit();
             }
         });
     }
@@ -208,11 +215,8 @@ public class JobFragment extends Fragment implements OnJobListListener {
     private void editJob(JobFragment jobFragmentInstance) {
         EditJobDialogFragment editJobDialogFragment =
                 new EditJobDialogFragment();
-        JobDao jobDao = new JobDao();
-        Job job = jobDao
-                .findJobIdByTitleAndPayDay(getContext(), jobTitle, payDay);
         Bundle bundle = new Bundle();
-        bundle.putString("id", job.getId());
+        bundle.putString("id", jobId);
         bundle.putString("title", jobTitle);
         bundle.putString("payDay", payDay);
         editJobDialogFragment.setArguments(bundle);

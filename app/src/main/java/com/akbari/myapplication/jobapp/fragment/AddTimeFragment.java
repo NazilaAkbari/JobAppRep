@@ -56,7 +56,7 @@ public class AddTimeFragment extends Fragment {
         setExitTimeField(view);
         setAddButtonListener(view);
         editButton = (Button) view.findViewById(R.id.btnEditTime);
-        if (getArguments().getString("enterTime") == null ||
+        if (this.getArguments().getString("enterTime") == null ||
                 getArguments().getString("enterTime").equals(""))
             editButton.setVisibility(View.GONE);
         else
@@ -205,6 +205,7 @@ public class AddTimeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), JobActivity.class);
                 intent.putExtra("selectedJob", getArguments().getString("selectedJob"));
                 intent.putExtra("payDay", getArguments().getString("payDay"));
+                intent.putExtra("jobId", getArguments().getString("jobId"));
                 startActivity(intent);
                 return true;
             default:

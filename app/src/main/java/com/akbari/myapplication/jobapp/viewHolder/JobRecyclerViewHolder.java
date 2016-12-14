@@ -19,6 +19,7 @@ public class JobRecyclerViewHolder
 
     private TextView jobTitle;
     private TextView payDay;
+    private TextView jobId;
     private ItemClickListener clickListener;
     private ItemLongClickListener longClickListener;
 
@@ -26,6 +27,7 @@ public class JobRecyclerViewHolder
         super(itemView);
         jobTitle = (TextView) itemView.findViewById(R.id.jobName);
         payDay = (TextView) itemView.findViewById(R.id.payDay);
+        jobId = (TextView) itemView.findViewById(R.id.jobId);
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
     }
@@ -36,6 +38,10 @@ public class JobRecyclerViewHolder
 
     public TextView getPayDay() {
         return payDay;
+    }
+
+    public TextView getJobId() {
+        return jobId;
     }
 
     public void setClickListener(ItemClickListener clickListener) {

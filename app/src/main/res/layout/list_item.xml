@@ -8,12 +8,21 @@
 
 
     <TextView
+        android:id="@+id/jobId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:textDirection="anyRtl"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/payDay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_weight="1"
-        android:textDirection="anyRtl"/>
+        android:textDirection="anyRtl" />
 
     <TextView
         android:id="@+id/jobName"
@@ -21,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_weight="1"
-        android:textDirection="anyRtl"/>
+        android:textDirection="anyRtl" />
 
 
 </LinearLayout>

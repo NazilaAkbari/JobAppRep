@@ -48,22 +48,22 @@ public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerViewHold
     public void onBindViewHolder(final JobRecyclerViewHolder viewHolder, final int position) {
         if (jobs.size() != 0) {
             viewHolder.getJobTitle().setText(jobs.get(position).getJobName());
-            viewHolder.getPayDay().setText(jobs.get(position).getPayDay().toString());
+            viewHolder.getPayDay().setText(String.valueOf(jobs.get(position).getPayDay()));
+            viewHolder.getJobId().setText(jobs.get(position).getId());
             viewHolder.setClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
                     Intent intent = new Intent(view.getContext(), MainActivity.class);
                     intent.putExtra("payDay", jobs.get(position).getPayDay().toString());
                     intent.putExtra("selectedJob", jobs.get(position).getJobName());
+                    intent.putExtra("jobId", jobs.get(position).getId());
                     view.getContext().startActivity(intent);
                 }
             });
             viewHolder.setLongClickListener(new ItemLongClickListener() {
                 @Override
                 public boolean onLongClick(View view, int position, boolean isLongClick) {
-                    String payDay = jobs.get(position).getPayDay().toString();
-                    String jobName = jobs.get(position).getJobName();
-                    showOnLongClickDialog(payDay, jobName, position);
+                    showOnLongClickDialog(jobs.get(position), position);
                     return true;
                 }
             });
@@ -91,12 +91,13 @@ public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerViewHold
         notifyDataSetChanged();
     }
 
-    private void showOnLongClickDialog(String payDay, String jobName, int position) {
+    private void showOnLongClickDialog(Job job, int position) {
         JobListItemLongClickDialogFragment longClickDialogFragment =
                 new JobListItemLongClickDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("selectedJob", jobName);
-        bundle.putString("payDay", payDay);
+        bundle.putString("selectedJob", job.getJobName());
+        bundle.putString("payDay", job.getPayDay().toString());
+        bundle.putString("jobId", job.getId());
         bundle.putInt("position", position);
         longClickDialogFragment.setTargetFragment(fragment, 0);
         longClickDialogFragment.setArguments(bundle);
