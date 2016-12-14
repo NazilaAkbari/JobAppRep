@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.dialogFragment.TimeDetailItemLongClickDialogFragment;
 import com.akbari.myapplication.jobapp.interfaces.ItemLongClickListener;
+import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.Time;
 import com.akbari.myapplication.jobapp.viewHolder.TimeRecyclerViewHolder;
 
@@ -26,15 +27,12 @@ public class TimeDetailRecyclerAdapter extends RecyclerView.Adapter<TimeRecycler
 
     private static List<Time> times = Collections.emptyList();
     private Fragment fragment;
-    private String jobTitle;
-    private String payDay;
+    private Job job;
 
-    public TimeDetailRecyclerAdapter(List<Time> times, Fragment fragment
-            , String payDay, String jobTitle) {
+    public TimeDetailRecyclerAdapter(List<Time> times, Fragment fragment, Job job) {
         TimeDetailRecyclerAdapter.times = times;
         this.fragment = fragment;
-        this.payDay = payDay;
-        this.jobTitle = jobTitle;
+        this.job = job;
         notifyDataSetChanged();
     }
 
@@ -54,7 +52,7 @@ public class TimeDetailRecyclerAdapter extends RecyclerView.Adapter<TimeRecycler
             holder.setLongClickListener(new ItemLongClickListener() {
                 @Override
                 public boolean onLongClick(View view, int position, boolean isLongClick) {
-                    showOnLongClickDialog(payDay, jobTitle, position);
+                    showOnLongClickDialog(position);
                     return true;
                 }
             });
@@ -66,11 +64,10 @@ public class TimeDetailRecyclerAdapter extends RecyclerView.Adapter<TimeRecycler
         return times.size();
     }
 
-    private void showOnLongClickDialog(String payDay, String jobName, int position) {
+    private void showOnLongClickDialog(int position) {
         Bundle bundle = new Bundle();
-        bundle.putString("selectedJob", jobName);
-        bundle.putString("payDay", payDay);
         bundle.putInt("position", position);
+        bundle.putString("jobId", job.getId());
         TimeDetailItemLongClickDialogFragment dialogFragment =
                 new TimeDetailItemLongClickDialogFragment();
         dialogFragment.setTargetFragment(fragment, 0);

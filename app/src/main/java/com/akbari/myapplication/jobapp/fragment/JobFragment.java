@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.activity.JobActivity;
 import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
@@ -41,18 +40,17 @@ import java.util.Map;
 public class JobFragment extends Fragment implements OnJobListListener {
 
     private DrawerLayout drawerLayout;
-    private String jobTitle;
-    private String payDay;
     private String jobId;
+    private Job job;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_job, container, false);
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
-        payDay = getArguments().getString("payDay");
-        jobTitle = getArguments().getString("selectedJob");
         jobId = getArguments().getString("jobId");
+        JobDao jobDao = new JobDao();
+        job = jobDao.findJobById(getContext(), jobId);
         setHasOptionsMenu(true);
         setTodayDate(view);
         setMonthTime(view);
@@ -71,8 +69,7 @@ public class JobFragment extends Fragment implements OnJobListListener {
     private void setMonthTime(View view) {
         TextView monthTime = (TextView) view.findViewById(R.id.monthTime);
         TimeDao timeDao = new TimeDao();
-        Integer time = timeDao.getThisMonthHour(this.getActivity(),
-                payDay, jobTitle);
+        Integer time = timeDao.getThisMonthHour(this.getActivity(), job);
         String timeS = time / 60 + " ساعت ";
         if (time % 60 > 0)
             timeS += "و " + time % 60 + " دقیقه";
@@ -82,8 +79,7 @@ public class JobFragment extends Fragment implements OnJobListListener {
     private void setWeekTime(View view) {
         TextView weekTime = (TextView) view.findViewById(R.id.weekTime);
         TimeDao timeDao = new TimeDao();
-        Integer time = timeDao.getThisWeekHour(this.getActivity(),
-                payDay, jobTitle);
+        Integer time = timeDao.getThisWeekHour(this.getActivity(), job);
         String timeS = time / 60 + " ساعت ";
         if (time % 60 > 0)
             timeS += "و " + time % 60 + " دقیقه";
@@ -97,8 +93,6 @@ public class JobFragment extends Fragment implements OnJobListListener {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("id", jobId);
-                bundle.putString("title", jobTitle);
-                bundle.putString("payDay", payDay);
                 AddTimeFragment addTimeFragment = new AddTimeFragment();
                 FragmentManager fm = getFragmentManager();
                 addTimeFragment.setArguments(bundle);
@@ -134,8 +128,8 @@ public class JobFragment extends Fragment implements OnJobListListener {
 
     private JobTime getJobTime() {
         JobTime jobTime = new JobTime();
-        jobTime.setJobName(jobTitle);
-        jobTime.setPayDay(Integer.valueOf(payDay));
+        jobTime.setJobName(job.getJobName());
+        jobTime.setPayDay(job.getPayDay());
         jobTime.setDateTo(DateUtil.getCurrentPersianDate());
         return jobTime;
     }
@@ -201,8 +195,7 @@ public class JobFragment extends Fragment implements OnJobListListener {
 
     private void openJobDetailHourFragment() {
         Bundle bundle = new Bundle();
-        bundle.putString("title", jobTitle);
-        bundle.putString("payDay", payDay);
+        bundle.putString("jobId", job.getId());
         JobDetailHourFragment jobDetailHourFragment =
                 new JobDetailHourFragment();
         jobDetailHourFragment.setArguments(bundle);
@@ -217,8 +210,6 @@ public class JobFragment extends Fragment implements OnJobListListener {
                 new EditJobDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("id", jobId);
-        bundle.putString("title", jobTitle);
-        bundle.putString("payDay", payDay);
         editJobDialogFragment.setArguments(bundle);
         editJobDialogFragment.setTargetFragment(jobFragmentInstance, 0);
         editJobDialogFragment.show(getFragmentManager(), "Edit");

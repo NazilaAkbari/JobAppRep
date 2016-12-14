@@ -40,7 +40,7 @@ public class JobDao {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DbHelper.FeedEntry.COLUMN_NAME_JOB_Name, job.getJobName());
-        db.update(DbHelper.FeedEntry.TABLE_NAME_TIME, cv, "jobName= '" + oldName+"'", null);
+        db.update(DbHelper.FeedEntry.TABLE_NAME_TIME, cv, "jobName= '" + oldName + "'", null);
         db.close();
     }
 
@@ -93,4 +93,21 @@ public class JobDao {
         db.close();
     }
 
+    public Job findJobById(Context context, String jobId) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM " + DbHelper.FeedEntry.TABLE_NAME_JOB
+                + " WHERE " + DbHelper.FeedEntry._ID + " = '" + jobId;
+        Cursor cursor = db.rawQuery(query, null);
+        Job job = new Job();
+        if (cursor.moveToFirst()) {
+            System.out.println(cursor.getString(0) + "!!!!");
+            job.setId(cursor.getString(0));
+            job.setJobName(cursor.getString(1));
+            job.setPayDay(Integer.valueOf(cursor.getString(2)));
+        }
+        cursor.close();
+        db.close();
+        return job;
+    }
 }

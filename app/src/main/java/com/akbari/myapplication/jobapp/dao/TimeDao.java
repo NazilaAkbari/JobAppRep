@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.JobTime;
 import com.akbari.myapplication.jobapp.model.Time;
 import com.akbari.myapplication.jobapp.utils.DateUtil;
@@ -44,10 +45,10 @@ public class TimeDao {
         db.close();
     }
 
-    public List<Time> getMonthTimes(Context context, String payDay, String jobTitle) {
+    public List<Time> getMonthTimes(Context context, Job job) {
         JobTime jobTime = new JobTime();
-        jobTime.setPayDay(Integer.valueOf(payDay));
-        jobTime.setJobName(jobTitle);
+        jobTime.setPayDay(job.getPayDay());
+        jobTime.setJobName(job.getJobName());
         PersianCalendar endOfThisMonth = getEndOfThisMonth(jobTime);
         jobTime.setDateTo(DateUtil.computeDateString(endOfThisMonth));
         endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
@@ -79,10 +80,10 @@ public class TimeDao {
     }
 
 
-    public Integer getThisMonthHour(Context context, String payDay, String jobName) {
+    public Integer getThisMonthHour(Context context, Job job) {
         JobTime jobTime = new JobTime();
-        jobTime.setPayDay(Integer.valueOf(payDay));
-        jobTime.setJobName(jobName);
+        jobTime.setPayDay(job.getPayDay());
+        jobTime.setJobName(job.getJobName());
         PersianCalendar endOfThisMonth = getEndOfThisMonth(jobTime);
         jobTime.setDateTo(DateUtil.computeDateString(endOfThisMonth));
         endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
@@ -90,10 +91,10 @@ public class TimeDao {
         return getHourInDateRange(context, jobTime);
     }
 
-    public Integer getThisWeekHour(Context context, String payDay, String jobName) {
+    public Integer getThisWeekHour(Context context, Job job) {
         JobTime jobTime = new JobTime();
-        jobTime.setPayDay(Integer.valueOf(payDay));
-        jobTime.setJobName(jobName);
+        jobTime.setPayDay(job.getPayDay());
+        jobTime.setJobName(job.getJobName());
         PersianCalendar persianCalendar = new PersianCalendar();
         int dayOfWeek = persianCalendar.get(Calendar.DAY_OF_WEEK);
         persianCalendar.set(Calendar.MONTH, persianCalendar.get(Calendar.MONTH) + 1);

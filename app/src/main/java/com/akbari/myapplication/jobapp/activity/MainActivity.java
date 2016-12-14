@@ -25,30 +25,17 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Intent intent = getIntent();
-        String payDay = intent.getStringExtra("payDay");
-        String jobName = intent.getStringExtra("selectedJob");
-        String jobId = intent.getStringExtra("jobId");
+        String jobId = getIntent().getStringExtra("jobId");
         JobDao jobDao = new JobDao();
         List<Job> jobs = jobDao.getAllJobs(this);
-        if (jobs.size() == 1) {
+        if (jobs.size() == 1 || jobId != null) {
             Intent jobIntent = new Intent(this, JobActivity.class);
-            jobIntent.putExtra("selectedJob", jobs.get(0).getJobName());
-            jobIntent.putExtra("payDay", jobs.get(0).getPayDay().toString());
             jobIntent.putExtra("jobId", jobs.get(0).getId());
             startActivity(jobIntent);
             this.finish();
-        }
-        if (jobName == null || jobName.equals("")) {
+        } else {
             ft.replace(R.id.place_holder, new ListFragment());
             ft.commit();
-        } else {
-            Intent jobIntent = new Intent(this, JobActivity.class);
-            jobIntent.putExtra("selectedJob", jobName);
-            jobIntent.putExtra("payDay", payDay);
-            jobIntent.putExtra("jobId", jobs.get(0).getId());
-            startActivity(jobIntent);
-            this.finish();
         }
     }
 

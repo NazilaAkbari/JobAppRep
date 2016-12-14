@@ -22,7 +22,9 @@ import android.widget.TimePicker;
 
 import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.activity.JobActivity;
+import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
+import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.Time;
 import com.alirezaafkar.sundatepicker.DatePicker;
 import com.alirezaafkar.sundatepicker.interfaces.DateSetListener;
@@ -45,6 +47,7 @@ public class AddTimeFragment extends Fragment {
     private TimePickerDialog enterTimePicker, exitTimePicker;
     private TextInputLayout timeStartLayout, timeEndLayout, dateLayout;
     private Button addButton, editButton;
+    private Job job;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,9 +58,10 @@ public class AddTimeFragment extends Fragment {
         setEnterTimeField(view);
         setExitTimeField(view);
         setAddButtonListener(view);
+        JobDao jobDao=new JobDao();
+        job=jobDao.findJobById(getContext(),getArguments().getString("jobId"));
         editButton = (Button) view.findViewById(R.id.btnEditTime);
-        if (this.getArguments().getString("enterTime") == null ||
-                getArguments().getString("enterTime").equals(""))
+        if (getArguments().getString("enterTime") == null)
             editButton.setVisibility(View.GONE);
         else
             addButton.setVisibility(View.GONE);
@@ -170,7 +174,7 @@ public class AddTimeFragment extends Fragment {
                 if (!validateEnterTime() || !validateExitTime() || !validateDate())
                     return;
                 Time time = new Time();
-                time.setJobName(getArguments().getString("selectedJob"));
+                time.setJobName(job.getJobName());
                 time.setEnterTime(enterTime.getText().toString());
                 time.setExitTime(exitTime.getText().toString());
                 time.setDate(date.getText().toString());
@@ -181,8 +185,7 @@ public class AddTimeFragment extends Fragment {
                     e.printStackTrace();
                 }
                 Intent intent = new Intent(getContext(), JobActivity.class);
-                intent.putExtra("selectedJob", getArguments().getString("selectedJob"));
-                intent.putExtra("payDay", getArguments().getString("payDay"));
+                intent.putExtra("jobId", job.getId());
                 startActivity(intent);
                 enterTime.setText("");
                 exitTime.setText("");
@@ -203,9 +206,7 @@ public class AddTimeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.open_drawer:
                 Intent intent = new Intent(getActivity(), JobActivity.class);
-                intent.putExtra("selectedJob", getArguments().getString("selectedJob"));
-                intent.putExtra("payDay", getArguments().getString("payDay"));
-                intent.putExtra("jobId", getArguments().getString("jobId"));
+                intent.putExtra("jobId", job.getId());
                 startActivity(intent);
                 return true;
             default:
