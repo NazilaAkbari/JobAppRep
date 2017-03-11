@@ -15,7 +15,7 @@ public class JobActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        //ToDo 
+        //ToDo
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("sdw");

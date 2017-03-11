@@ -97,7 +97,7 @@ public class JobDao {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT * FROM " + DbHelper.FeedEntry.TABLE_NAME_JOB
-                + " WHERE " + DbHelper.FeedEntry._ID + " = '" + jobId;
+                + " WHERE " + DbHelper.FeedEntry._ID + " = '" + jobId+"'";
         Cursor cursor = db.rawQuery(query, null);
         Job job = new Job();
         if (cursor.moveToFirst()) {
