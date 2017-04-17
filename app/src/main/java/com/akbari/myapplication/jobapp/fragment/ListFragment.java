@@ -75,9 +75,7 @@ public class ListFragment extends Fragment implements OnJobListListener {
         JobDao jobDao = new JobDao();
         Job job = jobDao.findJobIdByTitleAndPayDay(getContext(), title, payDay);
         Bundle bundle = new Bundle();
-        bundle.putString("id", job.getId());
-        bundle.putString("title", title);
-        bundle.putString("payDay", payDay);
+        bundle.putString("jobId", job.getId());
         fragment.setArguments(bundle);
         fragment.setTargetFragment(this, 0);
         fragment.show(getFragmentManager(), "Edit");

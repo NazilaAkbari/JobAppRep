@@ -47,7 +47,7 @@ public class EditJobDialogFragment extends android.support.v4.app.DialogFragment
         title = (EditText) view.findViewById(R.id.jobTitleEdit);
         payDay = (EditText) view.findViewById(R.id.payDayEdit);
         title.setText(job.getJobName());
-        payDay.setText(job.getPayDay());
+        payDay.setText(String.valueOf(job.getPayDay()));
         oldName = job.getJobName();
         builder.setPositiveButton(R.string.edit, new DialogInterface.OnClickListener() {
             @Override
@@ -57,7 +57,7 @@ public class EditJobDialogFragment extends android.support.v4.app.DialogFragment
                 if (payDayInt > 0 && payDayInt <= 30 &&
                         !title.getText().toString().equals("")) {
                     Job newJob = new Job();
-                    newJob.setId(getArguments().getString("id"));
+                    newJob.setId(getArguments().getString("jobId"));
                     newJob.setJobName(title.getText().toString());
                     newJob.setPayDay(Integer.valueOf(payDay.getText().toString()));
                     callBack.OnEditItem(newJob, oldName);

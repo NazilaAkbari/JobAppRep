@@ -48,7 +48,7 @@ public class DateUtil {
 
     static public String getPersianTextDate(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
-        String month = Month.values()[calendar.get(Calendar.MONTH) - 1].toString();
+        String month = Month.values()[calendar.get(Calendar.MONTH)].toString();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         return StringUtils.leftPad(String.valueOf(day), 2, '0') + " " +
                 month + " " +

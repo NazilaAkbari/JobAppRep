@@ -173,7 +173,6 @@ public class TimeDao {
                 + jobTime.getDateTo() + "'"
                 + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
                 + " = '" + jobTime.getJobName() + "'";
-        System.out.println(query + "!!!!!!Q");
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             return cursor.getInt(0);
@@ -190,7 +189,6 @@ public class TimeDao {
                 + " = '" + jobTime.getDateTo() + "'"
                 + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
                 + " = '" + jobTime.getJobName() + "'";
-        System.out.println(query + "!!!!!!");
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             return cursor.getInt(0);

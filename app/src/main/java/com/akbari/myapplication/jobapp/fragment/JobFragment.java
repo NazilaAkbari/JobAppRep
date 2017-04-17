@@ -92,7 +92,7 @@ public class JobFragment extends Fragment implements OnJobListListener {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("id", jobId);
+                bundle.putString("jobId", jobId);
                 AddTimeFragment addTimeFragment = new AddTimeFragment();
                 FragmentManager fm = getFragmentManager();
                 addTimeFragment.setArguments(bundle);
@@ -209,7 +209,7 @@ public class JobFragment extends Fragment implements OnJobListListener {
         EditJobDialogFragment editJobDialogFragment =
                 new EditJobDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("id", jobId);
+        bundle.putString("jobId", jobId);
         editJobDialogFragment.setArguments(bundle);
         editJobDialogFragment.setTargetFragment(jobFragmentInstance, 0);
         editJobDialogFragment.show(getFragmentManager(), "Edit");

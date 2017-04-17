@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by n.akbari on 04/24/2016.
+ * @author n.akbari
  */
 public class JobDao {
 
@@ -53,7 +53,6 @@ public class JobDao {
         Cursor cursor = db.rawQuery(query, null);
         Job job = new Job();
         if (cursor.moveToFirst()) {
-            System.out.println(cursor.getString(0) + "!!!!");
             job.setId(cursor.getString(0));
             job.setJobName(cursor.getString(1));
             job.setPayDay(Integer.valueOf(cursor.getString(2)));
@@ -101,7 +100,6 @@ public class JobDao {
         Cursor cursor = db.rawQuery(query, null);
         Job job = new Job();
         if (cursor.moveToFirst()) {
-            System.out.println(cursor.getString(0) + "!!!!");
             job.setId(cursor.getString(0));
             job.setJobName(cursor.getString(1));
             job.setPayDay(Integer.valueOf(cursor.getString(2)));

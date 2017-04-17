@@ -9,7 +9,7 @@ import com.akbari.myapplication.jobapp.interfaces.ItemLongClickListener;
 
 /**
  * @author Akbari
- * @version ${VERSION}
+ * @version 1.0
  * @since 12/10/2016
  */
 

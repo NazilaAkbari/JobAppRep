@@ -46,7 +46,7 @@ public class AddTimeFragment extends Fragment {
     private EditText date, enterTime, exitTime;
     private TimePickerDialog enterTimePicker, exitTimePicker;
     private TextInputLayout timeStartLayout, timeEndLayout, dateLayout;
-    private Button addButton, editButton;
+    private Button addButton;
     private Job job;
 
     @Override
@@ -58,13 +58,9 @@ public class AddTimeFragment extends Fragment {
         setEnterTimeField(view);
         setExitTimeField(view);
         setAddButtonListener(view);
-        JobDao jobDao=new JobDao();
-        job=jobDao.findJobById(getContext(),getArguments().getString("jobId"));
-        editButton = (Button) view.findViewById(R.id.btnEditTime);
-        if (getArguments().getString("enterTime") == null)
-            editButton.setVisibility(View.GONE);
-        else
-            addButton.setVisibility(View.GONE);
+        JobDao jobDao = new JobDao();
+        job = jobDao.findJobById(getContext(), getArguments().getString("jobId"));
+        addButton.setVisibility(View.GONE);
         return view;
     }
 

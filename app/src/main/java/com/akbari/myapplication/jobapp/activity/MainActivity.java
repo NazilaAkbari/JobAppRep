@@ -7,11 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.fragment.ListFragment;
-import com.akbari.myapplication.jobapp.model.Job;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,11 +22,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         String jobId = getIntent().getStringExtra("jobId");
-        JobDao jobDao = new JobDao();
-        List<Job> jobs = jobDao.getAllJobs(this);
-        if (jobs.size() == 1 || jobId != null) {
+        if (jobId != null) {
             Intent jobIntent = new Intent(this, JobActivity.class);
-            jobIntent.putExtra("jobId", jobs.get(0).getId());
+            jobIntent.putExtra("jobId", jobId);
             startActivity(jobIntent);
             this.finish();
         } else {
