@@ -28,7 +28,7 @@ public class JobDetailHourFragment extends Fragment implements OnJobDetailHourLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_job_detail_hour, container, false);
+        View view = inflater.inflate(R.layout.fragment_job_month_hour, container, false);
         TimeDao timeDao = new TimeDao();
         JobDao jobDao = new JobDao();
         Job job = jobDao.findJobById(getContext(), getArguments().getString("jobId"));

@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.JobActivity">
+
+    <LinearLayout
+        android:id="@+id/choose_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layoutDirection="rtl">
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/month_arrays"
+            android:prompt="@string/month_prompt"
+            android:layoutDirection="rtl"
+            android:gravity="right"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/detailRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/choose_layout"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:paddingEnd="5dp"
+        android:paddingStart="30dp"
+        android:scrollbars="vertical" />
+</RelativeLayout>

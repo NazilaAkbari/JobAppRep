@@ -34,6 +34,23 @@
     <string name="annual_report">گزارش سالیانه</string>
     <string name="show_job_list">مشاهده لیست مشاغل</string>
     <string name="month_detail_hour">مشاهده ریز کارکرد ماهیانه</string>
+    <string name="month">ماه</string>
+    <string name="month_prompt">انتخاب ماه</string>
+
+    <string-array name="month_arrays">
+        <item>فروردین</item>
+        <item>اردیبهشت</item>
+        <item>خرداد</item>
+        <item>تیر</item>
+        <item>مرداد</item>
+        <item>شهریور</item>
+        <item>مهر</item>
+        <item>آبان</item>
+        <item>آذر</item>
+        <item>دی</item>
+        <item>بهمن</item>
+        <item>اسفند</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
