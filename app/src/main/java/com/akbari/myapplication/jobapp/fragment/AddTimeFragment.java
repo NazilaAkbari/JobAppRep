@@ -60,7 +60,6 @@ public class AddTimeFragment extends Fragment {
         setAddButtonListener(view);
         JobDao jobDao = new JobDao();
         job = jobDao.findJobById(getContext(), getArguments().getString("jobId"));
-        addButton.setVisibility(View.GONE);
         return view;
     }
 

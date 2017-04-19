@@ -29,11 +29,16 @@ import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.JobTime;
 import com.akbari.myapplication.jobapp.utils.DateUtil;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -107,23 +112,40 @@ public class JobFragment extends Fragment implements OnJobListListener {
         BarChart chart = (BarChart) view.findViewById(R.id.chart);
         List<BarEntry> entries = new ArrayList<>();
         TimeDao timeDao = new TimeDao();
-        Map<Integer, Integer> chartData = timeDao.
+        Map<String, Integer> chartData = timeDao.
                 getMonthDailyHourData(getContext(), getJobTime());
-        for (Map.Entry<Integer, Integer> entry : chartData.entrySet()
-                ) {
-            entries.add(new BarEntry(entry.getKey(), entry.getValue() / 60));
+        List<String> chartKeys = new ArrayList<>(chartData.keySet());
+        Map<Float, String> labelMap = new HashMap<>();
+        System.out.println(chartKeys.size() + "!!!!");
+        for (int i = 0; i < chartKeys.size(); i++) {
+            System.out.println(chartKeys.get(i) + "!!!!");
+            labelMap.put((float) i, chartKeys.get(i));
+            entries.add(new BarEntry(i, chartData.get(chartKeys.get(i)) / 60));
         }
         BarDataSet set = new BarDataSet(entries, "کارکرد روزانه");
         BarData data = new BarData(set);
-        set.setColors(new int[]{R.color.pink, R.color.yellow,
-                        R.color.lightBlue, R.color.lightGreen,
-                        R.color.purple},
+        set.setColors(new int[]{
+                        R.color.pink, R.color.yellow,
+                        R.color.blue, R.color.orange,
+                        R.color.purple, R.color.green},
                 getContext());
         data.setBarWidth(0.5f);
-        chart.setHorizontalScrollBarEnabled(true);
         chart.setData(data);
-        chart.setFitBars(true); // make the x-axis fit exactly all bars
+        YAxis yAxis = chart.getAxisRight();
+        yAxis.setEnabled(false);
+        yAxis.setDrawGridLines(false);
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setValueFormatter(new XAxisValueFormatter(labelMap));
+        xAxis.setDrawLabels(true);
+        xAxis.setLabelCount(5);
+        xAxis.setLabelRotationAngle(-90);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        chart.getAxisLeft().setDrawGridLines(false);
+        chart.getLegend().setEnabled(false);
+        chart.setDescription(null);
         chart.invalidate();
+        chart.setVisibleXRangeMaximum(5f);
     }
 
     private JobTime getJobTime() {
@@ -262,4 +284,22 @@ public class JobFragment extends Fragment implements OnJobListListener {
         jobDao.editJob(getContext(), job);
         jobDao.editJobNameInTimeDb(getContext(), job, oldName);
     }
+
+    private class XAxisValueFormatter implements IAxisValueFormatter {
+
+        private Map<Float, String> labelMap = new HashMap<>();
+
+
+        XAxisValueFormatter(Map<Float, String> labelMap) {
+            this.labelMap.putAll(labelMap);
+        }
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            if (labelMap.get(value) != null)
+                return labelMap.get(value);
+            return "";
+        }
+    }
+
 }

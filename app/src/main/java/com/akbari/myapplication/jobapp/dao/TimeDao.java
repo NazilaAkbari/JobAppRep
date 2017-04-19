@@ -125,17 +125,20 @@ public class TimeDao {
         return chartAxisMap;
     }
 
-    public Map<Integer, Integer> getMonthDailyHourData(Context context, JobTime jobTime) {
-        PersianCalendar startOfThisMonth = getStartOfThisMonth(jobTime);
+    public Map<String, Integer> getMonthDailyHourData(Context context, JobTime jobTime) {
+        PersianCalendar startDate = getDateOfFirstTimeEntry(context, jobTime.getJobName());
         PersianCalendar today = new PersianCalendar();
         today.set(Calendar.MONTH, today.get(Calendar.MONTH) + 1);
-        Map<Integer, Integer> chartAxisMap = new HashMap<>();
-        while (today.compareTo(startOfThisMonth) >= 0) {
-            JobTime newJobTime = new JobTime();
-            newJobTime.setDateTo(DateUtil.computeDateString(today));
-            newJobTime.setJobName(jobTime.getJobName());
-            chartAxisMap.put(today.get(Calendar.DAY_OF_MONTH),
-                    getHourOfDay(context, newJobTime));
+        Map<String, Integer> chartAxisMap = new HashMap<>();
+        while (today.compareTo(startDate) >= 0) {
+            jobTime.setDateTo(DateUtil.computeDateString(today));
+            Integer hourOfDay = getHourOfDay(context, jobTime);
+            if (hourOfDay > 0) {
+                System.out.println(DateUtil.computeDateString(today));
+                System.out.println(hourOfDay);
+                chartAxisMap.put(DateUtil.computeDateString(today),
+                        hourOfDay);
+            }
             today.set(Calendar.DAY_OF_MONTH, today.get(Calendar.DAY_OF_MONTH) - 1);
         }
         return chartAxisMap;
