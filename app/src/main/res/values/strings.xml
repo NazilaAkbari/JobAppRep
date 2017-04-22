@@ -36,6 +36,8 @@
     <string name="month_detail_hour">مشاهده ریز کارکرد ماهیانه</string>
     <string name="month">ماه</string>
     <string name="month_prompt">انتخاب ماه</string>
+    <string name="year_choose">انتخاب سال</string>
+    <string name="view_detail">مشاهده</string>
 
     <string-array name="month_arrays">
         <item>فروردین</item>

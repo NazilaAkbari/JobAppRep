@@ -134,8 +134,6 @@ public class TimeDao {
             jobTime.setDateTo(DateUtil.computeDateString(today));
             Integer hourOfDay = getHourOfDay(context, jobTime);
             if (hourOfDay > 0) {
-                System.out.println(DateUtil.computeDateString(today));
-                System.out.println(hourOfDay);
                 chartAxisMap.put(DateUtil.computeDateString(today),
                         hourOfDay);
             }

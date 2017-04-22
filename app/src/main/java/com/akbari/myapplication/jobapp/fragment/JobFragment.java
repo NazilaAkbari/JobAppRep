@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.akbari.myapplication.jobapp.R;
+import com.akbari.myapplication.jobapp.activity.JobActivity;
 import com.akbari.myapplication.jobapp.activity.MainActivity;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
@@ -116,9 +117,7 @@ public class JobFragment extends Fragment implements OnJobListListener {
                 getMonthDailyHourData(getContext(), getJobTime());
         List<String> chartKeys = new ArrayList<>(chartData.keySet());
         Map<Float, String> labelMap = new HashMap<>();
-        System.out.println(chartKeys.size() + "!!!!");
         for (int i = 0; i < chartKeys.size(); i++) {
-            System.out.println(chartKeys.get(i) + "!!!!");
             labelMap.put((float) i, chartKeys.get(i));
             entries.add(new BarEntry(i, chartData.get(chartKeys.get(i)) / 60));
         }
@@ -168,32 +167,27 @@ public class JobFragment extends Fragment implements OnJobListListener {
                                 item.setChecked(true);
                                 drawerLayout.closeDrawers();
                                 showDialog();
-                                return true;
-                            case R.id.annualReport:
-                                item.setChecked(true);
-                                drawerLayout.closeDrawers();
-                                AnnualReportFragment fragment = new AnnualReportFragment();
-                                FragmentManager fm = getFragmentManager();
-                                FragmentTransaction transaction = fm.beginTransaction();
-                                transaction.replace(R.id.job_holder, fragment);
-                                transaction.commit();
-                                return true;
+                                item.setChecked(false);
+                                break;
                             case R.id.showJobList:
                                 item.setChecked(true);
                                 drawerLayout.closeDrawers();
                                 openListFragment();
-                                return true;
+                                item.setChecked(false);
+                                break;
                             case R.id.editJobDrawer:
                                 item.setChecked(true);
                                 drawerLayout.closeDrawers();
                                 item.setChecked(false);
                                 editJob(jobFragmentInstance);
-                                return true;
+                                item.setChecked(false);
+                                break;
                             case R.id.monthDetailHour:
                                 item.setChecked(true);
                                 drawerLayout.closeDrawers();
                                 openJobDetailHourFragment();
-                                return true;
+                                item.setChecked(false);
+                                break;
                         }
                         return false;
                     }
@@ -218,12 +212,12 @@ public class JobFragment extends Fragment implements OnJobListListener {
     private void openJobDetailHourFragment() {
         Bundle bundle = new Bundle();
         bundle.putString("jobId", job.getId());
-        JobDetailHourFragment jobDetailHourFragment =
-                new JobDetailHourFragment();
-        jobDetailHourFragment.setArguments(bundle);
+        JobTimeDetailFragment jobTimeDetailFragment =
+                new JobTimeDetailFragment();
+        jobTimeDetailFragment.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction tr = fragmentManager.beginTransaction();
-        tr.replace(R.id.job_holder, jobDetailHourFragment);
+        tr.replace(R.id.job_holder, jobTimeDetailFragment);
         tr.commit();
     }
 
@@ -283,6 +277,7 @@ public class JobFragment extends Fragment implements OnJobListListener {
         JobDao jobDao = new JobDao();
         jobDao.editJob(getContext(), job);
         jobDao.editJobNameInTimeDb(getContext(), job, oldName);
+        ((JobActivity) getActivity()).getSupportActionBar().setTitle(job.getJobName());
     }
 
     private class XAxisValueFormatter implements IAxisValueFormatter {

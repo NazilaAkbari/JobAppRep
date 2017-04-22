@@ -7,10 +7,6 @@
             android:title="@string/add_new_job"
             android:textDirection="anyRtl"/>
         <item
-            android:id="@+id/annualReport"
-            android:title="@string/annual_report"
-            android:textDirection="anyRtl" />
-        <item
             android:id="@+id/showJobList"
             android:title="@string/show_job_list"
             android:textDirection="anyRtl" />

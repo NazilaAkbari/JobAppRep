@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+        getSupportActionBar().setTitle("");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         String jobId = getIntent().getStringExtra("jobId");
         if (jobId != null) {

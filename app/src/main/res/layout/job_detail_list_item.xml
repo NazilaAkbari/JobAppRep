@@ -3,37 +3,7 @@
     android:layout_height="?attr/listPreferredItemHeight"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
     android:divider="@drawable/divider">
-
-<!--
-    <TextView
-        android:id="@+id/enterTimeTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:text="@string/enter_time"
-        android:textDirection="anyRtl" />
-
-    <TextView
-        android:id="@+id/exitTimeTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:text="@string/exit_time"
-        android:textDirection="anyRtl" />
-
-    <TextView
-        android:id="@+id/dateEnterTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:text="@string/date"
-        android:textDirection="anyRtl" />-->
 
     <TextView
         android:id="@+id/dateEnter"
@@ -45,7 +15,7 @@
 
 
     <TextView
-        android:id="@+id/exitTime"
+        android:id="@+id/enterTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -53,7 +23,7 @@
         android:textDirection="anyRtl" />
 
     <TextView
-        android:id="@+id/enterTime"
+        android:id="@+id/exitTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

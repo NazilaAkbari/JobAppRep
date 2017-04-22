@@ -2,32 +2,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingEnd="10dp"
+    android:paddingStart="10dp"
     android:orientation="vertical"
     tools:context=".activity.JobActivity">
 
     <LinearLayout
         android:id="@+id/choose_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
+        android:gravity="start"
         android:layoutDirection="rtl">
         <Spinner
+            android:id="@+id/month_choose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/month_arrays"
             android:prompt="@string/month_prompt"
             android:layoutDirection="rtl"
-            android:gravity="right"/>
+            android:gravity="start"/>
+        <EditText
+            android:id="@+id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/year_choose"/>
+        <Button
+            android:id="@+id/view_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/view_detail"
+            android:textDirection="anyRtl" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/sum_month_hour"
+        android:layout_below="@+id/choose_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="start"
+        android:layoutDirection="rtl">
+
+        <TextView
+            android:id="@+id/monthTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monthTime"
+            android:textDirection="anyRtl"
+            android:gravity="start"/>
+
+        <TextView
+            android:id="@+id/sum_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textDirection="anyRtl" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/detailRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/choose_layout"
+        android:layout_below="@id/sum_month_hour"
         android:layout_gravity="end"
         android:layout_marginTop="10dp"
-        android:paddingEnd="5dp"
-        android:paddingStart="30dp"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:layoutDirection="rtl"/>
 </RelativeLayout>
