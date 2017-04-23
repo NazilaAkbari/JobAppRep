@@ -11,6 +11,8 @@ public interface OnJobListListener {
 
     void OnAddItem(String title, String payDay);
 
+    void OnSelectRemoveButton(String title, String payDay, int position);
+
     void OnRemoveItem(String title, String payDay, int position);
 
     void OnSelectEditButton(String title, String payDay);

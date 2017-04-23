@@ -1,7 +1,5 @@
 package com.akbari.myapplication.jobapp.interfaces;
 
-import com.akbari.myapplication.jobapp.model.Job;
-
 /**
  * @author Akbari
  * @version ${VERSION}
@@ -10,7 +8,12 @@ import com.akbari.myapplication.jobapp.model.Job;
 
 public interface OnJobDetailHourListListener {
 
+    void OnSelectRemoveButton();
+
     void OnRemoveItem();
+
+    void OnSelectEditButton();
+
 
     void OnEditItem();
 }

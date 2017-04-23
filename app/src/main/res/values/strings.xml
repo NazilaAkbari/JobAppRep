@@ -38,6 +38,7 @@
     <string name="month_prompt">انتخاب ماه</string>
     <string name="year_choose">انتخاب سال</string>
     <string name="view_detail">مشاهده</string>
+    <string name="alert_delete">آیا مطمئن به حذف هستید؟</string>
 
     <string-array name="month_arrays">
         <item>فروردین</item>

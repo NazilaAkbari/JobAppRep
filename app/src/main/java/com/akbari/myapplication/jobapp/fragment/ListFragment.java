@@ -13,6 +13,7 @@ import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.adapter.JobRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dialogFragment.AddJobDialogFragment;
+import com.akbari.myapplication.jobapp.dialogFragment.DeleteAlertDialogFragment;
 import com.akbari.myapplication.jobapp.dialogFragment.EditJobDialogFragment;
 import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
 import com.akbari.myapplication.jobapp.model.Job;
@@ -60,6 +61,18 @@ public class ListFragment extends Fragment implements OnJobListListener {
         JobDao jobDao = new JobDao();
         jobDao.addJob(getContext(), job);
         mAdapter.addItem(jobs.size() - 1);
+    }
+
+    @Override
+    public void OnSelectRemoveButton(String title, String payDay, int position) {
+        DeleteAlertDialogFragment fragment=new DeleteAlertDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("selectedJob", title);
+        bundle.putString("payDay",payDay);
+        bundle.putInt("position", position);
+        fragment.setArguments(bundle);
+        fragment.setTargetFragment(this,0);
+        fragment.show(getFragmentManager(), "Alert");
     }
 
     @Override

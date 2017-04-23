@@ -49,10 +49,10 @@ public class TimeDetailItemLongClickDialogFragment extends DialogFragment {
                 intent.putExtra("selectedJob", jobName);
                 switch (which) {
                     case 0:
-                        callBack.OnEditItem();
+                        callBack.OnSelectRemoveButton();
                         break;
                     case 1:
-                        callBack.OnRemoveItem();
+                        callBack.OnSelectEditButton();
                         break;
 
                 }

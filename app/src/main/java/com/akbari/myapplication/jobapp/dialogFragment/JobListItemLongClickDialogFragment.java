@@ -51,7 +51,7 @@ public class JobListItemLongClickDialogFragment extends android.support.v4.app.D
                         getContext().startActivity(intent);
                         break;
                     case 1:
-                        callBack.OnRemoveItem(jobName, payDay, position);
+                        callBack.OnSelectRemoveButton(jobName, payDay, position);
                         break;
                     case 2:
                         callBack.OnSelectEditButton(jobName, payDay);

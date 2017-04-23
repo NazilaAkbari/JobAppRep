@@ -56,7 +56,7 @@ public class TimeDao {
         return getTimesInDateRange(context, jobTime);
     }
 
-    private List<Time> getTimesInDateRange(Context context, JobTime jobTime) {
+    public List<Time> getTimesInDateRange(Context context, JobTime jobTime) {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT * FROM " + DbHelper.FeedEntry.TABLE_NAME_TIME
@@ -147,9 +147,9 @@ public class TimeDao {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         calendar.set(Calendar.DAY_OF_MONTH, jobTime.getPayDay());
         if (day > jobTime.getPayDay())
-            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 2);
-        else
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
+        else
+            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
         return calendar;
     }
 
@@ -164,7 +164,7 @@ public class TimeDao {
         return calendar;
     }
 
-    private Integer getHourInDateRange(Context context, JobTime jobTime) {
+    public Integer getHourInDateRange(Context context, JobTime jobTime) {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT SUM ( " + DbHelper.FeedEntry.COLUMN_NAME_SUM

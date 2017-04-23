@@ -263,6 +263,11 @@ public class JobFragment extends Fragment implements OnJobListListener {
     }
 
     @Override
+    public void OnSelectRemoveButton(String title, String payDay, int position) {
+
+    }
+
+    @Override
     public void OnRemoveItem(String title, String payDay, int position) {
 
     }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.akbari.myapplication.jobapp.R;
 import com.akbari.myapplication.jobapp.adapter.TimeDetailRecyclerAdapter;
@@ -33,53 +34,83 @@ public class JobTimeDetailFragment extends Fragment implements OnJobDetailHourLi
     private TimeDetailRecyclerAdapter mAdapter;
     private Spinner monthSpinner;
     private EditText year;
+    private View view;
+    private TextView sumHour;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_job_month_hour, container, false);
+        view = inflater.inflate(R.layout.fragment_job_month_hour, container, false);
         Button viewDetail = (Button) view.findViewById(R.id.view_detail);
         monthSpinner = (Spinner) view.findViewById(R.id.month_choose);
         year = (EditText) view.findViewById(R.id.year);
-        TimeDao timeDao = new TimeDao();
-
-
+        sumHour = (TextView) view.findViewById(R.id.sum_hour);
+        final JobTimeDetailFragment jobTimeDetailFragment = this;
+        final TimeDao timeDao = new TimeDao();
         viewDetail.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                int month = (int) monthSpinner.getSelectedItemId();
-                int yearEnter = Integer.valueOf(year.getText().toString());
+            public void onClick(View v) {
                 JobDao jobDao = new JobDao();
-                Job job = jobDao.findJobById(getContext(), getArguments().getString("jobId"));
-                JobTime jobTime = new JobTime();
-                jobTime.setPayDay(job.getPayDay());
-                jobTime.setJobName(job.getJobName());
-                PersianCalendar calendar = new PersianCalendar();
-                calendar.set(Calendar.DAY_OF_MONTH, jobTime.getPayDay());
-                calendar.set(Calendar.MONTH, calendar.get(month) + 1);
-                calendar.set(Calendar.YEAR,calendar.get(Calendar.YEAR));
-                System.out.println(DateUtil.computeDateString(calendar)+"!!!!");
-                jobTime.setDateTo(DateUtil.computeDateString(calendar));
-                calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
-                System.out.println(DateUtil.computeDateString(calendar)+"!!!!");
-                System.out.println(Calendar.YEAR+"!!!!");
-                jobTime.setDateFrom(DateUtil.computeDateString(calendar));
+                Job job = jobDao.findJobById(getContext(),
+                        getArguments().getString("jobId"));
+                JobTime jobTime = getJobTime(job);
+                StringBuilder sumText = new StringBuilder();
+                sumText.append("  ");
+                int sumMinute = timeDao.getHourInDateRange(getContext(), jobTime);
+                int sum = sumMinute / 60;
+                sumText.append(sum);
+                sumText.append(" ساعت و ");
+                int minute = sumMinute % 60;
+                sumText.append(minute);
+                sumText.append(" دقیقه ");
+                sumHour.setText(sumText);
+                times.addAll(timeDao.getTimesInDateRange(getContext(), jobTime));
+                RecyclerView mRecyclerView = (RecyclerView) view.
+                        findViewById(R.id.detailRecycler);
+                mRecyclerView.setHasFixedSize(true);
+                RecyclerView.LayoutManager mLayoutManager = new
+                        LinearLayoutManager(getActivity());
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mAdapter = new TimeDetailRecyclerAdapter(times,
+                        jobTimeDetailFragment, job);
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.addItemDecoration(new
+                        CustomDividerItemDecoration(getContext()));
+                monthSpinner.setSelection(0);
+                year.getText().clear();
             }
         });
-
-       /* times.addAll(timeDao.getMonthTimes(getContext(), job));
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.detailRecycler);
-        mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new TimeDetailRecyclerAdapter(times, this, job);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new CustomDividerItemDecoration(getContext()));*/
         return view;
+    }
+
+    private JobTime getJobTime(Job job) {
+        int month = (int) monthSpinner.getSelectedItemId();
+        int yearEnter = Integer.valueOf(year.getText().toString());
+        JobTime jobTime = new JobTime();
+        jobTime.setPayDay(job.getPayDay());
+        jobTime.setJobName(job.getJobName());
+        PersianCalendar calendar = new PersianCalendar();
+        calendar.set(Calendar.DAY_OF_MONTH, jobTime.getPayDay());
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, yearEnter);
+        jobTime.setDateTo(DateUtil.computeDateString(calendar));
+        calendar.add(Calendar.MONTH, -1);
+        jobTime.setDateFrom(DateUtil.computeDateString(calendar));
+        return jobTime;
+    }
+
+    @Override
+    public void OnSelectRemoveButton() {
+
     }
 
     @Override
     public void OnRemoveItem() {
+
+    }
+
+    @Override
+    public void OnSelectEditButton() {
 
     }
 

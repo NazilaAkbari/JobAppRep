@@ -23,7 +23,7 @@ public class DateUtil {
 
     public static String computeDateString(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH)+1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         return year + "/" +
                 StringUtils.leftPad(String.valueOf(month), 2, '0') + "/" +

@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:textColor="@color/colorPrimaryDark"
             android:textDirection="anyRtl" />
     </LinearLayout>
 
