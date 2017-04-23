@@ -11,7 +11,7 @@ public class JobTime {
     private String id;
     private String dateFrom;
     private String dateTo;
-    private String jobName;
+    private String jobId;
     private Integer payDay;
 
     public String getId() {
@@ -38,12 +38,12 @@ public class JobTime {
         this.dateTo = dateTo;
     }
 
-    public String getJobName() {
-        return jobName;
+    public String getJobId() {
+        return jobId;
     }
 
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
     }
 
     public Integer getPayDay() {

@@ -54,8 +54,6 @@ public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerViewHold
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
                     Intent intent = new Intent(view.getContext(), MainActivity.class);
-                    intent.putExtra("payDay", jobs.get(position).getPayDay().toString());
-                    intent.putExtra("selectedJob", jobs.get(position).getJobName());
                     intent.putExtra("jobId", jobs.get(position).getId());
                     view.getContext().startActivity(intent);
                 }
@@ -95,8 +93,6 @@ public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerViewHold
         JobsLongClickDialogFragment longClickDialogFragment =
                 new JobsLongClickDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("selectedJob", job.getJobName());
-        bundle.putString("payDay", job.getPayDay().toString());
         bundle.putString("jobId", job.getId());
         bundle.putInt("position", position);
         longClickDialogFragment.setTargetFragment(fragment, 0);

@@ -45,7 +45,7 @@ public class TimesLongClickDialogFragment extends DialogFragment {
                         callBack.OnSelectRemoveButton(timeId,position);
                         break;
                     case 1:
-                        callBack.OnSelectEditButton();
+                        callBack.OnSelectEditButton(timeId);
                         break;
 
                 }

@@ -2,6 +2,8 @@ package com.akbari.myapplication.jobapp.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -92,7 +94,7 @@ public class TimesFragment extends Fragment implements TimeClickListener {
         int yearEnter = Integer.valueOf(year.getText().toString());
         JobTime jobTime = new JobTime();
         jobTime.setPayDay(job.getPayDay());
-        jobTime.setJobName(job.getJobName());
+        jobTime.setJobId(job.getId());
         PersianCalendar calendar = new PersianCalendar();
         calendar.set(Calendar.DAY_OF_MONTH, jobTime.getPayDay());
         calendar.set(Calendar.MONTH, month);
@@ -119,16 +121,19 @@ public class TimesFragment extends Fragment implements TimeClickListener {
         TimeDao timeDao = new TimeDao();
         timeDao.removeTime(getContext(), timeId);
         mAdapter.deleteItem(position);
-
     }
 
     @Override
-    public void OnSelectEditButton() {
-
-    }
-
-    @Override
-    public void OnEditItem() {
-
+    public void OnSelectEditButton(String timeId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("timeId", timeId);
+        bundle.putString("jobId", "");
+        AddTimeFragment fragment =
+                new AddTimeFragment();
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction tr = fragmentManager.beginTransaction();
+        tr.replace(R.id.job_holder, fragment);
+        tr.commit();
     }
 }

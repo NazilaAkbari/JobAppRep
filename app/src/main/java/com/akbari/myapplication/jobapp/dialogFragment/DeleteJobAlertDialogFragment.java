@@ -17,15 +17,13 @@ import com.akbari.myapplication.jobapp.interfaces.JobClickListener;
 public class DeleteJobAlertDialogFragment extends DialogFragment {
 
     private JobClickListener callBack;
-    private String payDay;
-    private String jobName;
+    private String jobId;
     private int position;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        payDay = getArguments().getString("payDay");
-        jobName = getArguments().getString("selectedJob");
+        jobId = getArguments().getString("jobId");
         position = getArguments().getInt("position");
         try {
             callBack = (JobClickListener) getTargetFragment();
@@ -43,7 +41,7 @@ public class DeleteJobAlertDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.remove, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        callBack.OnRemoveItem(jobName, payDay, position);
+                        callBack.OnRemoveItem(jobId, position);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

@@ -17,8 +17,7 @@ import com.akbari.myapplication.jobapp.interfaces.JobClickListener;
 
 public class JobsLongClickDialogFragment extends android.support.v4.app.DialogFragment {
 
-    private String payDay;
-    private String jobName;
+    private String jobId;
     private int position;
     private JobClickListener callBack;
     private static final CharSequence[] items = {"نمایش", "حذف", "ویرایش"};
@@ -26,8 +25,7 @@ public class JobsLongClickDialogFragment extends android.support.v4.app.DialogFr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        payDay = getArguments().getString("payDay");
-        jobName = getArguments().getString("selectedJob");
+        jobId = getArguments().getString("jobId");
         position = getArguments().getInt("position");
         try {
             callBack = (JobClickListener) getTargetFragment();
@@ -44,19 +42,16 @@ public class JobsLongClickDialogFragment extends android.support.v4.app.DialogFr
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getContext(), MainActivity.class);
-                intent.putExtra("payDay", payDay);
-                intent.putExtra("selectedJob", jobName);
                 switch (which) {
                     case 0:
                         getContext().startActivity(intent);
                         break;
                     case 1:
-                        callBack.OnSelectRemoveButton(jobName, payDay, position);
+                        callBack.OnSelectRemoveButton(jobId, position);
                         break;
                     case 2:
-                        callBack.OnSelectEditButton(jobName, payDay);
+                        callBack.OnSelectEditButton(jobId);
                         break;
-
                 }
             }
         });

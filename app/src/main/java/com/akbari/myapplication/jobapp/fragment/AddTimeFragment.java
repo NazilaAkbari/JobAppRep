@@ -46,8 +46,9 @@ public class AddTimeFragment extends Fragment {
     private EditText date, enterTime, exitTime;
     private TimePickerDialog enterTimePicker, exitTimePicker;
     private TextInputLayout timeStartLayout, timeEndLayout, dateLayout;
-    private Button addButton;
+    private Button addButton, editButton;
     private Job job;
+    private String timeId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,9 +58,23 @@ public class AddTimeFragment extends Fragment {
         setDateField(view);
         setEnterTimeField(view);
         setExitTimeField(view);
-        setAddButtonListener(view);
+        addButton = (Button) view.findViewById(R.id.btnAddTime);
+        setAddButtonListener();
         JobDao jobDao = new JobDao();
-        job = jobDao.findJobById(getContext(), getArguments().getString("jobId"));
+        editButton = (Button) view.findViewById(R.id.btnEditTime);
+        timeId = getArguments().getString("timeId");
+        if (timeId == null) {
+            editButton.setVisibility(View.GONE);
+            job = jobDao.findJobById(getContext(), getArguments().getString("jobId"));
+        } else {
+            addButton.setVisibility(View.GONE);
+            TimeDao timeDao = new TimeDao();
+            Time time = timeDao.findTimeById(getContext(), timeId);
+            date.setText(time.getDate());
+            enterTime.setText(time.getEnterTime());
+            exitTime.setText(time.getExitTime());
+            setEditButtonClickListener();
+        }
         return view;
     }
 
@@ -143,33 +158,13 @@ public class AddTimeFragment extends Fragment {
         exitTime.addTextChangedListener(new MyTextWatcher(exitTime));
     }
 
-    private void setAddButtonListener(View view) {
-        addButton = (Button) view.findViewById(R.id.btnAddTime);
+    private void setAddButtonListener() {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String enterTimeText = enterTime.getText().toString().trim();
-                String exitTimeText = exitTime.getText().toString().trim();
-                String dateText = date.getText().toString().trim();
-                if (enterTimeText.trim().isEmpty()) {
-                    timeStartLayout.setError(getString(R.string.time_enter_error_empty));
-                    requestFocus(enterTime);
-                    return;
-                }
-                if (exitTimeText.trim().isEmpty()) {
-                    timeEndLayout.setError(getString(R.string.time_exit_error_empty));
-                    requestFocus(exitTime);
-                    return;
-                }
-                if (dateText.trim().isEmpty()) {
-                    dateLayout.setError(getString(R.string.date_error_empty));
-                    requestFocus(date);
-                    return;
-                }
-                if (!validateEnterTime() || !validateExitTime() || !validateDate())
-                    return;
+                validateFields();
                 Time time = new Time();
-                time.setJobName(job.getJobName());
+                time.setJobId(job.getId());
                 time.setEnterTime(enterTime.getText().toString());
                 time.setExitTime(exitTime.getText().toString());
                 time.setDate(date.getText().toString());
@@ -187,6 +182,56 @@ public class AddTimeFragment extends Fragment {
                 date.setText("");
             }
         });
+    }
+
+    private void setEditButtonClickListener() {
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validateFields();
+                Time time = new Time();
+                time.setId(timeId);
+                time.setJobId(job.getId());
+                time.setEnterTime(enterTime.getText().toString());
+                time.setExitTime(exitTime.getText().toString());
+                time.setDate(date.getText().toString());
+                TimeDao timeDao = new TimeDao();
+                try {
+                    timeDao.edit(getContext(),time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(getContext(), JobActivity.class);
+                intent.putExtra("jobId", job.getId());
+                startActivity(intent);
+                enterTime.setText("");
+                exitTime.setText("");
+                date.setText("");
+            }
+        });
+    }
+
+    private void validateFields() {
+        String enterTimeText = enterTime.getText().toString().trim();
+        String exitTimeText = exitTime.getText().toString().trim();
+        String dateText = date.getText().toString().trim();
+        if (enterTimeText.trim().isEmpty()) {
+            timeStartLayout.setError(getString(R.string.time_enter_error_empty));
+            requestFocus(enterTime);
+            return;
+        }
+        if (exitTimeText.trim().isEmpty()) {
+            timeEndLayout.setError(getString(R.string.time_exit_error_empty));
+            requestFocus(exitTime);
+            return;
+        }
+        if (dateText.trim().isEmpty()) {
+            dateLayout.setError(getString(R.string.date_error_empty));
+            requestFocus(date);
+            return;
+        }
+        if (!validateEnterTime() || !validateExitTime() || !validateDate())
+            return;
     }
 
     @Override

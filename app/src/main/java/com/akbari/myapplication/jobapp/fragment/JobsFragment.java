@@ -64,11 +64,10 @@ public class JobsFragment extends Fragment implements JobClickListener {
     }
 
     @Override
-    public void OnSelectRemoveButton(String title, String payDay, int position) {
+    public void OnSelectRemoveButton(String id, int position) {
         DeleteJobAlertDialogFragment fragment=new DeleteJobAlertDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("selectedJob", title);
-        bundle.putString("payDay",payDay);
+        bundle.putString("jobId", id);
         bundle.putInt("position", position);
         fragment.setArguments(bundle);
         fragment.setTargetFragment(this,0);
@@ -76,19 +75,17 @@ public class JobsFragment extends Fragment implements JobClickListener {
     }
 
     @Override
-    public void OnRemoveItem(String title, String payDay, int position) {
+    public void OnRemoveItem(String id, int position) {
         JobDao jobDao = new JobDao();
         jobDao.delete(getContext(), jobs.get(position));
         mAdapter.deleteItem(position);
     }
 
     @Override
-    public void OnSelectEditButton(String title, String payDay) {
+    public void OnSelectEditButton(String jobId) {
         EditJobDialogFragment fragment = new EditJobDialogFragment();
-        JobDao jobDao = new JobDao();
-        Job job = jobDao.findJobIdByTitleAndPayDay(getContext(), title, payDay);
         Bundle bundle = new Bundle();
-        bundle.putString("jobId", job.getId());
+        bundle.putString("jobId", jobId);
         fragment.setArguments(bundle);
         fragment.setTargetFragment(this, 0);
         fragment.show(getFragmentManager(), "Edit");

@@ -12,8 +12,5 @@ public interface TimeClickListener {
 
     void OnRemoveItem(String timeId,int position);
 
-    void OnSelectEditButton();
-
-
-    void OnEditItem();
+    void OnSelectEditButton(String timeId);
 }

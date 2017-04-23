@@ -149,7 +149,7 @@ public class JobFragment extends Fragment implements JobClickListener {
 
     private JobTime getJobTime() {
         JobTime jobTime = new JobTime();
-        jobTime.setJobName(job.getJobName());
+        jobTime.setJobId(job.getId());
         jobTime.setPayDay(job.getPayDay());
         jobTime.setDateTo(DateUtil.getCurrentPersianDate());
         return jobTime;
@@ -263,17 +263,17 @@ public class JobFragment extends Fragment implements JobClickListener {
     }
 
     @Override
-    public void OnSelectRemoveButton(String title, String payDay, int position) {
+    public void OnSelectRemoveButton(String jobId, int position) {
 
     }
 
     @Override
-    public void OnRemoveItem(String title, String payDay, int position) {
+    public void OnRemoveItem(String jobId, int position) {
 
     }
 
     @Override
-    public void OnSelectEditButton(String title, String payDay) {
+    public void OnSelectEditButton(String jobId) {
 
     }
 

@@ -11,11 +11,11 @@ public interface JobClickListener {
 
     void OnAddItem(String title, String payDay);
 
-    void OnSelectRemoveButton(String title, String payDay, int position);
+    void OnSelectRemoveButton(String id, int position);
 
-    void OnRemoveItem(String title, String payDay, int position);
+    void OnRemoveItem(String id, int position);
 
-    void OnSelectEditButton(String title, String payDay);
+    void OnSelectEditButton(String jobId);
 
     void OnEditItem(Job job, String oldName);
 }

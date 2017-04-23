@@ -8,7 +8,7 @@ public class Time {
     private String enterTime;
     private String exitTime;
     private String date;
-    private String jobName;
+    private String jobId;
     private String sum;
 
     public String getId() {
@@ -43,12 +43,12 @@ public class Time {
         this.date = date;
     }
 
-    public String getJobName() {
-        return jobName;
+    public String getJobId() {
+        return jobId;
     }
 
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
     }
 
     public String getSum() {

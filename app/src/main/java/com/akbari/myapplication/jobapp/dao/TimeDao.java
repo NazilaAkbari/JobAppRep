@@ -39,21 +39,10 @@ public class TimeDao {
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_ENTER, time.getEnterTime());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_EXIT, time.getExitTime());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_Date, time.getDate());
-        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_JOB_Name, time.getJobName());
+        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_JOB_ID, time.getJobId());
         contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_SUM, difference);
         db.insert(DbHelper.FeedEntry.TABLE_NAME_TIME, null, contentValues);
         db.close();
-    }
-
-    public List<Time> getMonthTimes(Context context, Job job) {
-        JobTime jobTime = new JobTime();
-        jobTime.setPayDay(job.getPayDay());
-        jobTime.setJobName(job.getJobName());
-        PersianCalendar endOfThisMonth = getEndOfThisMonth(jobTime);
-        jobTime.setDateTo(DateUtil.computeDateString(endOfThisMonth));
-        endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
-        jobTime.setDateFrom(DateUtil.computeDateString(endOfThisMonth));
-        return getTimesInDateRange(context, jobTime);
     }
 
     public List<Time> getTimesInDateRange(Context context, JobTime jobTime) {
@@ -63,8 +52,8 @@ public class TimeDao {
                 + " WHERE " + DbHelper.FeedEntry.COLUMN_NAME_Date
                 + " BETWEEN '" + jobTime.getDateFrom() + "' AND '"
                 + jobTime.getDateTo() + "'"
-                + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
-                + " = '" + jobTime.getJobName() + "'";
+                + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_ID
+                + " = '" + jobTime.getJobId() + "'";
         List<Time> times = new ArrayList<>();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
@@ -80,11 +69,10 @@ public class TimeDao {
         return times;
     }
 
-
     public Integer getThisMonthHour(Context context, Job job) {
         JobTime jobTime = new JobTime();
         jobTime.setPayDay(job.getPayDay());
-        jobTime.setJobName(job.getJobName());
+        jobTime.setJobId(job.getId());
         PersianCalendar endOfThisMonth = getEndOfThisMonth(jobTime);
         jobTime.setDateTo(DateUtil.computeDateString(endOfThisMonth));
         endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
@@ -95,7 +83,7 @@ public class TimeDao {
     public Integer getThisWeekHour(Context context, Job job) {
         JobTime jobTime = new JobTime();
         jobTime.setPayDay(job.getPayDay());
-        jobTime.setJobName(job.getJobName());
+        jobTime.setJobId(job.getId());
         PersianCalendar persianCalendar = new PersianCalendar();
         int dayOfWeek = persianCalendar.get(Calendar.DAY_OF_WEEK);
         persianCalendar.set(Calendar.MONTH, persianCalendar.get(Calendar.MONTH) + 1);
@@ -106,28 +94,8 @@ public class TimeDao {
         return getHourInDateRange(context, jobTime);
     }
 
-    public Map<Integer, Integer> getAnnualHourData(Context context, JobTime jobTime) {
-        PersianCalendar endOfThisMonth = getEndOfThisMonth(jobTime);
-        PersianCalendar startDate = getDateOfFirstTimeEntry(context, jobTime.getJobName());
-        Map<Integer, Integer> chartAxisMap = new HashMap<>();
-        while (endOfThisMonth.compareTo(startDate) > 0) {
-            JobTime newJobTime = new JobTime();
-            newJobTime.setDateTo(DateUtil.computeDateString(endOfThisMonth));
-            endOfThisMonth.set(Calendar.MONTH, endOfThisMonth.get(Calendar.MONTH) - 1);
-            newJobTime.setDateFrom(DateUtil.computeDateString(endOfThisMonth));
-            newJobTime.setJobName(jobTime.getJobName());
-            if (jobTime.getPayDay() > 15)
-                chartAxisMap.put(endOfThisMonth.get(Calendar.MONTH) + 1,
-                        getHourInDateRange(context, newJobTime));
-            else
-                chartAxisMap.put(endOfThisMonth.get(Calendar.MONTH),
-                        getHourInDateRange(context, newJobTime));
-        }
-        return chartAxisMap;
-    }
-
     public Map<String, Integer> getMonthDailyHourData(Context context, JobTime jobTime) {
-        PersianCalendar startDate = getDateOfFirstTimeEntry(context, jobTime.getJobName());
+        PersianCalendar startDate = getDateOfFirstTimeEntry(context, jobTime.getJobId());
         PersianCalendar today = new PersianCalendar();
         today.set(Calendar.MONTH, today.get(Calendar.MONTH) + 1);
         Map<String, Integer> chartAxisMap = new HashMap<>();
@@ -154,17 +122,6 @@ public class TimeDao {
         return calendar;
     }
 
-    private PersianCalendar getStartOfThisMonth(JobTime jobTime) {
-        PersianCalendar calendar = new PersianCalendar();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        calendar.set(Calendar.DAY_OF_MONTH, jobTime.getPayDay());
-        if (day > jobTime.getPayDay())
-            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
-        else
-            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
-        return calendar;
-    }
-
     public Integer getHourInDateRange(Context context, JobTime jobTime) {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -173,8 +130,8 @@ public class TimeDao {
                 + " WHERE " + DbHelper.FeedEntry.COLUMN_NAME_Date
                 + " BETWEEN '" + jobTime.getDateFrom() + "' AND '"
                 + jobTime.getDateTo() + "'"
-                + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
-                + " = '" + jobTime.getJobName() + "'";
+                + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_ID
+                + " = '" + jobTime.getJobId() + "'";
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             return cursor.getInt(0);
@@ -189,8 +146,8 @@ public class TimeDao {
                 + " ) FROM " + DbHelper.FeedEntry.TABLE_NAME_TIME
                 + " WHERE " + DbHelper.FeedEntry.COLUMN_NAME_Date
                 + " = '" + jobTime.getDateTo() + "'"
-                + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
-                + " = '" + jobTime.getJobName() + "'";
+                + " AND " + DbHelper.FeedEntry.COLUMN_NAME_JOB_ID
+                + " = '" + jobTime.getJobId() + "'";
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             return cursor.getInt(0);
@@ -198,13 +155,13 @@ public class TimeDao {
             return -1;
     }
 
-    private PersianCalendar getDateOfFirstTimeEntry(Context context, String jobName) {
+    private PersianCalendar getDateOfFirstTimeEntry(Context context, String jobId) {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT " + DbHelper.FeedEntry.COLUMN_NAME_Date
                 + " FROM " + DbHelper.FeedEntry.TABLE_NAME_TIME
-                + " WHERE " + DbHelper.FeedEntry.COLUMN_NAME_JOB_Name
-                + " = '" + jobName + "'"
+                + " WHERE " + DbHelper.FeedEntry.COLUMN_NAME_JOB_ID
+                + " = '" + jobId + "'"
                 + " ORDER BY " + DbHelper.FeedEntry.COLUMN_NAME_Date;
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -224,6 +181,40 @@ public class TimeDao {
                 DbHelper.FeedEntry._ID + "=?",
                 new String[]{id}
         );
+        db.close();
+    }
+
+    public Time findTimeById(Context context, String id) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM " + DbHelper.FeedEntry.TABLE_NAME_TIME
+                + " WHERE " + DbHelper.FeedEntry._ID + " = '" + id + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        Time time = new Time();
+        if (cursor.moveToFirst()) {
+            time.setId(cursor.getString(0));
+            time.setEnterTime(cursor.getString(2));
+            time.setExitTime(cursor.getString(3));
+            time.setDate(cursor.getString(4));
+        }
+        cursor.close();
+        db.close();
+        return time;
+    }
+
+    public void edit(Context context,Time time) throws ParseException {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
+        Date timeEnter = timeFormat.parse(time.getEnterTime());
+        Date timeExit = timeFormat.parse(time.getExitTime());
+        float difference = (timeExit.getTime() - timeEnter.getTime()) / ((60 * 1000));
+        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_ENTER, time.getEnterTime());
+        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_EXIT, time.getExitTime());
+        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_Date, time.getDate());
+        contentValues.put(DbHelper.FeedEntry.COLUMN_NAME_SUM, difference);
+        db.update(DbHelper.FeedEntry.TABLE_NAME_TIME, contentValues, "_id=" + time.getId(), null);
         db.close();
     }
 

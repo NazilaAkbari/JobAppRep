@@ -39,27 +39,9 @@ public class JobDao {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(DbHelper.FeedEntry.COLUMN_NAME_JOB_Name, job.getJobName());
+        cv.put(DbHelper.FeedEntry.COLUMN_NAME_JOB_ID, job.getId());
         db.update(DbHelper.FeedEntry.TABLE_NAME_TIME, cv, "jobName= '" + oldName + "'", null);
         db.close();
-    }
-
-    public Job findJobIdByTitleAndPayDay(Context context, String title, String payDay) {
-        DbHelper dbHelper = new DbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT * FROM " + DbHelper.FeedEntry.TABLE_NAME_JOB
-                + " WHERE " + DbHelper.FeedEntry.COLUMN_NAME_JOB + " = '" + title
-                + "' AND " + DbHelper.FeedEntry.COLUMN_NAME_PAY_DAY + " = '" + payDay + "'";
-        Cursor cursor = db.rawQuery(query, null);
-        Job job = new Job();
-        if (cursor.moveToFirst()) {
-            job.setId(cursor.getString(0));
-            job.setJobName(cursor.getString(1));
-            job.setPayDay(Integer.valueOf(cursor.getString(2)));
-        }
-        cursor.close();
-        db.close();
-        return job;
     }
 
     public List<Job> getAllJobs(Context context) {
@@ -86,8 +68,8 @@ public class JobDao {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.delete(
                 DbHelper.FeedEntry.TABLE_NAME_JOB,
-                DbHelper.FeedEntry.COLUMN_NAME_JOB_Name + "=?",
-                new String[]{job.getJobName()}
+                DbHelper.FeedEntry.COLUMN_NAME_JOB_ID + "=?",
+                new String[]{job.getId()}
         );
         db.close();
     }

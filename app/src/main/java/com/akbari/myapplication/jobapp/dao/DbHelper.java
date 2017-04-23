@@ -36,12 +36,12 @@ import android.provider.BaseColumns;
          static final String COLUMN_NAME_ENTER = "enterColumn";
          static final String COLUMN_NAME_EXIT = "exitColumn";
          static final String COLUMN_NAME_SUM = "sumColumn";
-         static final String COLUMN_NAME_JOB_Name = "jobName";
+         static final String COLUMN_NAME_JOB_ID = "jobId";
          static final String COLUMN_NAME_Date = "date";
         private static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + FeedEntry.TABLE_NAME_TIME + " (" +
                         FeedEntry._ID + " INTEGER PRIMARY KEY," +
-                        FeedEntry.COLUMN_NAME_JOB_Name + TEXT_TYPE + COMMA_SEP +
+                        FeedEntry.COLUMN_NAME_JOB_ID + TEXT_TYPE + COMMA_SEP +
                         FeedEntry.COLUMN_NAME_ENTER + TEXT_TYPE + COMMA_SEP +
                         FeedEntry.COLUMN_NAME_EXIT + TEXT_TYPE + COMMA_SEP +
                         FeedEntry.COLUMN_NAME_Date + TEXT_TYPE + COMMA_SEP +
