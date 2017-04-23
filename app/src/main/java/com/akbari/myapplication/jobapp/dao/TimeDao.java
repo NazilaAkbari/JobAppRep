@@ -70,6 +70,7 @@ public class TimeDao {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Time time = new Time();
+            time.setId(cursor.getString(0));
             time.setEnterTime(cursor.getString(2));
             time.setExitTime(cursor.getString(3));
             time.setDate(cursor.getString(4));
@@ -213,6 +214,17 @@ public class TimeDao {
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
             return new PersianCalendar();
         }
+    }
+
+    public void removeTime(Context context, String id) {
+        DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        db.delete(
+                DbHelper.FeedEntry.TABLE_NAME_TIME,
+                DbHelper.FeedEntry._ID + "=?",
+                new String[]{id}
+        );
+        db.close();
     }
 
 }

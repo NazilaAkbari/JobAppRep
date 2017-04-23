@@ -17,6 +17,7 @@ import com.akbari.myapplication.jobapp.adapter.TimeDetailRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.decoration.CustomDividerItemDecoration;
+import com.akbari.myapplication.jobapp.dialogFragment.DeleteTimeAlertDialogFragment;
 import com.akbari.myapplication.jobapp.interfaces.OnJobDetailHourListListener;
 import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.JobTime;
@@ -46,24 +47,15 @@ public class JobTimeDetailFragment extends Fragment implements OnJobDetailHourLi
         year = (EditText) view.findViewById(R.id.year);
         sumHour = (TextView) view.findViewById(R.id.sum_hour);
         final JobTimeDetailFragment jobTimeDetailFragment = this;
-        final TimeDao timeDao = new TimeDao();
         viewDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 JobDao jobDao = new JobDao();
+                TimeDao timeDao = new TimeDao();
                 Job job = jobDao.findJobById(getContext(),
                         getArguments().getString("jobId"));
                 JobTime jobTime = getJobTime(job);
-                StringBuilder sumText = new StringBuilder();
-                sumText.append("  ");
-                int sumMinute = timeDao.getHourInDateRange(getContext(), jobTime);
-                int sum = sumMinute / 60;
-                sumText.append(sum);
-                sumText.append(" ساعت و ");
-                int minute = sumMinute % 60;
-                sumText.append(minute);
-                sumText.append(" دقیقه ");
-                sumHour.setText(sumText);
+                setSumText(timeDao, jobTime);
                 times.addAll(timeDao.getTimesInDateRange(getContext(), jobTime));
                 RecyclerView mRecyclerView = (RecyclerView) view.
                         findViewById(R.id.detailRecycler);
@@ -71,8 +63,7 @@ public class JobTimeDetailFragment extends Fragment implements OnJobDetailHourLi
                 RecyclerView.LayoutManager mLayoutManager = new
                         LinearLayoutManager(getActivity());
                 mRecyclerView.setLayoutManager(mLayoutManager);
-                mAdapter = new TimeDetailRecyclerAdapter(times,
-                        jobTimeDetailFragment, job);
+                mAdapter = new TimeDetailRecyclerAdapter(times, jobTimeDetailFragment);
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.addItemDecoration(new
                         CustomDividerItemDecoration(getContext()));
@@ -81,6 +72,19 @@ public class JobTimeDetailFragment extends Fragment implements OnJobDetailHourLi
             }
         });
         return view;
+    }
+
+    private void setSumText(TimeDao timeDao, JobTime jobTime) {
+        StringBuilder sumText = new StringBuilder();
+        sumText.append("  ");
+        int sumMinute = timeDao.getHourInDateRange(getContext(), jobTime);
+        int sum = sumMinute / 60;
+        sumText.append(sum);
+        sumText.append(" ساعت و ");
+        int minute = sumMinute % 60;
+        sumText.append(minute);
+        sumText.append(" دقیقه ");
+        sumHour.setText(sumText);
     }
 
     private JobTime getJobTime(Job job) {
@@ -100,12 +104,21 @@ public class JobTimeDetailFragment extends Fragment implements OnJobDetailHourLi
     }
 
     @Override
-    public void OnSelectRemoveButton() {
-
+    public void OnSelectRemoveButton(String timeId, int position) {
+        DeleteTimeAlertDialogFragment fragment = new DeleteTimeAlertDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("timeId", timeId);
+        bundle.putInt("position", position);
+        fragment.setArguments(bundle);
+        fragment.setTargetFragment(this, 0);
+        fragment.show(getFragmentManager(), "Alert");
     }
 
     @Override
-    public void OnRemoveItem() {
+    public void OnRemoveItem(String timeId, int position) {
+        TimeDao timeDao = new TimeDao();
+        timeDao.removeTime(getContext(), timeId);
+        mAdapter.deleteItem(position);
 
     }
 

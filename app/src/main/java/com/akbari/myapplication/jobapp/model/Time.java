@@ -1,7 +1,7 @@
 package com.akbari.myapplication.jobapp.model;
 
 /**
- * Created by n.akbari on 04/27/2016.
+ * @author Nazila Akbari
  */
 public class Time {
     private String id;

@@ -27,12 +27,10 @@ public class TimeDetailRecyclerAdapter extends RecyclerView.Adapter<TimeRecycler
 
     private static List<Time> times = Collections.emptyList();
     private Fragment fragment;
-    private Job job;
 
-    public TimeDetailRecyclerAdapter(List<Time> times, Fragment fragment, Job job) {
+    public TimeDetailRecyclerAdapter(List<Time> times, Fragment fragment) {
         TimeDetailRecyclerAdapter.times = times;
         this.fragment = fragment;
-        this.job = job;
         notifyDataSetChanged();
     }
 
@@ -66,12 +64,19 @@ public class TimeDetailRecyclerAdapter extends RecyclerView.Adapter<TimeRecycler
 
     private void showOnLongClickDialog(int position) {
         Bundle bundle = new Bundle();
+        System.out.println(times.get(position).getId() + "!!!!!!!!!!!!");
         bundle.putInt("position", position);
-        bundle.putString("jobId", job.getId());
+        bundle.putString("timeId", times.get(position).getId());
         TimeDetailItemLongClickDialogFragment dialogFragment =
                 new TimeDetailItemLongClickDialogFragment();
         dialogFragment.setTargetFragment(fragment, 0);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fragment.getFragmentManager(), "LongClickDialog");
+    }
+
+    public void deleteItem(int position) {
+        times.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
     }
 }

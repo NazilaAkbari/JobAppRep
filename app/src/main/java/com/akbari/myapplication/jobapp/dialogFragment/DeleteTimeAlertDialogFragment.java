@@ -8,27 +8,25 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
+import com.akbari.myapplication.jobapp.interfaces.OnJobDetailHourListListener;
 
 /**
  * @author Akbari
  */
 
-public class DeleteAlertDialogFragment extends DialogFragment {
+public class DeleteTimeAlertDialogFragment  extends DialogFragment {
 
-    private OnJobListListener callBack;
-    private String payDay;
-    private String jobName;
+    private OnJobDetailHourListListener callBack;
+    private String timeId;
     private int position;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        payDay = getArguments().getString("payDay");
-        jobName = getArguments().getString("selectedJob");
+        timeId = getArguments().getString("timeId");
         position = getArguments().getInt("position");
         try {
-            callBack = (OnJobListListener) getTargetFragment();
+            callBack = (OnJobDetailHourListListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
         }
@@ -43,12 +41,12 @@ public class DeleteAlertDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.remove, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        callBack.OnRemoveItem(jobName, payDay, position);
+                        callBack.OnRemoveItem(timeId, position);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DeleteAlertDialogFragment.this.getDialog().cancel();
+                        DeleteTimeAlertDialogFragment.this.getDialog().cancel();
                     }
                 });
         AlertDialog alertDialog = builder.create();

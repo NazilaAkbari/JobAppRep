@@ -8,9 +8,9 @@ package com.akbari.myapplication.jobapp.interfaces;
 
 public interface OnJobDetailHourListListener {
 
-    void OnSelectRemoveButton();
+    void OnSelectRemoveButton(String timeId,int position);
 
-    void OnRemoveItem();
+    void OnRemoveItem(String timeId,int position);
 
     void OnSelectEditButton();
 

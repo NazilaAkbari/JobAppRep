@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
 import com.akbari.myapplication.jobapp.activity.MainActivity;
+import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.interfaces.OnJobDetailHourListListener;
+import com.akbari.myapplication.jobapp.model.Job;
+import com.akbari.myapplication.jobapp.model.Time;
 
 /**
  * @author Akbari
@@ -18,8 +21,7 @@ import com.akbari.myapplication.jobapp.interfaces.OnJobDetailHourListListener;
 
 public class TimeDetailItemLongClickDialogFragment extends DialogFragment {
 
-    private String payDay;
-    private String jobName;
+    private String timeId;
     private int position;
     private OnJobDetailHourListListener callBack;
     private static final CharSequence[] items = {"حذف", "ویرایش"};
@@ -27,9 +29,8 @@ public class TimeDetailItemLongClickDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        payDay = getArguments().getString("payDay");
-        jobName = getArguments().getString("selectedJob");
-        position = getArguments().getInt("position");
+        timeId = getArguments().getString("timeId");
+        position=getArguments().getInt("position");
         try {
             callBack = (OnJobDetailHourListListener) getTargetFragment();
         } catch (ClassCastException e) {
@@ -44,12 +45,9 @@ public class TimeDetailItemLongClickDialogFragment extends DialogFragment {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                intent.putExtra("payDay", payDay);
-                intent.putExtra("selectedJob", jobName);
                 switch (which) {
                     case 0:
-                        callBack.OnSelectRemoveButton();
+                        callBack.OnSelectRemoveButton(timeId,position);
                         break;
                     case 1:
                         callBack.OnSelectEditButton();
