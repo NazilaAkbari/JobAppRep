@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.akbari.myapplication.jobapp.activity.MainActivity;
-import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
+import com.akbari.myapplication.jobapp.interfaces.JobClickListener;
 
 /**
  * @author Akbari
@@ -15,12 +15,12 @@ import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
  * @since 11/19/2016
  */
 
-public class JobListItemLongClickDialogFragment extends android.support.v4.app.DialogFragment {
+public class JobsLongClickDialogFragment extends android.support.v4.app.DialogFragment {
 
     private String payDay;
     private String jobName;
     private int position;
-    private OnJobListListener callBack;
+    private JobClickListener callBack;
     private static final CharSequence[] items = {"نمایش", "حذف", "ویرایش"};
 
     @Override
@@ -30,7 +30,7 @@ public class JobListItemLongClickDialogFragment extends android.support.v4.app.D
         jobName = getArguments().getString("selectedJob");
         position = getArguments().getInt("position");
         try {
-            callBack = (OnJobListListener) getTargetFragment();
+            callBack = (JobClickListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
         }

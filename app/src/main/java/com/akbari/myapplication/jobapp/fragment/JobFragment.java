@@ -25,7 +25,7 @@ import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.dialogFragment.AddJobDialogFragment;
 import com.akbari.myapplication.jobapp.dialogFragment.EditJobDialogFragment;
-import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
+import com.akbari.myapplication.jobapp.interfaces.JobClickListener;
 import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.JobTime;
 import com.akbari.myapplication.jobapp.utils.DateUtil;
@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JobFragment extends Fragment implements OnJobListListener {
+public class JobFragment extends Fragment implements JobClickListener {
 
     private DrawerLayout drawerLayout;
     private String jobId;
@@ -202,22 +202,22 @@ public class JobFragment extends Fragment implements OnJobListListener {
     }
 
     private void openListFragment() {
-        ListFragment listFragment = new ListFragment();
+        JobsFragment jobsFragment = new JobsFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction tr = fragmentManager.beginTransaction();
-        tr.replace(R.id.job_holder, listFragment);
+        tr.replace(R.id.job_holder, jobsFragment);
         tr.commit();
     }
 
     private void openJobDetailHourFragment() {
         Bundle bundle = new Bundle();
         bundle.putString("jobId", job.getId());
-        JobTimeDetailFragment jobTimeDetailFragment =
-                new JobTimeDetailFragment();
-        jobTimeDetailFragment.setArguments(bundle);
+        TimesFragment timesFragment =
+                new TimesFragment();
+        timesFragment.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction tr = fragmentManager.beginTransaction();
-        tr.replace(R.id.job_holder, jobTimeDetailFragment);
+        tr.replace(R.id.job_holder, timesFragment);
         tr.commit();
     }
 

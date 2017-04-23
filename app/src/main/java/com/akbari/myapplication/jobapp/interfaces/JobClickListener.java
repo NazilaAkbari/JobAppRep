@@ -7,7 +7,7 @@ import com.akbari.myapplication.jobapp.model.Job;
  * @since 06/19/2016
  * @version 1.0
  */
-public interface OnJobListListener {
+public interface JobClickListener {
 
     void OnAddItem(String title, String payDay);
 

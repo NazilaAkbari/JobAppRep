@@ -3,15 +3,10 @@ package com.akbari.myapplication.jobapp.dialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-import com.akbari.myapplication.jobapp.activity.MainActivity;
-import com.akbari.myapplication.jobapp.dao.JobDao;
-import com.akbari.myapplication.jobapp.interfaces.OnJobDetailHourListListener;
-import com.akbari.myapplication.jobapp.model.Job;
-import com.akbari.myapplication.jobapp.model.Time;
+import com.akbari.myapplication.jobapp.interfaces.TimeClickListener;
 
 /**
  * @author Akbari
@@ -19,11 +14,11 @@ import com.akbari.myapplication.jobapp.model.Time;
  * @since 12/10/2016
  */
 
-public class TimeDetailItemLongClickDialogFragment extends DialogFragment {
+public class TimesLongClickDialogFragment extends DialogFragment {
 
     private String timeId;
     private int position;
-    private OnJobDetailHourListListener callBack;
+    private TimeClickListener callBack;
     private static final CharSequence[] items = {"حذف", "ویرایش"};
 
     @Override
@@ -32,7 +27,7 @@ public class TimeDetailItemLongClickDialogFragment extends DialogFragment {
         timeId = getArguments().getString("timeId");
         position=getArguments().getInt("position");
         try {
-            callBack = (OnJobDetailHourListListener) getTargetFragment();
+            callBack = (TimeClickListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
         }

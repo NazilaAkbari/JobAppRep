@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.akbari.myapplication.jobapp.activity.MainActivity;
-import com.akbari.myapplication.jobapp.dialogFragment.JobListItemLongClickDialogFragment;
+import com.akbari.myapplication.jobapp.dialogFragment.JobsLongClickDialogFragment;
 import com.akbari.myapplication.jobapp.interfaces.ItemClickListener;
 import com.akbari.myapplication.jobapp.interfaces.ItemLongClickListener;
 import com.akbari.myapplication.jobapp.model.Job;
@@ -92,8 +92,8 @@ public class JobRecyclerAdapter extends RecyclerView.Adapter<JobRecyclerViewHold
     }
 
     private void showOnLongClickDialog(Job job, int position) {
-        JobListItemLongClickDialogFragment longClickDialogFragment =
-                new JobListItemLongClickDialogFragment();
+        JobsLongClickDialogFragment longClickDialogFragment =
+                new JobsLongClickDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("selectedJob", job.getJobName());
         bundle.putString("payDay", job.getPayDay().toString());

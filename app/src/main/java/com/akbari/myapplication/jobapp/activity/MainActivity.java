@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.fragment.ListFragment;
+import com.akbari.myapplication.jobapp.fragment.JobsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(jobIntent);
             this.finish();
         } else {
-            ft.replace(R.id.place_holder, new ListFragment());
+            ft.replace(R.id.place_holder, new JobsFragment());
             ft.commit();
         }
     }

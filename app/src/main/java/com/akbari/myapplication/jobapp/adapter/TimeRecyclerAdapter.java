@@ -8,9 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.dialogFragment.TimeDetailItemLongClickDialogFragment;
+import com.akbari.myapplication.jobapp.dialogFragment.TimesLongClickDialogFragment;
 import com.akbari.myapplication.jobapp.interfaces.ItemLongClickListener;
-import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.Time;
 import com.akbari.myapplication.jobapp.viewHolder.TimeRecyclerViewHolder;
 
@@ -23,13 +22,13 @@ import java.util.List;
  * @since 12/10/2016
  */
 
-public class TimeDetailRecyclerAdapter extends RecyclerView.Adapter<TimeRecyclerViewHolder> {
+public class TimeRecyclerAdapter extends RecyclerView.Adapter<TimeRecyclerViewHolder> {
 
     private static List<Time> times = Collections.emptyList();
     private Fragment fragment;
 
-    public TimeDetailRecyclerAdapter(List<Time> times, Fragment fragment) {
-        TimeDetailRecyclerAdapter.times = times;
+    public TimeRecyclerAdapter(List<Time> times, Fragment fragment) {
+        TimeRecyclerAdapter.times = times;
         this.fragment = fragment;
         notifyDataSetChanged();
     }
@@ -67,8 +66,8 @@ public class TimeDetailRecyclerAdapter extends RecyclerView.Adapter<TimeRecycler
         System.out.println(times.get(position).getId() + "!!!!!!!!!!!!");
         bundle.putInt("position", position);
         bundle.putString("timeId", times.get(position).getId());
-        TimeDetailItemLongClickDialogFragment dialogFragment =
-                new TimeDetailItemLongClickDialogFragment();
+        TimesLongClickDialogFragment dialogFragment =
+                new TimesLongClickDialogFragment();
         dialogFragment.setTargetFragment(fragment, 0);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fragment.getFragmentManager(), "LongClickDialog");

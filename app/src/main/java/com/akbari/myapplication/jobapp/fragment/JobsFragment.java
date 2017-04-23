@@ -15,13 +15,13 @@ import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dialogFragment.AddJobDialogFragment;
 import com.akbari.myapplication.jobapp.dialogFragment.DeleteJobAlertDialogFragment;
 import com.akbari.myapplication.jobapp.dialogFragment.EditJobDialogFragment;
-import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
+import com.akbari.myapplication.jobapp.interfaces.JobClickListener;
 import com.akbari.myapplication.jobapp.model.Job;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListFragment extends Fragment implements OnJobListListener {
+public class JobsFragment extends Fragment implements JobClickListener {
 
     private JobRecyclerAdapter mAdapter;
 

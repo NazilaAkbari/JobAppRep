@@ -8,7 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
+import com.akbari.myapplication.jobapp.interfaces.JobClickListener;
 
 /**
  * @author Akbari
@@ -16,7 +16,7 @@ import com.akbari.myapplication.jobapp.interfaces.OnJobListListener;
 
 public class DeleteJobAlertDialogFragment extends DialogFragment {
 
-    private OnJobListListener callBack;
+    private JobClickListener callBack;
     private String payDay;
     private String jobName;
     private int position;
@@ -28,7 +28,7 @@ public class DeleteJobAlertDialogFragment extends DialogFragment {
         jobName = getArguments().getString("selectedJob");
         position = getArguments().getInt("position");
         try {
-            callBack = (OnJobListListener) getTargetFragment();
+            callBack = (JobClickListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
         }

@@ -13,12 +13,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.adapter.TimeDetailRecyclerAdapter;
+import com.akbari.myapplication.jobapp.adapter.TimeRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.decoration.CustomDividerItemDecoration;
 import com.akbari.myapplication.jobapp.dialogFragment.DeleteTimeAlertDialogFragment;
-import com.akbari.myapplication.jobapp.interfaces.OnJobDetailHourListListener;
+import com.akbari.myapplication.jobapp.interfaces.TimeClickListener;
 import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.JobTime;
 import com.akbari.myapplication.jobapp.model.Time;
@@ -29,10 +29,10 @@ import com.ibm.icu.util.PersianCalendar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobTimeDetailFragment extends Fragment implements OnJobDetailHourListListener {
+public class TimesFragment extends Fragment implements TimeClickListener {
 
     private List<Time> times = new ArrayList<>();
-    private TimeDetailRecyclerAdapter mAdapter;
+    private TimeRecyclerAdapter mAdapter;
     private Spinner monthSpinner;
     private EditText year;
     private View view;
@@ -46,7 +46,7 @@ public class JobTimeDetailFragment extends Fragment implements OnJobDetailHourLi
         monthSpinner = (Spinner) view.findViewById(R.id.month_choose);
         year = (EditText) view.findViewById(R.id.year);
         sumHour = (TextView) view.findViewById(R.id.sum_hour);
-        final JobTimeDetailFragment jobTimeDetailFragment = this;
+        final TimesFragment timesFragment = this;
         viewDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +63,7 @@ public class JobTimeDetailFragment extends Fragment implements OnJobDetailHourLi
                 RecyclerView.LayoutManager mLayoutManager = new
                         LinearLayoutManager(getActivity());
                 mRecyclerView.setLayoutManager(mLayoutManager);
-                mAdapter = new TimeDetailRecyclerAdapter(times, jobTimeDetailFragment);
+                mAdapter = new TimeRecyclerAdapter(times, timesFragment);
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.addItemDecoration(new
                         CustomDividerItemDecoration(getContext()));

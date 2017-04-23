@@ -8,7 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 
 import com.akbari.myapplication.jobapp.R;
-import com.akbari.myapplication.jobapp.interfaces.OnJobDetailHourListListener;
+import com.akbari.myapplication.jobapp.interfaces.TimeClickListener;
 
 /**
  * @author Akbari
@@ -16,7 +16,7 @@ import com.akbari.myapplication.jobapp.interfaces.OnJobDetailHourListListener;
 
 public class DeleteTimeAlertDialogFragment  extends DialogFragment {
 
-    private OnJobDetailHourListListener callBack;
+    private TimeClickListener callBack;
     private String timeId;
     private int position;
 
@@ -26,7 +26,7 @@ public class DeleteTimeAlertDialogFragment  extends DialogFragment {
         timeId = getArguments().getString("timeId");
         position = getArguments().getInt("position");
         try {
-            callBack = (OnJobDetailHourListListener) getTargetFragment();
+            callBack = (TimeClickListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement OnAddFriendListener");
         }

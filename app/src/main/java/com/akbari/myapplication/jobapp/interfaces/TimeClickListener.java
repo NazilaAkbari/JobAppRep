@@ -6,7 +6,7 @@ package com.akbari.myapplication.jobapp.interfaces;
  * @since 12/10/2016
  */
 
-public interface OnJobDetailHourListListener {
+public interface TimeClickListener {
 
     void OnSelectRemoveButton(String timeId,int position);
 
