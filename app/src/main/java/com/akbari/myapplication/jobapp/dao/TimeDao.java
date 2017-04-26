@@ -86,7 +86,7 @@ public class TimeDao {
         jobTime.setJobId(job.getId());
         PersianCalendar persianCalendar = new PersianCalendar();
         int dayOfWeek = persianCalendar.get(Calendar.DAY_OF_WEEK);
-        persianCalendar.set(Calendar.MONTH, persianCalendar.get(Calendar.MONTH) + 1);
+        persianCalendar.set(Calendar.MONTH, persianCalendar.get(Calendar.MONTH));
         jobTime.setDateTo(DateUtil.computeDateString(persianCalendar));
         persianCalendar.set(Calendar.DAY_OF_MONTH,
                 persianCalendar.get(Calendar.DAY_OF_MONTH) - dayOfWeek);
@@ -97,7 +97,6 @@ public class TimeDao {
     public Map<String, Integer> getMonthDailyHourData(Context context, JobTime jobTime) {
         PersianCalendar startDate = getDateOfFirstTimeEntry(context, jobTime.getJobId());
         PersianCalendar today = new PersianCalendar();
-        today.set(Calendar.MONTH, today.get(Calendar.MONTH) + 1);
         Map<String, Integer> chartAxisMap = new HashMap<>();
         while (today.compareTo(startDate) >= 0) {
             jobTime.setDateTo(DateUtil.computeDateString(today));
@@ -164,13 +163,10 @@ public class TimeDao {
                 + " = '" + jobId + "'"
                 + " ORDER BY " + DbHelper.FeedEntry.COLUMN_NAME_Date;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
+        if (cursor.moveToFirst())
             return DateUtil.parsePersianDate(cursor.getString(0));
-        } else {
-            PersianCalendar calendar = new PersianCalendar();
-            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
+        else
             return new PersianCalendar();
-        }
     }
 
     public void removeTime(Context context, String id) {
@@ -193,6 +189,7 @@ public class TimeDao {
         Time time = new Time();
         if (cursor.moveToFirst()) {
             time.setId(cursor.getString(0));
+            time.setJobId(cursor.getString(1));
             time.setEnterTime(cursor.getString(2));
             time.setExitTime(cursor.getString(3));
             time.setDate(cursor.getString(4));
@@ -202,7 +199,7 @@ public class TimeDao {
         return time;
     }
 
-    public void edit(Context context,Time time) throws ParseException {
+    public void edit(Context context, Time time) throws ParseException {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

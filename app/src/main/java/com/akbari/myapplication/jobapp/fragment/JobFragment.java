@@ -202,11 +202,8 @@ public class JobFragment extends Fragment implements JobClickListener {
     }
 
     private void openListFragment() {
-        JobsFragment jobsFragment = new JobsFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction tr = fragmentManager.beginTransaction();
-        tr.replace(R.id.job_holder, jobsFragment);
-        tr.commit();
+        Intent i = new Intent(getActivity(), MainActivity.class);
+        getActivity().startActivity(i);
     }
 
     private void openJobDetailHourFragment() {
@@ -281,7 +278,6 @@ public class JobFragment extends Fragment implements JobClickListener {
     public void OnEditItem(Job job, String oldName) {
         JobDao jobDao = new JobDao();
         jobDao.editJob(getContext(), job);
-        jobDao.editJobNameInTimeDb(getContext(), job, oldName);
         ((JobActivity) getActivity()).getSupportActionBar().setTitle(job.getJobName());
     }
 

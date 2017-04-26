@@ -1,5 +1,6 @@
 package com.akbari.myapplication.jobapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.akbari.myapplication.jobapp.R;
+import com.akbari.myapplication.jobapp.activity.JobActivity;
 import com.akbari.myapplication.jobapp.adapter.TimeRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
@@ -39,23 +44,25 @@ public class TimesFragment extends Fragment implements TimeClickListener {
     private EditText year;
     private View view;
     private TextView sumHour;
+    private String jobId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_job_month_hour, container, false);
+        setHasOptionsMenu(true);
         Button viewDetail = (Button) view.findViewById(R.id.view_detail);
         monthSpinner = (Spinner) view.findViewById(R.id.month_choose);
         year = (EditText) view.findViewById(R.id.year);
         sumHour = (TextView) view.findViewById(R.id.sum_hour);
         final TimesFragment timesFragment = this;
+        jobId = getArguments().getString("jobId");
         viewDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 JobDao jobDao = new JobDao();
                 TimeDao timeDao = new TimeDao();
-                Job job = jobDao.findJobById(getContext(),
-                        getArguments().getString("jobId"));
+                Job job = jobDao.findJobById(getContext(), jobId);
                 JobTime jobTime = getJobTime(job);
                 setSumText(timeDao, jobTime);
                 times.addAll(timeDao.getTimesInDateRange(getContext(), jobTime));
@@ -135,5 +142,24 @@ public class TimesFragment extends Fragment implements TimeClickListener {
         FragmentTransaction tr = fragmentManager.beginTransaction();
         tr.replace(R.id.job_holder, fragment);
         tr.commit();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_back, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.back:
+                Intent intent = new Intent(getActivity(), JobActivity.class);
+                intent.putExtra("jobId", jobId);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

@@ -34,7 +34,7 @@ public class DateUtil {
         String[] parts = pdate.split(" ");
         String[] cal = parts[0].split("/");
         Integer year = Integer.valueOf(cal[0]);
-        Integer month = Integer.valueOf(cal[1]);
+        Integer month = Integer.valueOf(cal[1])-1;
         Integer day = Integer.valueOf(cal[2]);
         if (parts.length == 2) {
             String[] time = parts[1].split(":");

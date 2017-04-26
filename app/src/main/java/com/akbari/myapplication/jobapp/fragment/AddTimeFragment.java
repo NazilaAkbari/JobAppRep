@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -191,22 +193,28 @@ public class AddTimeFragment extends Fragment {
                 validateFields();
                 Time time = new Time();
                 time.setId(timeId);
-                time.setJobId(job.getId());
                 time.setEnterTime(enterTime.getText().toString());
                 time.setExitTime(exitTime.getText().toString());
                 time.setDate(date.getText().toString());
                 TimeDao timeDao = new TimeDao();
                 try {
-                    timeDao.edit(getContext(),time);
+                    timeDao.edit(getContext(), time);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Intent intent = new Intent(getContext(), JobActivity.class);
-                intent.putExtra("jobId", job.getId());
-                startActivity(intent);
+                Time timeById = timeDao.findTimeById(getContext(), timeId);
                 enterTime.setText("");
                 exitTime.setText("");
                 date.setText("");
+                Bundle bundle = new Bundle();
+                bundle.putString("jobId", timeById.getJobId());
+                TimesFragment timesFragment =
+                        new TimesFragment();
+                timesFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction tr = fragmentManager.beginTransaction();
+                tr.replace(R.id.job_holder, timesFragment);
+                tr.commit();
             }
         });
     }
@@ -237,14 +245,14 @@ public class AddTimeFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(
             Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_open_drawer, menu);
+        inflater.inflate(R.menu.menu_back, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle item selection
         switch (item.getItemId()) {
-            case R.id.open_drawer:
+            case R.id.back:
                 Intent intent = new Intent(getActivity(), JobActivity.class);
                 intent.putExtra("jobId", job.getId());
                 startActivity(intent);

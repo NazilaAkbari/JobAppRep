@@ -3,6 +3,7 @@ package com.akbari.myapplication.jobapp.fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.akbari.myapplication.jobapp.R;
+import com.akbari.myapplication.jobapp.activity.JobActivity;
 import com.akbari.myapplication.jobapp.adapter.JobRecyclerAdapter;
 import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dialogFragment.AddJobDialogFragment;
@@ -49,6 +51,7 @@ public class JobsFragment extends Fragment implements JobClickListener {
                 showDialog();
             }
         });
+      //  ((JobActivity) getActivity()).getSupportActionBar().setTitle("");
         return view;
     }
 
@@ -65,12 +68,12 @@ public class JobsFragment extends Fragment implements JobClickListener {
 
     @Override
     public void OnSelectRemoveButton(String id, int position) {
-        DeleteJobAlertDialogFragment fragment=new DeleteJobAlertDialogFragment();
+        DeleteJobAlertDialogFragment fragment = new DeleteJobAlertDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("jobId", id);
         bundle.putInt("position", position);
         fragment.setArguments(bundle);
-        fragment.setTargetFragment(this,0);
+        fragment.setTargetFragment(this, 0);
         fragment.show(getFragmentManager(), "Alert");
     }
 
@@ -95,7 +98,6 @@ public class JobsFragment extends Fragment implements JobClickListener {
     public void OnEditItem(Job job, String oldName) {
         JobDao jobDao = new JobDao();
         jobDao.editJob(getContext(), job);
-        jobDao.editJobNameInTimeDb(getContext(),job,oldName);
         mAdapter.updateList(jobDao.getAllJobs(getContext()));
     }
 

@@ -35,15 +35,6 @@ public class JobDao {
         db.close();
     }
 
-    public void editJobNameInTimeDb(Context context, Job job, String oldName) {
-        DbHelper dbHelper = new DbHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(DbHelper.FeedEntry.COLUMN_NAME_JOB_ID, job.getId());
-        db.update(DbHelper.FeedEntry.TABLE_NAME_TIME, cv, "jobName= '" + oldName + "'", null);
-        db.close();
-    }
-
     public List<Job> getAllJobs(Context context) {
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -68,7 +59,7 @@ public class JobDao {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.delete(
                 DbHelper.FeedEntry.TABLE_NAME_JOB,
-                DbHelper.FeedEntry.COLUMN_NAME_JOB_ID + "=?",
+                DbHelper.FeedEntry._ID + "=?",
                 new String[]{job.getId()}
         );
         db.close();
