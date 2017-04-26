@@ -51,7 +51,6 @@ public class JobsFragment extends Fragment implements JobClickListener {
                 showDialog();
             }
         });
-      //  ((JobActivity) getActivity()).getSupportActionBar().setTitle("");
         return view;
     }
 
