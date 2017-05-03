@@ -105,6 +105,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:layout_marginTop="20dp"
+        android:layoutDirection="rtl"
+        android:textDirection="rtl"
         app:itemTextColor="@color/colorAccent"
         app:menu="@menu/drawer_view" />
 
