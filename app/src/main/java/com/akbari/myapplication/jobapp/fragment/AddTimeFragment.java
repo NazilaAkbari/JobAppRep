@@ -28,6 +28,7 @@ import com.akbari.myapplication.jobapp.dao.JobDao;
 import com.akbari.myapplication.jobapp.dao.TimeDao;
 import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.Time;
+import com.akbari.myapplication.jobapp.utils.DateUtil;
 import com.alirezaafkar.sundatepicker.DatePicker;
 import com.alirezaafkar.sundatepicker.interfaces.DateSetListener;
 
@@ -68,6 +69,7 @@ public class AddTimeFragment extends Fragment {
         if (timeId == null) {
             editButton.setVisibility(View.GONE);
             job = jobDao.findJobById(getContext(), getArguments().getString("jobId"));
+            date.setText(DateUtil.getCurrentPersianDate());
         } else {
             addButton.setVisibility(View.GONE);
             TimeDao timeDao = new TimeDao();

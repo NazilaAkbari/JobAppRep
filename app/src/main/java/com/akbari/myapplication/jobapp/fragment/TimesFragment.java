@@ -30,6 +30,7 @@ import com.akbari.myapplication.jobapp.model.Job;
 import com.akbari.myapplication.jobapp.model.JobTime;
 import com.akbari.myapplication.jobapp.model.Time;
 import com.akbari.myapplication.jobapp.utils.DateUtil;
+import com.akbari.myapplication.jobapp.utils.Month;
 import com.ibm.icu.util.Calendar;
 import com.ibm.icu.util.PersianCalendar;
 
@@ -53,8 +54,12 @@ public class TimesFragment extends Fragment implements TimeClickListener {
         setHasOptionsMenu(true);
         Button viewDetail = (Button) view.findViewById(R.id.view_detail);
         monthSpinner = (Spinner) view.findViewById(R.id.month_choose);
-        year = (EditText) view.findViewById(R.id.year);
+        year = (EditText) view.findViewById(R.id.year_choose);
         sumHour = (TextView) view.findViewById(R.id.sum_hour);
+        PersianCalendar calendar = new PersianCalendar();
+        year.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+        monthSpinner.setSelection(calendar.get(Calendar.MONTH));
+        System.out.println(calendar.get(Calendar.MONTH));
         final TimesFragment timesFragment = this;
         jobId = getArguments().getString("jobId");
         viewDetail.setOnClickListener(new View.OnClickListener() {

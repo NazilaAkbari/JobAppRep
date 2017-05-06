@@ -10,7 +10,7 @@
     <string name="submit">ثبت</string>
     <string name="title">Job Time Calculator</string>
     <string name="jobName">Job Name</string>
-    <string name="payDay">روز حساب</string>
+    <string name="payDay">روز محاسبه حقوق در ماه</string>
     <string name="totalTime">Total Time</string>
     <string name="monthTime">کارکرد این ماه:</string>
     <string name="weekTime">کارکرد این هفته:</string>
@@ -19,7 +19,7 @@
     <string name="show_item">نمایش</string>
     <string name="remove">حذف</string>
     <string name="edit">ویرایش</string>
-    <string name="addTime">افزودن ساعت</string>
+    <string name="addTime">افزودن ساعت ورود و خروج</string>
     <string name="add">افزودن</string>
     <string name="job_title">عنوان شغل</string>
     <string name="time_enter_error">ساعت ورود درست نیست</string>
